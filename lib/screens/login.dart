@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
-  static String tag = 'login';
   @override
   _LoginState createState() => new _LoginState();
  }
@@ -92,13 +91,13 @@ class _LoginState extends State<Login> {
               child: Text("Ingresa con Google", style: TextStyle(fontFamily: 'Roboto',color: Color.fromRGBO(68, 68, 76, .8),
               ),
             ),
-              padding: new EdgeInsets.only(left: 15.0),
+            padding: new EdgeInsets.only(left: 15.0),
             ),
           ],
         ),
       ),
       color: Colors.white,
-      splashColor: Colors.blueGrey,
+      splashColor: Colors.lightBlue,
       onPressed: () { _handlerSignInGoogle(); },
     );
 
