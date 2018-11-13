@@ -14,6 +14,9 @@ class _LoginState extends State<Login> {
     void _handlerLogin () {
       Navigator.of(context).pushNamed('/home');
     }
+    void _handlerSignInGoogle() {
+      
+    }
     void _handlerNewAccount () {
       Navigator.of(context).pushNamed('/register');
     }
@@ -79,6 +82,25 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+    final loginButtonGoogle = RaisedButton(
+      child:  Center(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Image.asset('assets/google.png', width: 25.0,),
+            Padding(
+              child: Text("Ingresa con Google", style: TextStyle(fontFamily: 'Roboto',color: Color.fromRGBO(68, 68, 76, .8),
+              ),
+            ),
+              padding: new EdgeInsets.only(left: 15.0),
+            ),
+          ],
+        ),
+      ),
+      color: Colors.white,
+      splashColor: Colors.blueGrey,
+      onPressed: () { _handlerSignInGoogle(); },
+    );
 
     final newAccount = FlatButton(
       child: Text('Crear una cuenta', style: TextStyle(color: Colors.black54),),
@@ -99,6 +121,7 @@ class _LoginState extends State<Login> {
             password,
             SizedBox(height: 24.0,),
             loginButton,
+            loginButtonGoogle,
             newAccount,
           ],
         ),
