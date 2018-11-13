@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "794499569764",
+    "firebase_url": "https://panelmex-app-test.firebaseio.com",
+    "project_id": "panelmex-app-test",
+    "storage_bucket": "panelmex-app-test.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:794499569764:android:229183768cc21d0a",
+        "android_client_info": {
+          "package_name": "com.example.panelmexapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "794499569764-s4l32h55964sqspce0rrfsl4rg5o5aq9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVeq7JA8HAOAA6Zumaxn18JS_oveHnB2Q"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
