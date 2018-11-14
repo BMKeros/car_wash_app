@@ -32,7 +32,7 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    final User currentUser;
+    final User currentUser = new User(null, null);
     //Handlers
     Future _handlerLogin() async {
       var user = await _authService.signIn(
@@ -120,7 +120,8 @@ class _LoginState extends State<Login> {
     );
 
     return new StoreConnector<AppState, User>(
-      converter: null,// (Store<AppState> store) => User(store.state.currentUser.uid),
+      converter: null,
+      // (Store<AppState> store) => User(store.state.currentUser.uid),
       builder: (context, User currentUser) {
         return new Scaffold(
           backgroundColor: Colors.white,

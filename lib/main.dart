@@ -7,8 +7,13 @@ import 'package:panelmex_app/redux/state.dart';
 import 'package:panelmex_app/redux/reducers.dart';
 import 'package:panelmex_app/routes.dart';
 import 'package:panelmex_app/screens/login.dart';
+import 'package:map_view/map_view.dart';
+import 'package:panelmex_app/config/config.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  MapView.setApiKey(APIKEY);
+  return runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
