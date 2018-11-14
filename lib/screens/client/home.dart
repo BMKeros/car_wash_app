@@ -1,20 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:panelmex_app/screens/client/list_services.dart';
+import 'package:panelmex_app/screens/client/list_notifications.dart';
+import 'package:panelmex_app/screens/client/profile.dart';
 
 class HomeClient extends StatefulWidget {
   @override
   _HomeClientState createState() => new _HomeClientState();
- }
+}
+
 class _HomeClientState extends State<HomeClient> {
+  int _currentIndex = 0;
 
-  var listViewItems = {
-    0: ['Lavado completo','20/5/2018','Pendiente'],
-    1: ['Limpieza interior','13/4/2018','Rechazado'],
-    2: ['Brillo','17/52/2018','Finalizado'],
-    3: ['Lavado completo','20/5/2018','Pendiente'],
-    4: ['Limpieza interior','13/4/2018','Rechazado'],
-    5: ['Brillo','17/52/2018','Finalizado'],
+  final List<Widget> _children = [
+    ListServices(),
+    ListNotifications(),
+    Profile(),
+  ];
 
-  };
+  static List<BottomNavigationBarItem> _itemsNavigationBar = [
+    BottomNavigationBarItem(
+      icon: Icon(Icons.airport_shuttle),
+      title: Text('Servicios'),
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.notifications),
+      title: Text('Notificaciones'),
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.person),
+      title: Text('Perfil'),
+    ),
+  ];
+
+  void onTabTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,15 +46,38 @@ class _HomeClientState extends State<HomeClient> {
 
     return Scaffold(
       appBar: AppBar(
-        iconTheme: new IconThemeData(color: Colors.white,),
-        title: Text('Panelmex', style: TextStyle(color: Colors.white),),
+        iconTheme: new IconThemeData(
+          color: Colors.white,
+        ),
+        title: Text(
+          'Panelmex',
+          style: TextStyle(color: Colors.white),
+        ),
+        actions: <Widget>[
+          PopupMenuButton<String>(
+            itemBuilder: (BuildContext context) {
+              return [
+                PopupMenuItem<String>(
+                  value: 'Ajustes',
+                  child: Text('Ajustes1'),
+                )
+              ];
+            },
+          )
+        ],
+        automaticallyImplyLeading: false,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () { _handlerNewService(); },
+        onPressed: () {
+          _handlerNewService();
+        },
         tooltip: 'Solicitar servicio',
-        child: Icon(Icons.add, color: Colors.white,),
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
       ),
-      drawer: Drawer(
+      /*drawer: Drawer(
         child: Column(
           children: <Widget>[
             DrawerHeader(
@@ -40,17 +85,17 @@ class _HomeClientState extends State<HomeClient> {
                 child: Image.asset('assets/dream-car.jpg'),
               ),
             ),
-
             ListTile(
               leading: Icon(Icons.person, color: Colors.lightBlue),
               title: Text('Perfil'),
-              onTap: () {},
+              onTap: () {
+                _handlerProfile();
+              },
             ),
             ListTile(
-              leading: Icon(Icons.airport_shuttle, color: Colors.lightBlue),
-              title: Text('Servicios'),
-              onTap: () {}
-            ),
+                leading: Icon(Icons.airport_shuttle, color: Colors.lightBlue),
+                title: Text('Servicios'),
+                onTap: () {}),
             ListTile(
               leading: Icon(Icons.notifications, color: Colors.lightBlue),
               title: Text('Notificaciones'),
@@ -64,45 +109,13 @@ class _HomeClientState extends State<HomeClient> {
             ),
           ],
         ),
-      ),
-      body: ListView.builder(
-        itemCount: listViewItems.length,
-        itemBuilder: (BuildContext ctxt, int index) {
-          return ListTile(
-            title: Text(listViewItems[index][0]),
-            subtitle: Text(listViewItems[index][1]),
-            leading: Icon(
-              Icons.airport_shuttle,
-              color: Colors.blue[500],
-            ),
-            trailing: Icon(
-              Icons.check
-            ),
-          );
-        }
-      ),
+      ),*/
+      body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
-        items: _getFooterItems(),
+        currentIndex: _currentIndex,
+        items: _itemsNavigationBar,
+        onTap: onTabTapped,
       ),
-      
     );
   }
-}
-
-List<BottomNavigationBarItem> _getFooterItems() {
-  return [
-    BottomNavigationBarItem(
-      icon: Icon(Icons.airport_shuttle),
-      title: Text('Servicios'),
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.notifications),
-      title: Text('Notificaciones'),
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.person),
-      title: Text('Perfil'),
-      
-    ),
-  ];
 }

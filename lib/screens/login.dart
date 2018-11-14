@@ -1,23 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:redux/redux.dart';
+import 'package:panelmex_app/models/user.dart';
+import 'package:panelmex_app/services/auth.dart';
+import 'package:panelmex_app/redux/state.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
 class Login extends StatefulWidget {
   static String tag = 'login';
+
   @override
   _LoginState createState() => new _LoginState();
- }
+}
+
 class _LoginState extends State<Login> {
+  final AuthService _authService = new AuthService();
+
+  static final emailTextController = TextEditingController();
+  static final passwordTextController = TextEditingController();
+
+  final TextField email = TextField(
+    keyboardType: TextInputType.emailAddress,
+    decoration: InputDecoration(labelText: 'Correo'),
+    controller: emailTextController,
+  );
+
+  final TextField password = TextField(
+    obscureText: true,
+    decoration: InputDecoration(labelText: 'Contrasena'),
+    controller: passwordTextController,
+  );
 
   @override
   Widget build(BuildContext context) {
-    
+    final User currentUser;
     //Handlers
-    void _handlerLogin () {
-      Navigator.of(context).pushNamed('/home');
+    Future _handlerLogin() async {
+      var user = await _authService.signIn(
+          emailTextController.text, passwordTextController.text);
+
+      currentUser.email = user.email;
+      currentUser.uid = user.uid;
     }
-    void _handlerSignInGoogle() {
-      
+
+    Future _handlerSignInGoogle() async {
+      _authService.signInWithGoogle();
     }
-    void _handlerNewAccount () {
+
+    void _handlerNewAccount() {
       Navigator.of(context).pushNamed('/register');
     }
 
@@ -30,43 +59,6 @@ class _LoginState extends State<Login> {
       ),
     );
 
-    /*final email = TextFormField(
-      keyboardType: TextInputType.emailAddress,
-      autofocus: false,
-      decoration: InputDecoration(
-        hintText: 'Correo',
-        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(32.0)
-        )
-      ),
-    );*/
-    final email = TextField(
-      keyboardType: TextInputType.emailAddress,
-      decoration: InputDecoration(
-        labelText: 'Correo'
-      ),
-    );
-
-
-    /*final password = TextFormField(
-      autofocus: false,
-      obscureText: true,
-      decoration: InputDecoration(
-        hintText: 'Contrasena',
-        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(32.0)
-        )
-      ),
-    );*/
-    final password = TextField(
-      obscureText: true,
-      decoration: InputDecoration(
-        labelText: 'Contrasena'
-      ),
-    );
-
     final loginButton = Padding(
       padding: EdgeInsets.symmetric(vertical: 16.0),
       child: Material(
@@ -76,22 +68,35 @@ class _LoginState extends State<Login> {
         child: MaterialButton(
           minWidth: 200.0,
           height: 42.0,
-          onPressed: () { _handlerLogin(); },
+          onPressed: () {
+            _handlerLogin();
+          },
           color: Colors.lightBlueAccent,
-          child: Text('Iniciar de secion', style: TextStyle(color: Colors.white),),
+          child: Text(
+            'Iniciar de secion',
+            style: TextStyle(color: Colors.white),
+          ),
         ),
       ),
     );
+
     final loginButtonGoogle = RaisedButton(
-      child:  Center(
+      child: Center(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Image.asset('assets/google.png', width: 25.0,),
-            Padding(
-              child: Text("Ingresa con Google", style: TextStyle(fontFamily: 'Roboto',color: Color.fromRGBO(68, 68, 76, .8),
-              ),
+            Image.asset(
+              'assets/google.png',
+              width: 25.0,
             ),
+            Padding(
+              child: Text(
+                "Ingresa con Google",
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  color: Color.fromRGBO(68, 68, 76, .8),
+                ),
+              ),
               padding: new EdgeInsets.only(left: 15.0),
             ),
           ],
@@ -99,34 +104,51 @@ class _LoginState extends State<Login> {
       ),
       color: Colors.white,
       splashColor: Colors.blueGrey,
-      onPressed: () { _handlerSignInGoogle(); },
+      onPressed: () {
+        _handlerSignInGoogle();
+      },
     );
 
     final newAccount = FlatButton(
-      child: Text('Crear una cuenta', style: TextStyle(color: Colors.black54),),
-      onPressed: (){ _handlerNewAccount(); },
-    );
-   
-    return new Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(
-        child: ListView(
-          shrinkWrap: true,
-          padding: EdgeInsets.only(left: 24.0, right: 24.0),
-          children: <Widget>[
-            logo,
-            SizedBox(height: 48.0,),
-            email,
-            SizedBox(height: 8.0,),
-            password,
-            SizedBox(height: 24.0,),
-            loginButton,
-            loginButtonGoogle,
-            newAccount,
-          ],
-        ),
+      child: Text(
+        'Crear una cuenta',
+        style: TextStyle(color: Colors.black54),
       ),
-      
+      onPressed: () {
+        _handlerNewAccount();
+      },
+    );
+
+    return new StoreConnector<AppState, User>(
+      converter: null,// (Store<AppState> store) => User(store.state.currentUser.uid),
+      builder: (context, User currentUser) {
+        return new Scaffold(
+          backgroundColor: Colors.white,
+          body: Center(
+            child: ListView(
+              shrinkWrap: true,
+              padding: EdgeInsets.only(left: 24.0, right: 24.0),
+              children: <Widget>[
+                logo,
+                SizedBox(
+                  height: 48.0,
+                ),
+                email,
+                SizedBox(
+                  height: 8.0,
+                ),
+                password,
+                SizedBox(
+                  height: 24.0,
+                ),
+                loginButton,
+                loginButtonGoogle,
+                newAccount,
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

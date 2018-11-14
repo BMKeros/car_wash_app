@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:panelmex_app/services/auth.dart';
 
 class Register extends StatefulWidget {
   @override
   _RegisterState createState() => new _RegisterState();
  }
 class _RegisterState extends State<Register> {
+  final _authService = new AuthService();
+
+  static final fullNameTextController = new TextEditingController();
+  static final emailTextController = new TextEditingController();
+  static final passwordTextController = new TextEditingController();
+
+  Future _handleSignUp() async {
+    await _authService.signUp(emailTextController.text, passwordTextController.text);
+  }
+
   @override
   Widget build(BuildContext context) {
-    
+
     final logo = Hero(
       tag: 'hero',
       child: CircleAvatar(
@@ -19,8 +30,9 @@ class _RegisterState extends State<Register> {
 
     final name = TextField(
       decoration: InputDecoration(
-        labelText: 'Nombre y Apellido'
+        labelText: 'Nombre y Apellido',
       ),
+      controller: fullNameTextController,
     );
 
     final email = TextField(
@@ -28,6 +40,7 @@ class _RegisterState extends State<Register> {
       decoration: InputDecoration(
         labelText: 'Correo'
       ),
+      controller: emailTextController,
     );
 
     final passwordOne = TextField(
@@ -35,6 +48,7 @@ class _RegisterState extends State<Register> {
       decoration: InputDecoration(
         labelText: 'Contrasena'
       ),
+      controller: passwordTextController,
     );
     final passwordTwo = TextField(
       obscureText: true,
@@ -52,21 +66,19 @@ class _RegisterState extends State<Register> {
         child: MaterialButton(
           minWidth: 200.0,
           height: 42.0,
-          onPressed: () {
-
-          },
+          onPressed: _handleSignUp,
           color: Colors.lightBlueAccent,
           child: Text('Nueva cuenta', style: TextStyle(color: Colors.white),),
         ),
       ),
     );
 
-    final forgotLabel = FlatButton(
+    /*final forgotLabel = FlatButton(
       child: Text('Ya tengo una cuenta', style: TextStyle(color: Colors.black54),),
       onPressed: () {
 
       },
-    );
+    );*/
 
     return new Scaffold(
       backgroundColor: Colors.white,
@@ -90,7 +102,6 @@ class _RegisterState extends State<Register> {
           ],
         ),
       ),
-      
     );
   }
 }
