@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:panelmex_app/models/user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:panelmex_app/services/auth.dart';
+import 'package:panelmex_app/screens/client/home.dart';
 
-class Login extends StatefulWidget {
-  static String tag = 'login';
+class LoginScreen extends StatefulWidget {
+  static String tag = 'LoginScreen';
   static String routerName = '/login';
 
   @override
-  _LoginState createState() => new _LoginState();
+  _LoginScreenState createState() => new _LoginScreenState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginScreenState extends State<LoginScreen> {
   final AuthService _authService = new AuthService();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
 
   static final emailTextController = TextEditingController();
   static final passwordTextController = TextEditingController();
@@ -30,18 +34,30 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    final User currentUser = new User(null, null);
-    //Handlers
-    Future _handlerLogin() async {
-      var user = await _authService.signIn(
-          emailTextController.text, passwordTextController.text);
+    FirebaseUser _currentUser;
 
-      currentUser.email = user.email;
-      currentUser.uid = user.uid;
+    //Handlers
+    Future _handlerLoginScreen() async {
+      try {
+        _currentUser = await _authService.signIn(
+            emailTextController.text, passwordTextController.text);
+
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => HomeScreen(_currentUser)));
+      } on PlatformException catch (e) {
+        final snackBar = SnackBar(
+          content: Text(e.message),
+        );
+
+        // Find the Scaffold in the Widget tree and use it to show a SnackBar!
+        _scaffoldKey.currentState.showSnackBar(snackBar);
+      }
     }
 
     Future _handlerSignInGoogle() async {
-      _authService.signInWithGoogle();
+      try {
+        _currentUser = await _authService.signInWithGoogle();
+      } on PlatformException catch (e) {}
     }
 
     void _handlerNewAccount() {
@@ -57,7 +73,7 @@ class _LoginState extends State<Login> {
       ),
     );
 
-    final loginButton = Padding(
+    final LoginScreenButton = Padding(
       padding: EdgeInsets.symmetric(vertical: 16.0),
       child: Material(
         borderRadius: BorderRadius.circular(30.0),
@@ -67,7 +83,7 @@ class _LoginState extends State<Login> {
           minWidth: 200.0,
           height: 42.0,
           onPressed: () {
-            _handlerLogin();
+            _handlerLoginScreen();
           },
           color: Colors.lightBlueAccent,
           child: Text(
@@ -78,7 +94,7 @@ class _LoginState extends State<Login> {
       ),
     );
 
-    final loginButtonGoogle = RaisedButton(
+    final LoginScreenButtonGoogle = RaisedButton(
       child: Center(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -117,7 +133,8 @@ class _LoginState extends State<Login> {
       },
     );
 
-    new Scaffold(
+    return new Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.white,
       body: Center(
         child: ListView(
@@ -136,8 +153,8 @@ class _LoginState extends State<Login> {
             SizedBox(
               height: 24.0,
             ),
-            loginButton,
-            loginButtonGoogle,
+            LoginScreenButton,
+            LoginScreenButtonGoogle,
             newAccount,
           ],
         ),
@@ -145,3 +162,4 @@ class _LoginState extends State<Login> {
     );
   }
 }
+
