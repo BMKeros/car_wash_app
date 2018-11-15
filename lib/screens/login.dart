@@ -55,7 +55,7 @@ class _LoginState extends State<Login> {
       child: CircleAvatar(
         backgroundColor: Colors.transparent,
         radius: 48.0,
-        child: Image.asset('assets/dream-car.jpg'),
+        child: Image.asset('assets/dream-car.png'),
       ),
     );
 
