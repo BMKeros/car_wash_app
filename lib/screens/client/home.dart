@@ -4,6 +4,8 @@ import 'package:panelmex_app/screens/client/list_notifications.dart';
 import 'package:panelmex_app/screens/client/profile.dart';
 
 class HomeClient extends StatefulWidget {
+  static String routerName = '/home';
+
   @override
   _HomeClientState createState() => new _HomeClientState();
 }

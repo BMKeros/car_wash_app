@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:redux/redux.dart';
 import 'package:panelmex_app/models/user.dart';
 import 'package:panelmex_app/services/auth.dart';
-import 'package:panelmex_app/redux/state.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 
 class Login extends StatefulWidget {
   static String tag = 'login';
+  static String routerName = '/login';
 
   @override
   _LoginState createState() => new _LoginState();
@@ -119,37 +117,31 @@ class _LoginState extends State<Login> {
       },
     );
 
-    return new StoreConnector<AppState, User>(
-      converter: null,
-      // (Store<AppState> store) => User(store.state.currentUser.uid),
-      builder: (context, User currentUser) {
-        return new Scaffold(
-          backgroundColor: Colors.white,
-          body: Center(
-            child: ListView(
-              shrinkWrap: true,
-              padding: EdgeInsets.only(left: 24.0, right: 24.0),
-              children: <Widget>[
-                logo,
-                SizedBox(
-                  height: 48.0,
-                ),
-                email,
-                SizedBox(
-                  height: 8.0,
-                ),
-                password,
-                SizedBox(
-                  height: 24.0,
-                ),
-                loginButton,
-                loginButtonGoogle,
-                newAccount,
-              ],
+    new Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: ListView(
+          shrinkWrap: true,
+          padding: EdgeInsets.only(left: 24.0, right: 24.0),
+          children: <Widget>[
+            logo,
+            SizedBox(
+              height: 48.0,
             ),
-          ),
-        );
-      },
+            email,
+            SizedBox(
+              height: 8.0,
+            ),
+            password,
+            SizedBox(
+              height: 24.0,
+            ),
+            loginButton,
+            loginButtonGoogle,
+            newAccount,
+          ],
+        ),
+      ),
     );
   }
 }

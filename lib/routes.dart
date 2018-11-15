@@ -8,9 +8,9 @@ import 'package:panelmex_app/screens/client/new_service.dart';
 import 'package:panelmex_app/screens/client/profile.dart';
 
 final routes = {
-  '/login': (BuildContext context) => new Login(),
-  '/register': (BuildContext context) => new Register(),
-  '/home': (BuildContext context) => new HomeClient(),
-  '/new-service' : (BuildContext context) => new NewService(),
-  '/profile': (BuildContext context) => new Profile(),
+  Login.routerName: (BuildContext context) => new Login(),
+  Register.routerName: (BuildContext context) => new Register(),
+  HomeClient.routerName: (BuildContext context) => new HomeClient(),
+  NewService.routerName: (BuildContext context) => new NewService(),
+  Profile.routerName: (BuildContext context) => new Profile(),
 };

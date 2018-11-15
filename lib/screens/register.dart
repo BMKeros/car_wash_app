@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:panelmex_app/services/auth.dart';
 
 class Register extends StatefulWidget {
+  static String routerName = '/register';
+  
   @override
   _RegisterState createState() => new _RegisterState();
  }

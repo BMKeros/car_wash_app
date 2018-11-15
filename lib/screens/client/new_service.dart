@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:map_view/map_view.dart';
 
 class NewService extends StatefulWidget {
+  static String routerName = '/new-service';
+
   @override
   _NewServiceState createState() => new _NewServiceState();
  }
