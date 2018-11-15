@@ -79,39 +79,6 @@ class _HomeClientState extends State<HomeClient> {
           color: Colors.white,
         ),
       ),
-      /*drawer: Drawer(
-        child: Column(
-          children: <Widget>[
-            DrawerHeader(
-              child: Material(
-                child: Image.asset('assets/dream-car.jpg'),
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.person, color: Colors.lightBlue),
-              title: Text('Perfil'),
-              onTap: () {
-                _handlerProfile();
-              },
-            ),
-            ListTile(
-                leading: Icon(Icons.airport_shuttle, color: Colors.lightBlue),
-                title: Text('Servicios'),
-                onTap: () {}),
-            ListTile(
-              leading: Icon(Icons.notifications, color: Colors.lightBlue),
-              title: Text('Notificaciones'),
-              onTap: () {},
-            ),
-            Divider(color: Colors.grey),
-            ListTile(
-              leading: Icon(Icons.exit_to_app, color: Colors.lightBlue),
-              title: Text('Salir'),
-              onTap: () {},
-            ),
-          ],
-        ),
-      ),*/
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
