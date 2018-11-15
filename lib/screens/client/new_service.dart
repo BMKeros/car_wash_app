@@ -74,7 +74,7 @@ class _NewServiceState extends State<NewService> {
     );
   }
   List<Marker> markers = <Marker>[
-    new Marker('1', 'Direccion', _latitud, _longitud, color: Colors.lightBlue, draggable: true)
+    //new Marker('1', 'Direccion', _latitud, _longitud, color: Colors.lightBlue, draggable: true)
   ];
   _handlerShowMap() {
     
@@ -83,7 +83,7 @@ class _NewServiceState extends State<NewService> {
         mapViewType: MapViewType.normal,
         initialCameraPosition: new CameraPosition(Location(23.87, -102.66), 5.0),
         showUserLocation: true,
-        title: 'Direccion del servicio.',
+        title: 'Direccion',
         hideToolbar: false,
         showCompassButton: true,
       ),
@@ -108,7 +108,7 @@ class _NewServiceState extends State<NewService> {
       print('Latitud seleccionada ${tapped.latitude}');
       print('Longitud selecionada ${tapped.longitude}');
       setState(() {
-        markers = []..add(new Marker('1', 'Direccion Servicio', _latitud, _longitud, color: Colors.lightBlue, draggable: true,)); 
+        markers = []..add(new Marker('1', 'Direccion',tapped.latitude, tapped.longitude, color: Colors.lightBlue, draggable: true,)); 
       });
       mapView.setMarkers(markers);
     });
