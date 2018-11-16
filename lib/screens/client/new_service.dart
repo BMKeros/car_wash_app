@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:map_view/map_view.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 class NewService extends StatefulWidget {
   static String routerName = '/new-service';
 
   @override
   _NewServiceState createState() => new _NewServiceState();
- }
+}
+
 class _NewServiceState extends State<NewService> {
-  MapView mapView = new MapView();  
+  MapView mapView = new MapView();
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController dateController = TextEditingController();
   TextEditingController timeController = TextEditingController();
-  List<DropdownMenuItem<int>>  itemsServiceType = [];
+  List<DropdownMenuItem<int>> itemsServiceType = [];
   List<DropdownMenuItem<int>> itemsPaymentMethod = [];
 
   DateTime _date = DateTime.now();
@@ -25,11 +28,10 @@ class _NewServiceState extends State<NewService> {
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
-      context: context,
-      initialDate: _date,
-      firstDate: new DateTime(2018),
-      lastDate: new DateTime(2050)
-    );
+        context: context,
+        initialDate: _date,
+        firstDate: new DateTime(2018),
+        lastDate: new DateTime(2050));
 
     if (picked != null) {
       setState(() {
@@ -40,11 +42,9 @@ class _NewServiceState extends State<NewService> {
   }
 
   Future<Null> _selectTime(BuildContext context) async {
-    final TimeOfDay picked = await showTimePicker(
-      context: context,
-      initialTime: _time,
-    );
-    
+    final TimeOfDay picked =
+        await showTimePicker(context: context, initialTime: _time);
+
     if (picked != null) {
       setState(() {
         _time = picked;
@@ -55,12 +55,12 @@ class _NewServiceState extends State<NewService> {
 
   void loadDataItems() {
     itemsServiceType = [];
-    itemsPaymentMethod= [];
+    itemsPaymentMethod = [];
 
     itemsServiceType.add(DropdownMenuItem(
-      child: Text('Por fuera'), 
-      value: 1,)
-    );
+      child: Text('Por fuera'),
+      value: 1,
+    ));
     itemsServiceType.add(DropdownMenuItem(
       child: Text('Completo'), 
       value: 2,)
@@ -74,50 +74,62 @@ class _NewServiceState extends State<NewService> {
       value: 4,)
     );
 
-     itemsPaymentMethod.add(DropdownMenuItem(
-      child: Text('Efectivo'), 
-      value: 1,)
-    );
     itemsPaymentMethod.add(DropdownMenuItem(
-      child: Text('Tarjeta'), 
-      value: 2,)
-    );
+      child: Text('Efectivo'),
+      value: 1,
+    ));
+    itemsPaymentMethod.add(DropdownMenuItem(
+      child: Text('Tarjeta'),
+      value: 2,
+    ));
   }
-  List<Marker> markers = <Marker>[
-    //new Marker('1', 'Direccion', _latitud, _longitud, color: Colors.lightBlue, draggable: true)
-  ];
+
+  List<Marker> markers = <Marker>[];
+
   _handlerShowMap() {
-    
+
     mapView.show(
       MapOptions(
         mapViewType: MapViewType.normal,
-        initialCameraPosition: new CameraPosition(Location(23.87, -102.66), 5.0),
+        initialCameraPosition:
+            new CameraPosition(Location(23.87, -102.66), 5.0),
         showUserLocation: true,
         title: 'Direccion',
         hideToolbar: false,
         showCompassButton: true,
       ),
-      toolbarActions: [new ToolbarAction("Cerrar", 1), new ToolbarAction("Confirmar", 2)],
+      toolbarActions: [
+        new ToolbarAction("Cerrar", 1),
+        new ToolbarAction("Confirmar", 2)
+      ],
     );
+
     mapView.onToolbarAction.listen((id) {
       if (id == 1) {
         mapView.dismiss();
       } else if (id == 2) {
-        if (mapView.markers.isNotEmpty){
+        if (mapView.markers.isNotEmpty) {
           setState(() {
             _latitud = mapView.markers[0].latitude;
             _longitud = mapView.markers[0].longitude;
           });
           mapView.dismiss();
         }
-
       }
     });
+
     mapView.onMapTapped.listen((tapped) {
       print('Latitud seleccionada ${tapped.latitude}');
       print('Longitud selecionada ${tapped.longitude}');
       setState(() {
-        markers = []..add(new Marker('1', 'Direccion',tapped.latitude, tapped.longitude, color: Colors.lightBlue, draggable: true,)); 
+        markers = []..add(new Marker(
+            '1',
+            'Direccion Servicio',
+            _latitud,
+            _longitud,
+            color: Colors.lightBlue,
+            draggable: true,
+          ));
       });
       mapView.setMarkers(markers);
     });
@@ -129,8 +141,13 @@ class _NewServiceState extends State<NewService> {
 
     return new Scaffold(
       appBar: AppBar(
-        iconTheme: new IconThemeData(color: Colors.white,),
-        title: Text('Nuevo servicio', style: TextStyle(color: Colors.white),),
+        iconTheme: new IconThemeData(
+          color: Colors.white,
+        ),
+        title: Text(
+          'Nuevo servicio',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -159,9 +176,10 @@ class _NewServiceState extends State<NewService> {
                     decoration: InputDecoration(
                       labelText: 'Seleccione la fecha',
                       suffixIcon: IconButton(
-                        icon: Icon(Icons.date_range),
-                        onPressed: () { _selectDate(context); }
-                      ),
+                          icon: Icon(Icons.date_range),
+                          onPressed: () {
+                            _selectDate(context);
+                          }),
                     ),
                     validator: (value) {
                       if (value.isEmpty) {
@@ -174,9 +192,10 @@ class _NewServiceState extends State<NewService> {
                     decoration: InputDecoration(
                       labelText: 'Seleccione la hora',
                       suffixIcon: IconButton(
-                        icon: Icon(Icons.timer),
-                        onPressed: () { _selectTime(context); }
-                      ),
+                          icon: Icon(Icons.timer),
+                          onPressed: () {
+                            _selectTime(context);
+                          }),
                     ),
                     validator: (value) {
                       if (value.isEmpty) {
@@ -191,9 +210,7 @@ class _NewServiceState extends State<NewService> {
                       items: itemsServiceType,
                       onChanged: (value) {
                         selectedServiceType = value;
-                        setState(() {
-                                                
-                        });
+                        setState(() {});
                       },
                     ),
                   ),
@@ -204,23 +221,25 @@ class _NewServiceState extends State<NewService> {
                       items: itemsPaymentMethod,
                       onChanged: (value) {
                         selectedPaymentMethod = value;
-                        setState(() {
-                                                
-                        });
+                        setState(() {});
                       },
                     ),
                   ),
                   RaisedButton(
-                    child:  Center(
+                    child: Center(
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           Icon(Icons.zoom_out_map),
                           Padding(
-                            child: Text("Direccion para el servicio", style: TextStyle(fontFamily: 'Roboto',color: Color.fromRGBO(68, 68, 76, .8),
+                            child: Text(
+                              "Direccion para el servicio",
+                              style: TextStyle(
+                                fontFamily: 'Roboto',
+                                color: Color.fromRGBO(68, 68, 76, .8),
+                              ),
                             ),
-                          ),
-                          padding: new EdgeInsets.only(left: 15.0),
+                            padding: new EdgeInsets.only(left: 15.0),
                           ),
                         ],
                       ),
@@ -229,12 +248,39 @@ class _NewServiceState extends State<NewService> {
                     splashColor: Colors.lightBlue,
                     onPressed: _handlerShowMap,
                   ),
+                  Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 20.0),
+                      child: Material(
+                        borderRadius: BorderRadius.circular(30.0),
+                        shadowColor: Colors.lightBlueAccent.shade100,
+                        elevation: 5.0,
+                        child: MaterialButton(
+                          minWidth: 200.0,
+                          height: 42.0,
+                          onPressed: () {
+                            if (_formKey.currentState.validate()) {
+                              // If the form is valid, we want to show a Snackbar
+                              Firestore.instance.collection('services').document()
+                                  .setData({ 'title': 'title', 'author': 'author' });
+                              print('error en el formulario');
+                            }
+                          },
+                          color: Colors.lightBlueAccent,
+                          child: Text(
+                            'Solicitar Servicio',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
-          ]
+          ],
         ),
-      )
+      ),
     );
   }
 }

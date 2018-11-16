@@ -3,6 +3,69 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:panelmex_app/services/auth.dart';
 import 'package:panelmex_app/screens/client/home.dart';
+import 'package:panelmex_app/widgets/dialog_loading.dart';
+
+class SlideRightRoute extends PageRouteBuilder {
+  final Widget widget;
+  SlideRightRoute({this.widget})
+      : super(
+      pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
+        return widget;
+      },
+      transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+        return new SlideTransition(
+          position: new Tween<Offset>(
+            begin: const Offset(-1.0, 0.0),
+            end: Offset.zero,
+          ).animate(animation),
+          child: child,
+        );
+      }
+  );
+}
+
+class ScaleRoute extends PageRouteBuilder {
+  final Widget widget;
+  ScaleRoute({this.widget})
+      : super(
+      pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
+        return widget;
+      },
+      transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+        return new ScaleTransition(
+          scale: new Tween<double>(
+            begin: 0.0,
+            end: 1.0,
+          ).animate(
+            CurvedAnimation(
+              parent: animation,
+              curve: Interval(
+                0.00,
+                0.50,
+                curve: Curves.linear,
+              ),
+            ),
+          ),
+          child: ScaleTransition(
+            scale: Tween<double>(
+              begin: 1.5,
+              end: 1.0,
+            ).animate(
+              CurvedAnimation(
+                parent: animation,
+                curve: Interval(
+                  0.50,
+                  1.00,
+                  curve: Curves.linear,
+                ),
+              ),
+            ),
+            child: child,
+          ),
+        );
+      }
+  );
+}
 
 class LoginScreen extends StatefulWidget {
   static String tag = 'LoginScreen';
@@ -15,7 +78,6 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final AuthService _authService = new AuthService();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
 
   static final emailTextController = TextEditingController();
   static final passwordTextController = TextEditingController();
@@ -39,11 +101,24 @@ class _LoginScreenState extends State<LoginScreen> {
     //Handlers
     Future _handlerLoginScreen() async {
       try {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+        builder: (BuildContext context){
+            return DialogLoading();
+        });
+
         _currentUser = await _authService.signIn(
             emailTextController.text, passwordTextController.text);
 
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => HomeScreen(_currentUser)));
+        Navigator.pop(context);
+
+        /*Navigator.push(context,
+            MaterialPageRoute(builder: (context) => HomeScreen(_currentUser)));*/
+
+        await Navigator.push(context, SlideRightRoute(widget: HomeScreen(_currentUser)));
+
+
       } on PlatformException catch (e) {
         final snackBar = SnackBar(
           content: Text(e.message),
@@ -56,8 +131,31 @@ class _LoginScreenState extends State<LoginScreen> {
 
     Future _handlerSignInGoogle() async {
       try {
+        /*showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context){
+              return DialogLoading();
+            });*/
+
         _currentUser = await _authService.signInWithGoogle();
-      } on PlatformException catch (e) {}
+
+        //Navigator.pop(context);*/
+
+        /*Navigator.push(context,
+            MaterialPageRoute(builder: (context) => HomeScreen(_currentUser)));*/
+
+        await Navigator.push(context, SlideRightRoute(widget: HomeScreen(_currentUser)));
+
+
+      } on PlatformException catch (e) {
+        final snackBar = SnackBar(
+          content: Text(e.message),
+        );
+
+        // Find the Scaffold in the Widget tree and use it to show a SnackBar!
+        _scaffoldKey.currentState.showSnackBar(snackBar);
+      }
     }
 
     void _handlerNewAccount() {
