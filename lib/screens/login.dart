@@ -22,7 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final TextField email = TextField(
     keyboardType: TextInputType.emailAddress,
-    decoration: InputDecoration(labelText: 'Correo'),
+    decoration: InputDecoration(labelText: 'Correo electronico'),
     controller: emailTextController,
   );
 
@@ -87,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
           },
           color: Colors.lightBlueAccent,
           child: Text(
-            'Iniciar de secion',
+            'Iniciar secion',
             style: TextStyle(color: Colors.white),
           ),
         ),
