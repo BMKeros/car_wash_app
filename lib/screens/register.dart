@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:panelmex_app/services/auth.dart';
+import 'package:panelmex_app/screens/client/home.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 
 class Register extends StatefulWidget {
   static String routerName = '/register';
@@ -9,38 +12,53 @@ class Register extends StatefulWidget {
  }
 class _RegisterState extends State<Register> {
   final _authService = new AuthService();
-
-  static final fullNameTextController = new TextEditingController();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  //static final fullNameTextController = new TextEditingController();
   static final emailTextController = new TextEditingController();
   static final passwordTextController = new TextEditingController();
 
-  Future _handleSignUp() async {
-    await _authService.signUp(emailTextController.text, passwordTextController.text);
-  }
+
 
   @override
   Widget build(BuildContext context) {
+    FirebaseUser _currentUser;
 
+    Future _handleSignUp() async {
+      try {
+        await _authService.signUp(emailTextController.text, passwordTextController.text);
+        _currentUser = await _authService.signIn(emailTextController.text, passwordTextController.text);
+
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => HomeScreen(_currentUser)));
+      } on PlatformException catch (e) {
+        final snackBar = SnackBar(
+          content: Text(e.message),
+        );
+
+        // Find the Scaffold in the Widget tree and use it to show a SnackBar!
+        _scaffoldKey.currentState.showSnackBar(snackBar);
+      }
+    }
     final logo = Hero(
       tag: 'hero',
       child: CircleAvatar(
         backgroundColor: Colors.transparent,
         radius: 48.0,
-        child: Image.asset('assets/dream-car.jpg'),
+        child: Image.asset('assets/dream-car.png'),
       ),
     );
 
-    final name = TextField(
+    /*final name = TextField(
       decoration: InputDecoration(
         labelText: 'Nombre y Apellido',
       ),
       controller: fullNameTextController,
-    );
+    );*/
 
     final email = TextField(
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
-        labelText: 'Correo'
+        labelText: 'Correo electronico'
       ),
       controller: emailTextController,
     );
@@ -75,14 +93,15 @@ class _RegisterState extends State<Register> {
       ),
     );
 
-    /*final forgotLabel = FlatButton(
+    final forgotLabel = FlatButton(
       child: Text('Ya tengo una cuenta', style: TextStyle(color: Colors.black54),),
       onPressed: () {
-
+        Navigator.of(context).pop();
       },
-    );*/
+    );
 
     return new Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.white,
       body: Center(
         child: ListView(
@@ -90,8 +109,8 @@ class _RegisterState extends State<Register> {
           padding: EdgeInsets.only(left: 24.0, right: 24.0),
           children: <Widget>[
             logo,
-            SizedBox(height: 25.0,),
-            name,
+            //SizedBox(height: 25.0,),
+            //name,
             SizedBox(height: 8.0,),
             email,
             SizedBox(height: 8.0,),
@@ -100,7 +119,7 @@ class _RegisterState extends State<Register> {
             passwordTwo,
             SizedBox(height: 20.0,),
             loginButton,
-            //forgotLabel,
+            forgotLabel,
           ],
         ),
       ),

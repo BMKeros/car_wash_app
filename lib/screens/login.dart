@@ -22,7 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final TextField email = TextField(
     keyboardType: TextInputType.emailAddress,
-    decoration: InputDecoration(labelText: 'Correo'),
+    decoration: InputDecoration(labelText: 'Correo electronico'),
     controller: emailTextController,
   );
 
@@ -69,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
       child: CircleAvatar(
         backgroundColor: Colors.transparent,
         radius: 48.0,
-        child: Image.asset('assets/dream-car.jpg'),
+        child: Image.asset('assets/dream-car.png'),
       ),
     );
 
@@ -87,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
           },
           color: Colors.lightBlueAccent,
           child: Text(
-            'Iniciar de secion',
+            'Iniciar secion',
             style: TextStyle(color: Colors.white),
           ),
         ),
