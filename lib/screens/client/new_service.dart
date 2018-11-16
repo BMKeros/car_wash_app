@@ -34,7 +34,7 @@ class _NewServiceState extends State<NewService> {
     if (picked != null) {
       setState(() {
         _date = picked;
-        dateController.text = picked.toString();
+        dateController.text = '${picked.day}/${picked.month}/${picked.year}';
       });
     }
   }
@@ -42,13 +42,13 @@ class _NewServiceState extends State<NewService> {
   Future<Null> _selectTime(BuildContext context) async {
     final TimeOfDay picked = await showTimePicker(
       context: context,
-      initialTime: _time
+      initialTime: _time,
     );
     
     if (picked != null) {
       setState(() {
         _time = picked;
-        timeController.text = picked.toString();
+        timeController.text = picked.format(context);
       });
     }
   }
@@ -64,6 +64,14 @@ class _NewServiceState extends State<NewService> {
     itemsServiceType.add(DropdownMenuItem(
       child: Text('Completo'), 
       value: 2,)
+    );
+    itemsServiceType.add(DropdownMenuItem(
+      child: Text('Pulido'),
+      value: 3,)
+    );
+    itemsServiceType.add(DropdownMenuItem(
+      child: Text('Encerado'),
+      value: 4,)
     );
 
      itemsPaymentMethod.add(DropdownMenuItem(
@@ -100,7 +108,6 @@ class _NewServiceState extends State<NewService> {
             _latitud = mapView.markers[0].latitude;
             _longitud = mapView.markers[0].longitude;
           });
-
           mapView.dismiss();
         }
 
@@ -124,6 +131,19 @@ class _NewServiceState extends State<NewService> {
       appBar: AppBar(
         iconTheme: new IconThemeData(color: Colors.white,),
         title: Text('Nuevo servicio', style: TextStyle(color: Colors.white),),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          if (_formKey.currentState.validate()) {
+            // If the form is valid, we want to show a Snackbar
+            print('error en el formulario');
+          }
+        },
+        tooltip: 'Guardar',
+        child: Icon(
+          Icons.save,
+          color: Colors.white,
+        ),
       ),
       body: Center(
         child: ListView(
@@ -209,28 +229,6 @@ class _NewServiceState extends State<NewService> {
                     splashColor: Colors.lightBlue,
                     onPressed: _handlerShowMap,
                   ),
-                  Center(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 20.0),
-                      child: Material(
-                        borderRadius: BorderRadius.circular(30.0),
-                        shadowColor: Colors.lightBlueAccent.shade100,
-                        elevation: 5.0,
-                        child: MaterialButton(
-                          minWidth: 200.0,
-                          height: 42.0,
-                          onPressed: () { 
-                            if (_formKey.currentState.validate()) {
-                            // If the form is valid, we want to show a Snackbar
-                              print('error en el formulario');
-                            }
-                          },
-                          color: Colors.lightBlueAccent,
-                          child: Text('Solicitar Servicio', style: TextStyle(color: Colors.white),),
-                        ),
-                      ),
-                    ),
-                  )
                 ],
               ),
             ),
