@@ -9,26 +9,37 @@ import 'package:panelmex_app/services/auth.dart';
 class HomeScreen extends StatefulWidget {
   static String routerName = '/home';
 
-  final FirebaseUser currentUser;
+  final FirebaseUser _currentUser;
 
-  HomeScreen(this.currentUser);
+  HomeScreen(this._currentUser);
 
   @override
-  _HomeScreenState createState() => new _HomeScreenState(this.currentUser);
+  _HomeScreenState createState() => new _HomeScreenState(this._currentUser);
 }
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
-  final FirebaseUser currentUser;
+  final FirebaseUser _currentUser;
   AuthService _auth = new AuthService();
 
-  _HomeScreenState(this.currentUser);
+  _HomeScreenState(this._currentUser);
 
-  final List<Widget> _children = [
-    ListServices(),
-    ListNotifications(),
-    Profile(),
-  ];
+  Widget _renderScreen() {
+    switch (_currentIndex) {
+      case 0:
+        return ListServices(_currentUser);
+        break;
+      case 1:
+        return ListNotifications();
+        break;
+      case 2:
+        return Profile();
+        break;
+      default:
+        return null;
+        break;
+    }
+  }
 
   static List<BottomNavigationBarItem> _itemsNavigationBar = [
     BottomNavigationBarItem(
@@ -105,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
           color: Colors.white,
         ),
       ),
-      body: _children[_currentIndex],
+      body: _renderScreen(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         items: _itemsNavigationBar,
