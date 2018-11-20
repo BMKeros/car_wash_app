@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:map_view/map_view.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:firebase_database/firebase_database.dart';
+import 'package:intl/intl.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:datetime_picker_formfield/time_picker_formfield.dart';
 
 class NewService extends StatefulWidget {
   static String routerName = '/new-service';
@@ -14,86 +16,52 @@ class _NewServiceState extends State<NewService> {
   MapView mapView = new MapView();
   final _formKey = GlobalKey<FormState>();
 
-  TextEditingController dateController = TextEditingController();
-  TextEditingController timeController = TextEditingController();
-  List<DropdownMenuItem<int>> itemsServiceType = [];
-  List<DropdownMenuItem<int>> itemsPaymentMethod = [];
+  String _date;
+  String _time;
 
-  DateTime _date = DateTime.now();
-  TimeOfDay _time = TimeOfDay.now();
   int selectedServiceType = null;
   int selectedPaymentMethod = null;
   static double _latitud = 23.87;
   static double _longitud = -102.66;
 
-  Future<Null> _selectDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: _date,
-        firstDate: new DateTime(2018),
-        lastDate: new DateTime(2050));
-
-    if (picked != null) {
-      setState(() {
-        _date = picked;
-        dateController.text = '${picked.day}/${picked.month}/${picked.year}';
-      });
-    }
-  }
-
-  Future<Null> _selectTime(BuildContext context) async {
-    final TimeOfDay picked =
-        await showTimePicker(context: context, initialTime: _time);
-
-    if (picked != null) {
-      setState(() {
-        _time = picked;
-        timeController.text = picked.format(context);
-      });
-    }
-  }
-
-  void loadDataItems() {
-    itemsServiceType = [];
-    itemsPaymentMethod = [];
-
-    itemsServiceType.add(DropdownMenuItem(
+  final List<DropdownMenuItem> _itemsServiceType = [
+    DropdownMenuItem(
       child: Text('Por fuera'),
       value: 1,
-    ));
-    itemsServiceType.add(DropdownMenuItem(
-      child: Text('Completo'), 
-      value: 2,)
-    );
-    itemsServiceType.add(DropdownMenuItem(
+    ),
+    DropdownMenuItem(
+      child: Text('Completo'),
+      value: 2,
+    ),
+    DropdownMenuItem(
       child: Text('Pulido'),
-      value: 3,)
-    );
-    itemsServiceType.add(DropdownMenuItem(
+      value: 3,
+    ),
+    DropdownMenuItem(
       child: Text('Encerado'),
-      value: 4,)
-    );
+      value: 4,
+    )
+  ];
 
-    itemsPaymentMethod.add(DropdownMenuItem(
+  final List<DropdownMenuItem> _itemsPaymentMethod = [
+    DropdownMenuItem(
       child: Text('Efectivo'),
       value: 1,
-    ));
-    itemsPaymentMethod.add(DropdownMenuItem(
+    ),
+    DropdownMenuItem(
       child: Text('Tarjeta'),
       value: 2,
-    ));
-  }
+    )
+  ];
 
   List<Marker> markers = <Marker>[];
 
   _handlerShowMap() {
-
     mapView.show(
       MapOptions(
         mapViewType: MapViewType.normal,
-        initialCameraPosition:
-            new CameraPosition(Location(23.87, -102.66), 5.0),
         showUserLocation: true,
+        showMyLocationButton: true,
         title: 'Direccion',
         hideToolbar: false,
         showCompassButton: true,
@@ -121,24 +89,20 @@ class _NewServiceState extends State<NewService> {
     mapView.onMapTapped.listen((tapped) {
       print('Latitud seleccionada ${tapped.latitude}');
       print('Longitud selecionada ${tapped.longitude}');
-      setState(() {
-        markers = []..add(new Marker(
-            '1',
-            'Direccion Servicio',
-            _latitud,
-            _longitud,
-            color: Colors.lightBlue,
-            draggable: true,
-          ));
-      });
-      mapView.setMarkers(markers);
+
+      mapView.addMarker(new Marker(
+        '1',
+        'Direccion Servicio',
+        _latitud,
+        _longitud,
+        color: Colors.lightBlue,
+        draggable: true,
+      ));
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    loadDataItems();
-
     return new Scaffold(
       appBar: AppBar(
         iconTheme: new IconThemeData(
@@ -171,57 +135,40 @@ class _NewServiceState extends State<NewService> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  TextFormField(
-                    controller: dateController,
-                    decoration: InputDecoration(
-                      labelText: 'Seleccione la fecha',
-                      suffixIcon: IconButton(
-                          icon: Icon(Icons.date_range),
-                          onPressed: () {
-                            _selectDate(context);
-                          }),
-                    ),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Debe seleccionar la fecha!';
-                      }
+                  DateTimePickerFormField(
+                    decoration: InputDecoration(labelText: 'Fecha'),
+                    format: DateFormat.yMd(),
+                    onChanged: (DateTime date) {
+                      _date = date.toString();
                     },
                   ),
-                  TextFormField(
-                    controller: timeController,
-                    decoration: InputDecoration(
-                      labelText: 'Seleccione la hora',
-                      suffixIcon: IconButton(
-                          icon: Icon(Icons.timer),
-                          onPressed: () {
-                            _selectTime(context);
-                          }),
-                    ),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Debe seleccionar la hora!';
-                      }
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  TimePickerFormField(
+                    decoration: InputDecoration(labelText: 'Hora'),
+                    format: DateFormat.Hms(),
+                    onChanged: (TimeOfDay time) {
+                      _time = time.toString();
                     },
                   ),
                   ListTile(
-                    title: Text('Selecione el tipo de servicio'),
+                    title: Text('Tipo de servicio'),
                     trailing: DropdownButton(
                       value: selectedServiceType,
-                      items: itemsServiceType,
+                      items: _itemsServiceType,
                       onChanged: (value) {
                         selectedServiceType = value;
-                        setState(() {});
                       },
                     ),
                   ),
                   ListTile(
-                    title: Text('Selecione el metodo de pago'),
+                    title: Text('Metodo de pago'),
                     trailing: DropdownButton(
                       value: selectedPaymentMethod,
-                      items: itemsPaymentMethod,
+                      items: _itemsPaymentMethod,
                       onChanged: (value) {
                         selectedPaymentMethod = value;
-                        setState(() {});
                       },
                     ),
                   ),
@@ -261,9 +208,15 @@ class _NewServiceState extends State<NewService> {
                           onPressed: () {
                             if (_formKey.currentState.validate()) {
                               // If the form is valid, we want to show a Snackbar
-                              Firestore.instance.collection('services').document()
-                                  .setData({ 'title': 'title', 'author': 'author' });
-                              print('error en el formulario');
+                              FirebaseDatabase.instance
+                                  .reference()
+                                  .child('services')
+                                  .push()
+                                  .set({
+                                'type': 'Lavado completo',
+                                'date': '19-09-2018',
+                                'time': '19:00:00',
+                              });
                             }
                           },
                           color: Colors.lightBlueAccent,
