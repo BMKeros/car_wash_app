@@ -57,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
         return ListNotifications();
         break;
       case 2:
-        return Profile();
+        return Profile(_currentUser);
         break;
       default:
         return null;

@@ -8,6 +8,7 @@ import 'package:datetime_picker_formfield/time_picker_formfield.dart';
 
 import 'package:panelmex_app/widgets/dialog_loading.dart';
 import 'package:panelmex_app/screens/client/home.dart';
+import 'package:panelmex_app/config/config.dart';
 
 class NewService extends StatefulWidget {
   static String routerName = '/new-service';
@@ -24,8 +25,11 @@ class _NewServiceState extends State<NewService> {
   final FirebaseUser _currentUser;
 
   _NewServiceState(this._currentUser);
-
+  
   MapView mapView = new MapView();
+  var staticMapProvider = new StaticMapProvider(APIKEY);
+  Uri _staticMapUri;
+
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController _dateController = TextEditingController();
@@ -74,6 +78,7 @@ class _NewServiceState extends State<NewService> {
   _handlerShowMap() {
     mapView.show(
       MapOptions(
+        initialCameraPosition: CameraPosition(Location(_latitud, _longitud), 5),
         mapViewType: MapViewType.normal,
         showUserLocation: true,
         showMyLocationButton: true,
@@ -87,15 +92,21 @@ class _NewServiceState extends State<NewService> {
       ],
     );
 
-    mapView.onToolbarAction.listen((id) {
+    mapView.onToolbarAction.listen((id) async {
       if (id == 1) {
         mapView.dismiss();
       } else if (id == 2) {
+        var currentUriMap =  await staticMapProvider.getImageUriFromMap(mapView, width: 900, height: 400);
         if (mapView.markers.isNotEmpty) {
           setState(() {
             _latitud = mapView.markers[0].latitude;
             _longitud = mapView.markers[0].longitude;
+            _staticMapUri = currentUriMap;
+
           });
+          print("======******///**//**");
+          print(_staticMapUri.toString());
+          print("======******///**//**");
           mapView.dismiss();
         }
       }

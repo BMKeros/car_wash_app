@@ -77,7 +77,7 @@ class _RegisterState extends State<Register> {
       ),
     );
 
-    final loginButton = Padding(
+    /*final loginButton = Padding(
       padding: EdgeInsets.symmetric(vertical: 16.0),
       child: Material(
         borderRadius: BorderRadius.circular(30.0),
@@ -91,6 +91,17 @@ class _RegisterState extends State<Register> {
           child: Text('Nueva cuenta', style: TextStyle(color: Colors.white),),
         ),
       ),
+    );*/
+    final newAccountButtonRadius = Padding(
+      padding: EdgeInsets.symmetric(vertical: 16.0),
+      child: RaisedButton(
+        color: Colors.lightBlueAccent,
+        highlightColor: Colors.lightBlueAccent,
+        child: new Text('Nueva cuenta', style: TextStyle(color: Colors.white)),
+        textColor: Colors.white,
+        onPressed: _handleSignUp,
+        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0))
+      )
     );
 
     final forgotLabel = FlatButton(
@@ -118,7 +129,7 @@ class _RegisterState extends State<Register> {
             SizedBox(height: 8.0,),
             passwordTwo,
             SizedBox(height: 20.0,),
-            loginButton,
+            newAccountButtonRadius,
             forgotLabel,
           ],
         ),
