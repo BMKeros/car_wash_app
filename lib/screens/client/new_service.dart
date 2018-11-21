@@ -1,18 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:map_view/map_view.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:datetime_picker_formfield/time_picker_formfield.dart';
 
+import 'package:panelmex_app/widgets/dialog_loading.dart';
+import 'package:panelmex_app/screens/client/home.dart';
+
 class NewService extends StatefulWidget {
   static String routerName = '/new-service';
 
+  final FirebaseUser _currentUser;
+
+  NewService(this._currentUser);
   @override
-  _NewServiceState createState() => new _NewServiceState();
+  _NewServiceState createState() => new _NewServiceState(this._currentUser);
 }
 
 class _NewServiceState extends State<NewService> {
+  final FirebaseUser _currentUser;
+  _NewServiceState(this._currentUser);
+
   MapView mapView = new MapView();
   final _formKey = GlobalKey<FormState>();
 
@@ -25,6 +35,7 @@ class _NewServiceState extends State<NewService> {
   static double _longitud = -102.66;
 
   final List<DropdownMenuItem> _itemsServiceType = [
+    // select service type
     DropdownMenuItem(
       child: Text('Por fuera'),
       value: 1,
@@ -42,6 +53,8 @@ class _NewServiceState extends State<NewService> {
       value: 4,
     )
   ];
+
+  final List _dataServiceType = ['Por fuera', 'Completo', 'Pulido', 'Encerado'];
 
   final List<DropdownMenuItem> _itemsPaymentMethod = [
     DropdownMenuItem(
@@ -90,14 +103,17 @@ class _NewServiceState extends State<NewService> {
       print('Latitud seleccionada ${tapped.latitude}');
       print('Longitud selecionada ${tapped.longitude}');
 
-      mapView.addMarker(new Marker(
-        '1',
-        'Direccion Servicio',
-        _latitud,
-        _longitud,
-        color: Colors.lightBlue,
-        draggable: true,
-      ));
+      setState(() {
+        markers = []..add(new Marker(
+          '1',
+          'Direccion',
+          tapped.latitude, 
+          tapped.longitude, 
+          color: Colors.lightBlue, 
+          draggable: true,)
+        ); 
+      });
+      mapView.setMarkers(markers);
     });
   }
 
@@ -114,10 +130,28 @@ class _NewServiceState extends State<NewService> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
+        onPressed: () async {
           if (_formKey.currentState.validate()) {
             // If the form is valid, we want to show a Snackbar
-            print('error en el formulario');
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return DialogLoading();
+              },
+            );
+            await FirebaseDatabase.instance
+              .reference()
+              .child('services')
+              .push()
+              .set({
+                'type': _dataServiceType[selectedServiceType-1],
+                'date': _date,
+                'time': _time,
+              });
+            Navigator.pop(context);
+             Navigator.push(context,
+            MaterialPageRoute(builder: (context) => HomeScreen(this._currentUser)));
           }
         },
         tooltip: 'Guardar',
@@ -139,7 +173,7 @@ class _NewServiceState extends State<NewService> {
                     decoration: InputDecoration(labelText: 'Fecha'),
                     format: DateFormat.yMd(),
                     onChanged: (DateTime date) {
-                      _date = date.toString();
+                      _date = '${date.day}/${date.month}/${date.year}';
                     },
                   ),
                   SizedBox(
@@ -149,7 +183,7 @@ class _NewServiceState extends State<NewService> {
                     decoration: InputDecoration(labelText: 'Hora'),
                     format: DateFormat.Hms(),
                     onChanged: (TimeOfDay time) {
-                      _time = time.toString();
+                      _time = '${time.hour}:${time.minute}';
                     },
                   ),
                   ListTile(
@@ -158,7 +192,9 @@ class _NewServiceState extends State<NewService> {
                       value: selectedServiceType,
                       items: _itemsServiceType,
                       onChanged: (value) {
-                        selectedServiceType = value;
+                        setState(() {
+                           selectedServiceType = value;                       
+                        });
                       },
                     ),
                   ),
@@ -168,7 +204,9 @@ class _NewServiceState extends State<NewService> {
                       value: selectedPaymentMethod,
                       items: _itemsPaymentMethod,
                       onChanged: (value) {
-                        selectedPaymentMethod = value;
+                        setState(() {
+                          selectedPaymentMethod = value;                          
+                        });
                       },
                     ),
                   ),
@@ -195,39 +233,6 @@ class _NewServiceState extends State<NewService> {
                     splashColor: Colors.lightBlue,
                     onPressed: _handlerShowMap,
                   ),
-                  Center(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 20.0),
-                      child: Material(
-                        borderRadius: BorderRadius.circular(30.0),
-                        shadowColor: Colors.lightBlueAccent.shade100,
-                        elevation: 5.0,
-                        child: MaterialButton(
-                          minWidth: 200.0,
-                          height: 42.0,
-                          onPressed: () {
-                            if (_formKey.currentState.validate()) {
-                              // If the form is valid, we want to show a Snackbar
-                              FirebaseDatabase.instance
-                                  .reference()
-                                  .child('services')
-                                  .push()
-                                  .set({
-                                'type': 'Lavado completo',
-                                'date': '19-09-2018',
-                                'time': '19:00:00',
-                              });
-                            }
-                          },
-                          color: Colors.lightBlueAccent,
-                          child: Text(
-                            'Solicitar Servicio',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
                 ],
               ),
             ),
