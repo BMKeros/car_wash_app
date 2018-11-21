@@ -5,6 +5,7 @@ import 'package:panelmex_app/screens/client/list_services.dart';
 import 'package:panelmex_app/screens/client/list_notifications.dart';
 import 'package:panelmex_app/screens/client/profile.dart';
 import 'package:panelmex_app/services/auth.dart';
+import 'package:panelmex_app/screens/client/new_service.dart';
 
 class HomeScreen extends StatefulWidget {
   static String routerName = '/home';
@@ -65,7 +66,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     void _handlerNewService() {
-      Navigator.of(context).pushNamed('/new-service');
+      Navigator.push(context,
+      MaterialPageRoute(builder: (context) => NewService(this._currentUser)));
     }
 
     void _onSelectedPopupMenu(String menuKey) async {
