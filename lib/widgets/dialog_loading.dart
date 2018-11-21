@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 
 class DialogLoading extends StatelessWidget {
-
   String _message = "Por favor espere..";
 
-  DialogLoading();
-
-  DialogLoading.CustomMessage(String message) {
-    _message = message;
+  DialogLoading({String message}) {
+    if (message != null) {
+      _message = message;
+    }
   }
 
   @override

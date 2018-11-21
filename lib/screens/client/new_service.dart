@@ -150,7 +150,7 @@ class _NewServiceState extends State<NewService> {
               context: context,
               barrierDismissible: false,
               builder: (BuildContext context) {
-                return DialogLoading.CustomMessage("Solicitando Servicio");
+                return DialogLoading(message: "Solicitando Servicio");
               },
             );
 
