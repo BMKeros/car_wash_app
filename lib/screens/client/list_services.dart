@@ -30,8 +30,11 @@ class ListServicesState extends State<ListServices> {
   void initState() {
     super.initState();
     _items = new List();
-    _onServiceAddedSubscription =
-        _serviceReference.onChildAdded.listen(_onServiceAdded);
+    _onServiceAddedSubscription = _serviceReference
+        .orderByChild('uid')
+        .equalTo(_currentUser.uid)
+        .onChildAdded
+        .listen(_onServiceAdded);
   }
 
   @override
