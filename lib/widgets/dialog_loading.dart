@@ -17,8 +17,8 @@ class DialogLoading extends StatelessWidget {
       content: new Row(
         children: <Widget>[
           new CircularProgressIndicator(),
-          new Spacer(flex: 7),
-          new Text("Please Wait.."),
+          new Spacer(flex: 2),
+          new Text("Por favor espere.."),
         ],
       ),
     );
