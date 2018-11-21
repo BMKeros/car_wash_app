@@ -15,24 +15,28 @@ class NewService extends StatefulWidget {
   final FirebaseUser _currentUser;
 
   NewService(this._currentUser);
+
   @override
   _NewServiceState createState() => new _NewServiceState(this._currentUser);
 }
 
 class _NewServiceState extends State<NewService> {
   final FirebaseUser _currentUser;
+
   _NewServiceState(this._currentUser);
 
   MapView mapView = new MapView();
   final _formKey = GlobalKey<FormState>();
 
-  String _date;
-  String _time;
+  TextEditingController _dateController = TextEditingController();
+  TextEditingController _timeController = TextEditingController();
 
   int selectedServiceType = null;
   int selectedPaymentMethod = null;
   static double _latitud = 23.87;
   static double _longitud = -102.66;
+
+  final List _dataServiceType = ['Por fuera', 'Completo', 'Pulido', 'Encerado'];
 
   final List<DropdownMenuItem> _itemsServiceType = [
     // select service type
@@ -53,8 +57,6 @@ class _NewServiceState extends State<NewService> {
       value: 4,
     )
   ];
-
-  final List _dataServiceType = ['Por fuera', 'Completo', 'Pulido', 'Encerado'];
 
   final List<DropdownMenuItem> _itemsPaymentMethod = [
     DropdownMenuItem(
@@ -107,11 +109,11 @@ class _NewServiceState extends State<NewService> {
         markers = []..add(new Marker(
           '1',
           'Direccion',
-          tapped.latitude, 
-          tapped.longitude, 
-          color: Colors.lightBlue, 
-          draggable: true,)
-        ); 
+          tapped.latitude,
+          tapped.longitude,
+          color: Colors.lightBlue,
+          draggable: true,
+        ));
       });
       mapView.setMarkers(markers);
     });
@@ -137,21 +139,27 @@ class _NewServiceState extends State<NewService> {
               context: context,
               barrierDismissible: false,
               builder: (BuildContext context) {
-                return DialogLoading();
+                return DialogLoading.CustomMessage("Solicitando Servicio");
               },
             );
+
             await FirebaseDatabase.instance
-              .reference()
-              .child('services')
-              .push()
-              .set({
-                'type': _dataServiceType[selectedServiceType-1],
-                'date': _date,
-                'time': _time,
-              });
+                .reference()
+                .child('services')
+                .push()
+                .set({
+              'uid': _currentUser.uid,
+              'type': _dataServiceType[selectedServiceType - 1],
+              'date': _dateController.text,
+              'time': _timeController.text,
+              'status': 'pending',
+            });
+
             Navigator.pop(context);
-             Navigator.push(context,
-            MaterialPageRoute(builder: (context) => HomeScreen(this._currentUser)));
+            await Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => HomeScreen(this._currentUser)));
           }
         },
         tooltip: 'Guardar',
@@ -172,9 +180,7 @@ class _NewServiceState extends State<NewService> {
                   DateTimePickerFormField(
                     decoration: InputDecoration(labelText: 'Fecha'),
                     format: DateFormat.yMd(),
-                    onChanged: (DateTime date) {
-                      _date = '${date.day}/${date.month}/${date.year}';
-                    },
+                    controller: _dateController,
                   ),
                   SizedBox(
                     height: 10.0,
@@ -182,9 +188,7 @@ class _NewServiceState extends State<NewService> {
                   TimePickerFormField(
                     decoration: InputDecoration(labelText: 'Hora'),
                     format: DateFormat.Hms(),
-                    onChanged: (TimeOfDay time) {
-                      _time = '${time.hour}:${time.minute}';
-                    },
+                    controller: _timeController,
                   ),
                   ListTile(
                     title: Text('Tipo de servicio'),
@@ -193,7 +197,7 @@ class _NewServiceState extends State<NewService> {
                       items: _itemsServiceType,
                       onChanged: (value) {
                         setState(() {
-                           selectedServiceType = value;                       
+                          selectedServiceType = value;
                         });
                       },
                     ),
@@ -205,7 +209,7 @@ class _NewServiceState extends State<NewService> {
                       items: _itemsPaymentMethod,
                       onChanged: (value) {
                         setState(() {
-                          selectedPaymentMethod = value;                          
+                          selectedPaymentMethod = value;
                         });
                       },
                     ),
