@@ -22,7 +22,12 @@ class _ServiceDeatilState extends State<ServiceDeatil> {
         child: ListView(
           padding: EdgeInsets.only(left: 15.0, right: 15.0, top: 10.0),
           children: <Widget>[
-            Card(
+            Image.network(
+              'https://maps.googleapis.com/maps/api/staticmap?markers=22.974016651251087%2C-102.82458242028953&size=900x400&maptype=roadmap&key=AIzaSyDnIlWaCvwjvwP7cZu6zcCYnWXFFwrm0Fc&center=23.870000091397973%2C-102.66000006347895',
+              height: 100,
+              fit: BoxFit.cover,
+            )
+            /*Card(
               child: Column(
                 children: <Widget>[
                   Padding(
@@ -56,36 +61,6 @@ class _ServiceDeatilState extends State<ServiceDeatil> {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(right: 7.0, top: 10.0),
-                          child: Text(
-                            "Calificar:",
-                            style: TextStyle(fontWeight: FontWeight.w600)
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 0.0),
-                          child: StarRating(
-                            size: 25.0,
-                            rating: rating,
-                            color: Colors.orange,
-                            borderColor: Colors.grey,
-                            starCount: 6,
-                            onRatingChanged: (rating) => setState(
-                                  () {
-                                this.rating = rating;
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -108,7 +83,40 @@ class _ServiceDeatilState extends State<ServiceDeatil> {
                           );
                         },
                         isExpanded: expandedDetail,
-                        body: new Text("culito", style: TextStyle(fontSize: 20.0),),
+                        body: Column(
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: EdgeInsets.only(right: 7.0, top: 10.0),
+                                    child: Text(
+                                      "Calificar:",
+                                      style: TextStyle(fontWeight: FontWeight.w600)
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 0.0),
+                                    child: StarRating(
+                                      size: 25.0,
+                                      rating: rating,
+                                      color: Colors.orange,
+                                      borderColor: Colors.grey,
+                                      starCount: 6,
+                                      onRatingChanged: (rating) => setState(
+                                            () {
+                                          this.rating = rating;
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        )
                       ),
                     ],
                     expansionCallback: (int index, bool isExpanded) {
@@ -120,7 +128,7 @@ class _ServiceDeatilState extends State<ServiceDeatil> {
                   ),
                 ],
               ),
-            )
+            )*/
           ],
         ),
       ),
