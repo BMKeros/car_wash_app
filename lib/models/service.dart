@@ -5,8 +5,11 @@ class Service {
   String _type;
   String _date;
   String _time;
+  String _uid;
+  String _status;
 
-  Service(this._key, this._type, this._date, this._time);
+  Service(this._key, this._uid, this._type, this._date, this._time,
+      this._status);
 
   String get key => _key;
 
@@ -16,11 +19,17 @@ class Service {
 
   String get time => _time;
 
+  String get uid => _uid;
+
+  String get status => _status;
+
   Service.fromSnapshot(DataSnapshot snapshot) {
     print(snapshot.value);
     _key = snapshot.key;
+    _uid = snapshot.value['uid'];
     _type = snapshot.value['type'];
     _date = snapshot.value['date'];
     _time = snapshot.value['time'];
+    _status = snapshot.value['status'];
   }
 }
