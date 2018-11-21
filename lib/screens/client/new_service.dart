@@ -154,6 +154,7 @@ class _NewServiceState extends State<NewService> {
               'time': _timeController.text,
               'status': 'pending',
               'created_data': DateTime.now().toString(),
+              'static_map_uri': _staticMapUri.toString(),
             });
 
             Navigator.pop(context);
