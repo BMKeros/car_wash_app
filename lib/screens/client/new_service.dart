@@ -153,6 +153,7 @@ class _NewServiceState extends State<NewService> {
               'date': _dateController.text,
               'time': _timeController.text,
               'status': 'pending',
+              'created_data': DateTime.now().toString(),
             });
 
             Navigator.pop(context);
