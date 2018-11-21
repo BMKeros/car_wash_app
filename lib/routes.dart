@@ -11,6 +11,6 @@ final routes = {
   LoginScreen.routerName: (BuildContext context) => new LoginScreen(),
   Register.routerName: (BuildContext context) => new Register(),
   //HomeClient.routerName: (BuildContext context) => new HomeClient(),
-  NewService.routerName: (BuildContext context) => new NewService(),
+  //NewService.routerName: (BuildContext context) => new NewService(),
   Profile.routerName: (BuildContext context) => new Profile(),
 };
