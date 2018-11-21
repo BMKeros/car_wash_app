@@ -96,29 +96,20 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Image.asset('assets/dream-car.png'),
       ),
     );
-
-    final LoginScreenButton = Padding(
+    final LoginButtonRadius = Padding(
       padding: EdgeInsets.symmetric(vertical: 16.0),
-      child: Material(
-        borderRadius: BorderRadius.circular(30.0),
-        shadowColor: Colors.lightBlueAccent.shade100,
-        elevation: 5.0,
-        child: MaterialButton(
-          minWidth: 200.0,
-          height: 42.0,
-          onPressed: () {
-            _handlerLoginScreen();
-          },
-          color: Colors.lightBlueAccent,
-          child: Text(
-            'Iniciar sesión',
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-      ),
+      child: RaisedButton(
+        color: Colors.lightBlueAccent,
+        highlightColor: Colors.lightBlueAccent,
+        child: new Text('Iniciar sesión'),
+        textColor: Colors.white,
+        onPressed: _handlerLoginScreen,
+        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0))
+      )
     );
 
     final LoginScreenButtonGoogle = RaisedButton(
+      shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
       child: Center(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -135,7 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: Color.fromRGBO(68, 68, 76, .8),
                 ),
               ),
-              padding: new EdgeInsets.only(left: 15.0),
+              padding: new EdgeInsets.only(left: 20),
             ),
           ],
         ),
@@ -177,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(
               height: 24.0,
             ),
-            LoginScreenButton,
+            LoginButtonRadius,
             LoginScreenButtonGoogle,
             newAccount,
           ],
