@@ -22,13 +22,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final TextField email = TextField(
     keyboardType: TextInputType.emailAddress,
-    decoration: InputDecoration(labelText: 'Correo electronico'),
+    decoration: InputDecoration(labelText: 'Email'),
     controller: emailTextController,
   );
 
   final TextField password = TextField(
     obscureText: true,
-    decoration: InputDecoration(labelText: 'Contrasena'),
+    decoration: InputDecoration(labelText: 'Password'),
     controller: passwordTextController,
   );
 
@@ -73,6 +73,8 @@ class _LoginScreenState extends State<LoginScreen> {
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => HomeScreen(_currentUser)));
       } on PlatformException catch (e) {
+        Navigator.pop(context);
+
         final snackBar = SnackBar(
           content: Text(e.message),
         );
@@ -109,7 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
           },
           color: Colors.lightBlueAccent,
           child: Text(
-            'Iniciar secion',
+            'Iniciar sesión',
             style: TextStyle(color: Colors.white),
           ),
         ),
