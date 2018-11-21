@@ -182,6 +182,7 @@ class _NewServiceState extends State<NewService> {
                     decoration: InputDecoration(labelText: 'Fecha'),
                     format: DateFormat.yMd(),
                     controller: _dateController,
+                    dateOnly: true,
                   ),
                   SizedBox(
                     height: 10.0,
