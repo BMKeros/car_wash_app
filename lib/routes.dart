@@ -12,5 +12,5 @@ final routes = {
   Register.routerName: (BuildContext context) => new Register(),
   //HomeClient.routerName: (BuildContext context) => new HomeClient(),
   //NewService.routerName: (BuildContext context) => new NewService(),
-  Profile.routerName: (BuildContext context) => new Profile(),
+  //Profile.routerName: (BuildContext context) => new Profile(),
 };
