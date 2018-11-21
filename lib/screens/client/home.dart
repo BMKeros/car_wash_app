@@ -6,6 +6,7 @@ import 'package:panelmex_app/screens/client/list_notifications.dart';
 import 'package:panelmex_app/screens/client/profile.dart';
 import 'package:panelmex_app/services/auth.dart';
 import 'package:panelmex_app/screens/client/new_service.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class HomeScreen extends StatefulWidget {
   static String routerName = '/home';
@@ -22,8 +23,30 @@ class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
   final FirebaseUser _currentUser;
   AuthService _auth = new AuthService();
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   _HomeScreenState(this._currentUser);
+
+  @override
+  void initState() {
+    super.initState();
+
+    _firebaseMessaging.getToken().then((token) {
+      print(token);
+    });
+
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print('on message $message');
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print('on resume $message');
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print('on launch $message');
+      },
+    );
+  }
 
   Widget _renderScreen() {
     switch (_currentIndex) {
@@ -66,8 +89,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     void _handlerNewService() {
-      Navigator.push(context,
-      MaterialPageRoute(builder: (context) => NewService(this._currentUser)));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => NewService(this._currentUser)));
     }
 
     void _onSelectedPopupMenu(String menuKey) async {
