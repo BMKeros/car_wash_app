@@ -46,101 +46,120 @@ class ListServicesState extends State<ListServices> {
     });
   }
 
+  Icon _getIconStatus(String status) {
+    IconData icon;
+    MaterialColor color;
+
+    switch (status) {
+      case 'pending':
+        icon = Icons.timer;
+        color = Colors.orange;
+        break;
+      case 'accepted':
+        icon = Icons.check_circle;
+        color = Colors.green;
+        break;
+      case 'cancelled':
+        icon = Icons.close;
+        color = Colors.red;
+        break;
+      default:
+        icon = Icons.timer;
+        color = Colors.orange;
+        break;
+    }
+
+    return Icon(icon, color: color);
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        body: ListView.builder(
-          itemCount: _items.length,
-          itemBuilder: (BuildContext ctx, int index) {
-            return GestureDetector(
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ServiceDeatil()));
-              },
-              child: Column(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: <Widget>[
-                        CircleAvatar(
-                          child: Image.asset('assets/car-wash.png'),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment
-                                      .spaceBetween,
+      body: ListView.builder(
+        itemCount: _items.length,
+        itemBuilder: (BuildContext ctx, int index) {
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ServiceDeatil()));
+            },
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: <Widget>[
+                      CircleAvatar(
+                        child: Image.asset('assets/car-wash.png'),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    _items[index].type,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 20.0),
+                                  ),
+                                  _getIconStatus(_items[index].status),
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 2.0),
+                                child: Row(
+                                  //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: <Widget>[
-                                    Text(
-                                      _items[index].type,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 20.0),
+                                    Icon(Icons.timer),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 8.0),
+                                      child: Text(_items[index].time),
                                     ),
-                                    Icon(
-                                      Icons.check_circle, //Aceptado
-                                      //Icons.close - Cancelado
-                                      //Icons.timer - pendiente
-                                      color: Colors.green,
-                                    ),
+                                    Padding(
+                                      padding:
+                                      const EdgeInsets.only(left: 23.0),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.start,
+                                        children: <Widget>[
+                                          Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                            children: <Widget>[
+                                              Icon(Icons.date_range),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 8.0),
+                                                child: Text(_items[index].date),
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    )
                                   ],
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 2.0),
-                                  child: Row(
-                                    //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: <Widget>[
-                                      Icon(Icons.timer),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 8.0),
-                                        child: Text(_items[index].time),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 23.0),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                          children: <Widget>[
-                                            Row(
-                                              mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                              children: <Widget>[
-                                                Icon(Icons.date_range),
-                                                Padding(
-                                                  padding: const EdgeInsets
-                                                      .only(
-                                                      left: 8.0),
-                                                  child: Text(
-                                                      _items[index].date),
-                                                ),
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        )
-                      ],
-                    ),
+                        ),
+                      )
+                    ],
                   ),
-                  Divider(),
-                ],
-              ),
-            );
-          },
-        ));
+                ),
+                Divider(),
+              ],
+            ),
+          );
+        },
+      ),
+    );
   }
 }
