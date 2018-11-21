@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
 
 class DialogLoading extends StatelessWidget {
+
+  String _message = "Por favor espere..";
+
+  DialogLoading();
+
+  DialogLoading.CustomMessage(String message) {
+    _message = message;
+  }
+
   @override
   Widget build(BuildContext context) {
-    /*return new Dialog(
-      child: new Row(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          new CircularProgressIndicator(),
-          new Text("Please Wait.."),
-        ],
-      ),
-    );*/
-
     return AlertDialog(
       content: new Row(
         children: <Widget>[
           new CircularProgressIndicator(),
           new Spacer(flex: 2),
-          new Text("Por favor espere.."),
+          new Text(_message),
         ],
       ),
     );
