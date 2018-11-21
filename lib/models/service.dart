@@ -7,9 +7,10 @@ class Service {
   String _time;
   String _uid;
   String _status;
+  String _created_date;
 
   Service(this._key, this._uid, this._type, this._date, this._time,
-      this._status);
+      this._status, this._created_date);
 
   String get key => _key;
 
@@ -23,6 +24,8 @@ class Service {
 
   String get status => _status;
 
+  String get created_date => _created_date;
+
   Service.fromSnapshot(DataSnapshot snapshot) {
     print(snapshot.value);
     _key = snapshot.key;
@@ -31,5 +34,6 @@ class Service {
     _date = snapshot.value['date'];
     _time = snapshot.value['time'];
     _status = snapshot.value['status'];
+    _created_date = snapshot.value['created_date'];
   }
 }
