@@ -166,6 +166,8 @@ class _NewServiceState extends State<NewService> {
               'status': 'pending',
               'created_data': DateTime.now().toString(),
               'static_map_uri': _staticMapUri.toString(),
+	      'latitude': _latitud,
+	      'longitude': _longitud
             });
 
             Navigator.pop(context);
