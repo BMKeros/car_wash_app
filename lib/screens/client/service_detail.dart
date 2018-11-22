@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating/flutter_rating.dart';
+import 'package:panelmex_app/common/utils.dart';
 
 class ServiceDeatil extends StatefulWidget {
   @override
@@ -23,11 +24,11 @@ class _ServiceDeatilState extends State<ServiceDeatil> {
           padding: EdgeInsets.only(left: 15.0, right: 15.0, top: 10.0),
           children: <Widget>[
             Image.network(
-              'https://maps.googleapis.com/maps/api/staticmap?markers=22.974016651251087%2C-102.82458242028953&size=900x400&maptype=roadmap&key=AIzaSyDnIlWaCvwjvwP7cZu6zcCYnWXFFwrm0Fc&center=23.870000091397973%2C-102.66000006347895',
-              height: 100,
+              getStaticMapBox(latitud, longitud, '620', '620'),
+              height: 200,
               fit: BoxFit.cover,
-            )
-            /*Card(
+            ),
+            Card(
               child: Column(
                 children: <Widget>[
                   Padding(
@@ -128,7 +129,7 @@ class _ServiceDeatilState extends State<ServiceDeatil> {
                   ),
                 ],
               ),
-            )*/
+            )
           ],
         ),
       ),
