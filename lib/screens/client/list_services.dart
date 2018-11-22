@@ -83,8 +83,13 @@ class ListServicesState extends State<ListServices> {
         itemBuilder: (BuildContext ctx, int index) {
           return GestureDetector(
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ServiceDeatil()));
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      ServiceDeatil(_currentUser, _items[index]),
+                ),
+              );
             },
             child: Column(
               children: <Widget>[
