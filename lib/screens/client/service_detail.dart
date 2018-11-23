@@ -3,6 +3,7 @@ import 'package:flutter_rating/flutter_rating.dart';
 import 'package:panelmex_app/common/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:panelmex_app/models/service.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ServiceDeatil extends StatefulWidget {
   final FirebaseUser _user;
@@ -41,29 +42,37 @@ class _ServiceDeatilState extends State<ServiceDeatil> {
         child: ListView(
           padding: EdgeInsets.only(left: 15.0, right: 15.0, top: 10.0),
           children: <Widget>[
-            Image.network(
-              getStaticMapBox(_currentService.latitud, _currentService.longitud, '620', '620'),
+            /*Image.network(
+              getStaticMapBox(_currentService.latitude, _currentService.longitude, '620', '620'),
               height: 200,
               fit: BoxFit.cover,
+            ),*/
+            CachedNetworkImage(
+              imageUrl: getStaticMapBox(_currentService.latitude, _currentService.longitude, '620', '620'),
+              placeholder: Padding(
+                padding: const EdgeInsets.only(left: 130, top: 20, right: 130, bottom: 20),
+                child: CircularProgressIndicator(),
+              ),
+              errorWidget: new Icon(Icons.error),
             ),
             Card(
               child: Column(
                 children: <Widget>[
-                  Padding(
+                  /*Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       'Datos',
                       style: TextStyle(
                           fontWeight: FontWeight.w800, fontSize: 20.0),
                     ),
-                  ),
+                  ),*/
                   ListTile(
-                    title: Text('20/02/2018',
+                    title: Text(_currentService.date,
                         style: TextStyle(fontWeight: FontWeight.w500)),
                     leading: Icon(Icons.date_range),
                   ),
                   ListTile(
-                    title: Text('8:30 AM',
+                    title: Text(_currentService.time,
                         style: TextStyle(fontWeight: FontWeight.w500)),
                     leading: Icon(Icons.access_time),
                   ),
@@ -79,7 +88,7 @@ class _ServiceDeatilState extends State<ServiceDeatil> {
                             style: TextStyle(fontWeight: FontWeight.w600),
                           ),
                         ),
-                        Text('Aceptado'),
+                        Text(_currentService.status),
                       ],
                     ),
                   ),
@@ -89,25 +98,11 @@ class _ServiceDeatilState extends State<ServiceDeatil> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.only(right: 7.0, top: 10.0),
-                          child: Text("Calificar:",
+                          padding: EdgeInsets.only(right: 16.0),
+                          child: Text("Tipo:",
                               style: TextStyle(fontWeight: FontWeight.w600)),
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 0.0),
-                          child: StarRating(
-                            size: 25.0,
-                            rating: rating,
-                            color: Colors.orange,
-                            borderColor: Colors.grey,
-                            starCount: 6,
-                            onRatingChanged: (rating) => setState(
-                                  () {
-                                this.rating = rating;
-                              },
-                            ),
-                          ),
-                        ),
+                        Text(_currentService.type)
                       ],
                     ),
                   ),
