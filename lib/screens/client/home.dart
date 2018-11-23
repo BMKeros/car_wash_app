@@ -67,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   static List<BottomNavigationBarItem> _itemsNavigationBar = [
     BottomNavigationBarItem(
-      icon: Icon(Icons.airport_shuttle),
+      icon: Icon(Icons.local_car_wash),
       title: Text('Servicios'),
     ),
     BottomNavigationBarItem(
