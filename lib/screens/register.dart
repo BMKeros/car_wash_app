@@ -95,7 +95,6 @@ class _RegisterState extends State<Register> {
     final newAccountButtonRadius = Padding(
       padding: EdgeInsets.symmetric(vertical: 16.0),
       child: RaisedButton(
-        color: Colors.lightBlueAccent,
         highlightColor: Colors.lightBlueAccent,
         child: new Text('Nueva cuenta', style: TextStyle(color: Colors.white)),
         textColor: Colors.white,
@@ -122,7 +121,7 @@ class _RegisterState extends State<Register> {
             logo,
             //SizedBox(height: 25.0,),
             //name,
-            SizedBox(height: 8.0,),
+            SizedBox(height: 48.0,),
             email,
             SizedBox(height: 8.0,),
             passwordOne,

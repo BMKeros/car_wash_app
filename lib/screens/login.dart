@@ -99,9 +99,19 @@ class _LoginScreenState extends State<LoginScreen> {
     final LoginButtonRadius = Padding(
       padding: EdgeInsets.symmetric(vertical: 16.0),
       child: RaisedButton(
-        color: Colors.lightBlueAccent,
         highlightColor: Colors.lightBlueAccent,
-        child: new Text('Iniciar sesión'),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Icon(
+              Icons.input
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20),
+              child: Text('Iniciar sesion'),
+            )
+          ],
+        ),
         textColor: Colors.white,
         onPressed: _handlerLoginScreen,
         shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0))
@@ -112,13 +122,14 @@ class _LoginScreenState extends State<LoginScreen> {
       shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
       child: Center(
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Image.asset(
               'assets/google.png',
               width: 25.0,
             ),
             Padding(
+              padding: const EdgeInsets.only(left: 20),              
               child: Text(
                 "Ingresa con Google",
                 style: TextStyle(
@@ -126,7 +137,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: Color.fromRGBO(68, 68, 76, .8),
                 ),
               ),
-              padding: new EdgeInsets.only(left: 20),
             ),
           ],
         ),
