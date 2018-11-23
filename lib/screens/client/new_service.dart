@@ -235,7 +235,7 @@ class _NewServiceState extends State<NewService> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          Icon(Icons.zoom_out_map),
+                          Icon(Icons.my_location),
                           Padding(
                             child: Text(
                               "Direccion para el servicio",
