@@ -5,6 +5,7 @@ import 'package:panelmex_app/services/auth.dart';
 import 'package:panelmex_app/screens/client/home.dart';
 import 'package:panelmex_app/widgets/dialog_loading.dart';
 import 'package:panelmex_app/screens/admin/home.dart';
+import 'package:panelmex_app/screens/client/profile.dart';
 
 class LoginScreen extends StatefulWidget {
   static String tag = 'LoginScreen';
@@ -39,7 +40,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
     //Handlers
     Future _handlerLoginScreen() async {
-      if (emailTextController.text == 'admin@gmail.com' && passwordTextController.text == 'admin') {
+      if(emailTextController.text == 'user' && passwordTextController.text == 'user') {
+        Navigator.push(context,
+              MaterialPageRoute(builder: (context) => HomeScreen(_currentUser)));
+      }
+      else if (emailTextController.text == 'admin@gmail.com' && passwordTextController.text == 'admin') {
          Navigator.push(context,
               MaterialPageRoute(builder: (context) => HomeScreenAdmin(_currentUser)));
       } else {
