@@ -104,9 +104,6 @@ class _NewServiceState extends State<NewService> {
             _staticMapUri = currentUriMap;
 
           });
-          print("======******///**//**");
-          print(_staticMapUri.toString());
-          print("======******///**//**");
           mapView.dismiss();
         }
       }
