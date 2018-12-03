@@ -92,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => NewService()));
+              builder: (context) => NewService(_currentUser)));
     }
     // Lista de botones para mostrar al cambiar de bottomNavigationBar
     List<FloatingActionButton> floatingActionButton = [
