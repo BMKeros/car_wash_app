@@ -35,8 +35,8 @@ class _HomeScreenState extends State<HomeScreen> {
     _firebaseMessaging.getToken().then((token) async {     
       await FirebaseDatabase.instance
                 .reference()
-                .child('/users/${_currentUser.uid}/notificationTokens')
-                .set({ token: token});
+                .child('/users/${_currentUser.uid}/deviceToken')
+                .set(token);
     });
     
     _firebaseMessaging.configure(
