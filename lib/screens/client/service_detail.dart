@@ -77,7 +77,7 @@ class _ServiceDeatilState extends State<ServiceDeatil> {
                             style: TextStyle(fontWeight: FontWeight.w600),
                           ),
                         ),
-                        Text(_currentService.status),
+                        Text(getNameStatus(_currentService.status)),
                       ],
                     ),
                   ),
