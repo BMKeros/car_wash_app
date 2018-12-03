@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:panelmex_app/screens/login.dart';
 import 'package:panelmex_app/screens/client/list_services.dart';
 import 'package:panelmex_app/screens/client/list_notifications.dart';
@@ -31,10 +32,13 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
 
-    _firebaseMessaging.getToken().then((token) {
-      print(token);
+    _firebaseMessaging.getToken().then((token) async {     
+      await FirebaseDatabase.instance
+                .reference()
+                .child('/users/${_currentUser.uid}/notificationTokens')
+                .set({ token: token});
     });
-
+    
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         print('on message $message');
