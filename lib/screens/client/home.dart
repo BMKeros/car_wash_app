@@ -85,16 +85,34 @@ class _HomeScreenState extends State<HomeScreen> {
       _currentIndex = index;
     });
   }
-
+  
   @override
   Widget build(BuildContext context) {
     void _handlerNewService() {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => NewService(this._currentUser)));
+              builder: (context) => NewService()));
     }
-
+    // Lista de botones para mostrar al cambiar de bottomNavigationBar
+    List<FloatingActionButton> floatingActionButton = [
+      FloatingActionButton(
+        onPressed: _handlerNewService,
+        tooltip: 'Nuevo servicio',
+        child: Icon(Icons.add),
+      ),
+      FloatingActionButton(
+        onPressed: () {},
+        tooltip: 'Ver notificaciones',
+        child: Icon(Icons.notifications),
+      ),
+      FloatingActionButton(
+        onPressed: () {},
+        tooltip: 'Editar perfil',
+        child: Icon(Icons.edit),
+      )
+    ];
+    
     void _onSelectedPopupMenu(String menuKey) async {
       switch (menuKey) {
         case 'menu_signout':
@@ -133,16 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
         automaticallyImplyLeading: false,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _handlerNewService();
-        },
-        tooltip: 'Solicitar servicio',
-        child: Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
-      ),
+      floatingActionButton: floatingActionButton[_currentIndex],
       body: _renderScreen(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
