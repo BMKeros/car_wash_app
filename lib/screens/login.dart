@@ -55,6 +55,9 @@ class _LoginScreenState extends State<LoginScreen> {
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => HomeScreen(_currentUser)));
       } on PlatformException catch (e) {
+
+        Navigator.pop(context);
+
         final snackBar = SnackBar(
           content: Text(e.message),
         );
