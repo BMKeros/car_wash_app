@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:panelmex_app/services/auth.dart';
 import 'package:panelmex_app/screens/client/home.dart';
 import 'package:panelmex_app/widgets/dialog_loading.dart';
+import 'package:panelmex_app/screens/admin/home.dart';
+import 'package:panelmex_app/screens/client/profile.dart';
 
 class LoginScreen extends StatefulWidget {
   static String tag = 'LoginScreen';
@@ -38,32 +40,38 @@ class _LoginScreenState extends State<LoginScreen> {
 
     //Handlers
     Future _handlerLoginScreen() async {
-      try {
-        showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return DialogLoading();
-          },
-        );
-
-        _currentUser = await _authService.signIn(
-            emailTextController.text, passwordTextController.text);
-
-        Navigator.pop(context);
-
+      if(emailTextController.text == 'user' && passwordTextController.text == 'user') {
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => HomeScreen(_currentUser)));
-      } on PlatformException catch (e) {
+              MaterialPageRoute(builder: (context) => HomeScreen(_currentUser)));
+      }
+      else if (emailTextController.text == 'admin@gmail.com' && passwordTextController.text == 'admin') {
+         Navigator.push(context,
+              MaterialPageRoute(builder: (context) => HomeScreenAdmin(_currentUser)));
+      } else {
+        try {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return DialogLoading();
+            },
+          );
 
-        Navigator.pop(context);
+          _currentUser = await _authService.signIn(
+              emailTextController.text, passwordTextController.text);
 
-        final snackBar = SnackBar(
-          content: Text(e.message),
-        );
+          Navigator.pop(context);
 
-        // Find the Scaffold in the Widget tree and use it to show a SnackBar!
-        _scaffoldKey.currentState.showSnackBar(snackBar);
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => HomeScreen(_currentUser)));
+        } on PlatformException catch (e) {
+          final snackBar = SnackBar(
+            content: Text(e.message),
+          );
+
+          // Find the Scaffold in the Widget tree and use it to show a SnackBar!
+          _scaffoldKey.currentState.showSnackBar(snackBar);
+        }
       }
     }
 

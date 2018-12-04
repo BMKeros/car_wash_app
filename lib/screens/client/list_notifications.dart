@@ -18,7 +18,7 @@ class ListNotificationsState extends State<ListNotifications> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      body: ListView.builder(
+      body: /*ListView.builder(
         itemCount: listViewItems.length,
         itemBuilder: (BuildContext ctxt, int index) {
           return ListTile(
@@ -31,7 +31,41 @@ class ListNotificationsState extends State<ListNotifications> {
             trailing: Icon(Icons.check),
           );
         },
-      ),
+      ),*/
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(9),
+            child: Text(
+              'Promociones',
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 17
+              ),
+            ),
+          ),
+          Container(
+            height: 150,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: 7,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: EdgeInsets.all(8),
+                  child: Container(
+                    width: 200,
+                    height: 150,
+                    color: Colors.blueGrey,
+                    child: Text('Contenedor $index'),
+                  ),
+                );
+              },
+            ),
+          )
+        ],
+      )
     );
+    
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:panelmex_app/screens/login.dart';
 import 'package:panelmex_app/screens/client/list_services.dart';
 import 'package:panelmex_app/screens/client/list_notifications.dart';
@@ -31,10 +32,13 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
 
-    _firebaseMessaging.getToken().then((token) {
-      print(token);
+    _firebaseMessaging.getToken().then((token) async {     
+      await FirebaseDatabase.instance
+                .reference()
+                .child('/users/${_currentUser.uid}/deviceToken')
+                .set(token);
     });
-
+    
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         print('on message $message');
@@ -85,16 +89,34 @@ class _HomeScreenState extends State<HomeScreen> {
       _currentIndex = index;
     });
   }
-
+  
   @override
   Widget build(BuildContext context) {
     void _handlerNewService() {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => NewService(this._currentUser)));
+              builder: (context) => NewService(_currentUser)));
     }
-
+    // Lista de botones para mostrar al cambiar de bottomNavigationBar
+    List<FloatingActionButton> floatingActionButton = [
+      FloatingActionButton(
+        onPressed: _handlerNewService,
+        tooltip: 'Nuevo servicio',
+        child: Icon(Icons.add),
+      ),
+      FloatingActionButton(
+        onPressed: () {},
+        tooltip: 'Ver notificaciones',
+        child: Icon(Icons.notifications),
+      ),
+      FloatingActionButton(
+        onPressed: () {},
+        tooltip: 'Editar perfil',
+        child: Icon(Icons.edit),
+      )
+    ];
+    
     void _onSelectedPopupMenu(String menuKey) async {
       switch (menuKey) {
         case 'menu_signout':
@@ -133,16 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
         automaticallyImplyLeading: false,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _handlerNewService();
-        },
-        tooltip: 'Solicitar servicio',
-        child: Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
-      ),
+      floatingActionButton: floatingActionButton[_currentIndex],
       body: _renderScreen(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,

@@ -34,11 +34,13 @@ class _NewServiceState extends State<NewService> {
 
   TextEditingController _dateController = TextEditingController();
   TextEditingController _timeController = TextEditingController();
+  TextEditingController _couponController = TextEditingController();
 
   int selectedServiceType = null;
   int selectedPaymentMethod = null;
   static double _latitud = 23.87;
   static double _longitud = -102.66;
+  bool coupon = false;
 
   final List _dataServiceType = ['Por fuera', 'Completo', 'Pulido', 'Encerado'];
 
@@ -104,9 +106,6 @@ class _NewServiceState extends State<NewService> {
             _staticMapUri = currentUriMap;
 
           });
-          print("======******///**//**");
-          print(_staticMapUri.toString());
-          print("======******///**//**");
           mapView.dismiss();
         }
       }
@@ -166,8 +165,9 @@ class _NewServiceState extends State<NewService> {
               'status': 'pending',
               'created_data': DateTime.now().toString(),
               'static_map_uri': _staticMapUri.toString(),
-	      'latitude': _latitud,
-	      'longitude': _longitud
+              'coupon': _couponController.text,
+              'latitude': _latitud,
+              'longitude': _longitud
             });
 
             Navigator.pop(context);
@@ -253,6 +253,26 @@ class _NewServiceState extends State<NewService> {
                     splashColor: Colors.lightBlue,
                     onPressed: _handlerShowMap,
                   ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text('Posees un cupon.?'),
+                      Switch(
+                        value: coupon,
+                        onChanged: (bool value) {
+                          setState(() {
+                            coupon = value;
+                            _couponController.text = '';
+                          });
+                        },
+                      )
+                    ],
+                  ),
+                  coupon ? TextField(
+                    decoration: InputDecoration(labelText: 'Ingrese tu cupon'),
+                    controller: _couponController,
+                  )
+                  : Text('')
                 ],
               ),
             ),
