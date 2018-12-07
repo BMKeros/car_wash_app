@@ -65,12 +65,11 @@ class _LoginScreenState extends State<LoginScreen> {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => HomeScreen(_currentUser)));
         } on PlatformException catch (e) {
-          final snackBar = SnackBar(
-            content: Text(e.message),
-          );
+          Navigator.pop(context);
 
-          // Find the Scaffold in the Widget tree and use it to show a SnackBar!
-          _scaffoldKey.currentState.showSnackBar(snackBar);
+          _scaffoldKey.currentState.showSnackBar(SnackBar(
+            content: Text(e.message),
+          ));
         }
       }
     }
@@ -85,13 +84,10 @@ class _LoginScreenState extends State<LoginScreen> {
             MaterialPageRoute(builder: (context) => HomeScreen(_currentUser)));
       } on PlatformException catch (e) {
         Navigator.pop(context);
-
-        final snackBar = SnackBar(
+        
+        _scaffoldKey.currentState.showSnackBar(SnackBar(
           content: Text(e.message),
-        );
-
-        // Find the Scaffold in the Widget tree and use it to show a SnackBar!
-        _scaffoldKey.currentState.showSnackBar(snackBar);
+        ));
       }
     }
 
