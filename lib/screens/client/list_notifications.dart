@@ -18,21 +18,7 @@ class ListNotificationsState extends State<ListNotifications> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      body: /*ListView.builder(
-        itemCount: listViewItems.length,
-        itemBuilder: (BuildContext ctxt, int index) {
-          return ListTile(
-            title: Text(listViewItems[index][0]),
-            subtitle: Text(listViewItems[index][1]),
-            leading: Icon(
-              Icons.airport_shuttle,
-              color: Colors.blue[500],
-            ),
-            trailing: Icon(Icons.check),
-          );
-        },
-      ),*/
-      Column(
+      body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
@@ -46,7 +32,7 @@ class ListNotificationsState extends State<ListNotifications> {
             ),
           ),
           Container(
-            height: 150,
+            height: 125,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: 7,
@@ -62,10 +48,44 @@ class ListNotificationsState extends State<ListNotifications> {
                 );
               },
             ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(9),
+            child: Text(
+              'Notificaciones',
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 17
+              ),
+            ),
+          ),
+          Container(
+            height: 185,
+            child: ListView.builder(
+              itemCount: 10,
+              itemBuilder: (BuildContext ctx, int index) => Column (
+                children: <Widget>[
+                  Container(
+                    width: 380,
+                    child: Card(
+                      elevation: 4,
+                      child: ListTile(
+                        title: Text('Titulo'),
+                        subtitle: Text(
+                          'Su servicio ha sido aceptado correctamente.',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      )
+                    ),
+                  )
+                ]
+              ),
+            ),
           )
         ],
-      )
+      ),
     );
-    
   }
 }
+
+
