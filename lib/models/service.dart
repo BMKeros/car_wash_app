@@ -10,6 +10,8 @@ class Service {
   String _status;
   String _created_date;
   String _static_map_uri;
+  String _washing_type;
+  String _vehicle_type;
   double _latitude;
   double _longitude;
 
@@ -21,6 +23,8 @@ class Service {
       this._status,
       this._created_date,
       this._static_map_uri,
+      this._washing_type,
+      this._vehicle_type,
       this._latitude,
       this._longitude);
 
@@ -41,6 +45,10 @@ class Service {
   String get createdDate => _created_date;
 
   String get staticMapUri => _static_map_uri;
+  
+  String get washingType => _washing_type;
+
+  String get vehicleType => _vehicle_type;
 
   double get latitude => _latitude;
 
