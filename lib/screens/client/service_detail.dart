@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating/flutter_rating.dart';
 import 'package:panelmex_app/common/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:panelmex_app/models/service.dart';
@@ -23,7 +22,7 @@ class _ServiceDetailState extends State<ServiceDetail> {
   double rating = 3.5;
   int starCount = 6;
   bool expandedDetail = false;
-
+  bool _showCardResposible = false;
   _ServiceDetailState(this._currentUser, this._currentService);
 
   @override
@@ -98,7 +97,7 @@ class _ServiceDetailState extends State<ServiceDetail> {
                 ],
               ),
             ),
-            Card(
+            _showCardResposible ? Card(
               child: Column(
                 children: <Widget>[
                   ExpansionPanelList(
@@ -126,25 +125,13 @@ class _ServiceDetailState extends State<ServiceDetail> {
                                   Padding(
                                     padding:
                                     EdgeInsets.only(right: 7.0, top: 10.0),
-                                    child: Text("Calificar:",
+                                    child: Text("Nombre:",
                                         style: TextStyle(
                                             fontWeight: FontWeight.w600)),
                                   ),
                                   Padding(
                                     padding: EdgeInsets.only(top: 0.0),
-                                    child: StarRating(
-                                      size: 25.0,
-                                      rating: rating,
-                                      color: Colors.orange,
-                                      borderColor: Colors.grey,
-                                      starCount: 6,
-                                      onRatingChanged: (rating) =>
-                                          setState(
-                                                () {
-                                              this.rating = rating;
-                                            },
-                                          ),
-                                    ),
+                                    child: Text('Ramon Garcia')
                                   ),
                                 ],
                               ),
@@ -162,7 +149,7 @@ class _ServiceDetailState extends State<ServiceDetail> {
                   ),
                 ],
               ),
-            )
+            ) : Text('')
           ],
         ),
       ),
