@@ -38,6 +38,7 @@ class _NewServiceState extends State<NewService> {
 
   int selectedServiceType = null;
   int selectedPaymentMethod = null;
+  
   static double _latitud = 23.87;
   static double _longitud = -102.66;
   bool coupon = false;
