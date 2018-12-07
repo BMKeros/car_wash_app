@@ -38,12 +38,15 @@ class _NewServiceState extends State<NewService> {
 
   int selectedServiceType = null;
   int selectedPaymentMethod = null;
-  
+  int selectedWashingType = null;
+
   static double _latitud = 23.87;
   static double _longitud = -102.66;
   bool coupon = false;
 
   final List _dataServiceType = ['Por fuera', 'Completo', 'Pulido', 'Encerado'];
+  final List _dataPaymentMethod = ['Tarjeta', 'Efectivo'];
+  final List _dataWashingType = ['car', 'van'];
 
   final List<DropdownMenuItem> _itemsServiceType = [
     // select service type
@@ -72,6 +75,17 @@ class _NewServiceState extends State<NewService> {
     ),
     DropdownMenuItem(
       child: Text('Tarjeta'),
+      value: 2,
+    )
+  ];
+
+  final List<DropdownMenuItem> _itemsWashingType = [
+    DropdownMenuItem(
+      child: Text('Carro'),
+      value: 1,
+    ),
+    DropdownMenuItem(
+      child: Text('Camioneta'),
       value: 2,
     )
   ];
@@ -161,6 +175,8 @@ class _NewServiceState extends State<NewService> {
                 .set({
               'uid': _currentUser.uid,
               'type': _dataServiceType[selectedServiceType - 1],
+              'washing_type': _dataWashingType[selectedWashingType - 1],
+              'payment_method': _dataPaymentMethod[selectedPaymentMethod - 1],
               'date': _dateController.text,
               'time': _timeController.text,
               'status': 'pending',
@@ -218,6 +234,19 @@ class _NewServiceState extends State<NewService> {
                         });
                       },
                     ),
+                  ),
+                  ListTile(
+                    title: Text('Tipo de lavado'),
+                    trailing: DropdownButton(
+                      value: selectedWashingType,
+                      items: _itemsWashingType,
+                      onChanged: (value) {
+                        setState(() {
+                           selectedWashingType = value;              
+                        });
+                      },  
+                    )
+
                   ),
                   ListTile(
                     title: Text('Metodo de pago'),
