@@ -5,17 +5,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:panelmex_app/models/service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-class ServiceDeatil extends StatefulWidget {
+class ServiceDetail extends StatefulWidget {
   final FirebaseUser _user;
   final Service _service;
 
-  ServiceDeatil(this._user, this._service);
+  ServiceDetail(this._user, this._service);
 
   @override
-  _ServiceDeatilState createState() => new _ServiceDeatilState(_user, _service);
+  _ServiceDetailState createState() => new _ServiceDetailState(_user, _service);
 }
 
-class _ServiceDeatilState extends State<ServiceDeatil> {
+class _ServiceDetailState extends State<ServiceDetail> {
   // rating service
   final FirebaseUser _currentUser;
   final Service _currentService;
@@ -24,7 +24,7 @@ class _ServiceDeatilState extends State<ServiceDeatil> {
   int starCount = 6;
   bool expandedDetail = false;
 
-  _ServiceDeatilState(this._currentUser, this._currentService);
+  _ServiceDetailState(this._currentUser, this._currentService);
 
   @override
   Widget build(BuildContext context) {

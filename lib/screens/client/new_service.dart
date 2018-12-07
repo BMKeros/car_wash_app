@@ -163,7 +163,7 @@ class _NewServiceState extends State<NewService> {
               'date': _dateController.text,
               'time': _timeController.text,
               'status': 'pending',
-              'created_data': DateTime.now().toString(),
+              'created_date': DateTime.now().toString(),
               'static_map_uri': _staticMapUri.toString(),
               'coupon': _couponController.text,
               'latitude': _latitud,

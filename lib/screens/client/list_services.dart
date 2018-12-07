@@ -20,9 +20,12 @@ class ListServices extends StatefulWidget {
 class ListServicesState extends State<ListServices> {
   FirebaseUser _currentUser;
   List<Service> _items;
+
   StreamSubscription<Event> _onServiceAddedSubscription;
+  StreamSubscription<Event> _onServiceChangedSubscription;
+
   DatabaseReference _serviceReference =
-  FirebaseDatabase.instance.reference().child('services');
+      FirebaseDatabase.instance.reference().child('services');
 
   ListServicesState(this._currentUser);
 
@@ -30,22 +33,37 @@ class ListServicesState extends State<ListServices> {
   void initState() {
     super.initState();
     _items = new List();
+
     _onServiceAddedSubscription = _serviceReference
         .orderByChild('uid')
         .equalTo(_currentUser.uid)
         .onChildAdded
         .listen(_onServiceAdded);
+
+    _onServiceChangedSubscription = _serviceReference
+        .orderByChild('uid')
+        .equalTo(_currentUser.uid)
+        .onChildChanged
+        .listen(_onServiceUpdated);
   }
 
   @override
   void dispose() {
     super.dispose();
     _onServiceAddedSubscription.cancel();
+    _onServiceChangedSubscription.cancel();
   }
 
   void _onServiceAdded(Event event) {
     setState(() {
       _items.add(new Service.fromSnapshot(event.snapshot));
+    });
+  }
+
+  void _onServiceUpdated(Event event) {
+    var oldServiceValue = _items.singleWhere((service) => service.key == event.snapshot.key);
+    setState(() {
+      _items[_items.indexOf(oldServiceValue)] = new Service.fromSnapshot(event.snapshot);
     });
   }
 
@@ -79,32 +97,8 @@ class ListServicesState extends State<ListServices> {
   Widget build(BuildContext context) {
     return new Scaffold(
       body: ListView.builder(
-        itemCount: _items.length,
-        itemBuilder: (BuildContext ctx, int index) => Column (
-          children: <Widget>[
-            Divider(height: 10,),
-            ListTile(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        ServiceDeatil(_currentUser, _items[index]),
-                  ),
-                );
-              },
-              leading: CircleAvatar(
-                child: Image.asset('assets/car-wash.png'),
-              ),
-              title: Text(
-                _items[index].type,
-                style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 20.0),
-              ),
-              trailing: _getIconStatus(_items[index].status),
-              subtitle: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          itemCount: _items.length,
+          itemBuilder: (BuildContext ctx, int index) => Column(
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.only(right: 4, top: 3,),
@@ -121,23 +115,76 @@ class ListServicesState extends State<ListServices> {
                   Padding(
                     padding: EdgeInsets.only(top: 4),
                     child: Text(_items[index].date),
+                  ),
+                  Divider(
+                    height: 10,
+                  ),
+                  ListTile(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              ServiceDetail(_currentUser, _items[index]),
+                        ),
+                      );
+                    },
+                    leading: CircleAvatar(
+                      child: Image.asset('assets/car-wash.png'),
+                    ),
+                    title: Text(
+                      _items[index].type,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500, fontSize: 20.0),
+                    ),
+                    trailing: _getIconStatus(_items[index].status),
+                    subtitle: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            right: 7,
+                            top: 3,
+                          ),
+                          child: Icon(
+                            Icons.timer,
+                            size: 20,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4),
+                          child: Text(_items[index].time),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 20,
+                            top: 3,
+                            right: 7,
+                          ),
+                          child: Icon(
+                            Icons.date_range,
+                            size: 20,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4),
+                          child: Text(_items[index].date),
+                        )
+                      ],
+                    ),
                   )
                 ],
-              ),
-            )
-          ],
-        )
-      ),
+              )),
     );
   }
 }
-          
-            /*onTap: () {
+
+/*onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
-                      ServiceDeatil(_currentUser, _items[index]),
+                      ServiceDetail(_currentUser, _items[index]),
                 ),
               );
             },
