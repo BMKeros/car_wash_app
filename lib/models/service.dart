@@ -12,6 +12,7 @@ class Service {
   String _static_map_uri;
   String _washing_type;
   String _vehicle_type;
+  String _responsible_key;
   double _latitude;
   double _longitude;
 
@@ -26,7 +27,8 @@ class Service {
       this._washing_type,
       this._vehicle_type,
       this._latitude,
-      this._longitude);
+      this._longitude,
+      this._responsible_key);
 
   String get key => _key;
 
@@ -65,6 +67,7 @@ class Service {
     _static_map_uri = snapshot.value['static_map_uri'];
     _latitude = snapshot.value['latitude'];
     _longitude = snapshot.value['longitude'];
+    _responsible_key = snapshot.value['responsibleKey'];
   }
 }
 
