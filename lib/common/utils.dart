@@ -1,3 +1,5 @@
+import 'package:panelmex_app/common/constans.dart';
+
 String getStaticMapBox(double latitud, double longitud, String height, String width) {
   return 'https://api.mapbox.com/styles/v1/mapbox/streets-v10/static/${longitud},${latitud},14.0,0,0/${height}x${width}?access_token=pk.eyJ1IjoiaG9zdGVsaXgiLCJhIjoiY2pvc3pjMzk1MHZ5MTNxbmhicGFmbWpwcCJ9.Q6iOP5hPtKHNlbJWup_r3g';
 }
@@ -6,15 +8,19 @@ String getStaticMapBox(double latitud, double longitud, String height, String wi
 // Obtener los estatus en espanol
 String getNameStatus(String status) {
   switch(status) {
-    case 'pending':
+    case STATUS_PENDING:
       return 'Pendiente';
       break;
-    
-    case 'completed':
+      
+    case STATUS_ACCEPTED:
+      return 'Aceptado';
+      break;
+
+    case STATUS_COMPLETED:
       return 'Completado';
       break;
     
-    case 'refused':
+    case STATUS_REFUSED:
       return 'Rechasado';
       break;
 
