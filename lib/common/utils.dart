@@ -29,3 +29,35 @@ String getNameStatus(String status) {
       break;
   }
 }
+
+String getWashingType(String type){
+  switch(type) {
+    case WASHING_TYPE_INSIDE:
+      return 'Por Dentro';
+      break;
+      
+    case WASHING_TYPE_OUTSIDE:
+      return 'Por Fuera';
+      break;
+
+    default:
+      return null;
+      break;
+  }
+}
+
+String getVehicleType(String type){
+  switch(type) {
+    case VAN_TYPE:
+      return 'Camioneta';
+      break;
+      
+    case CAR_TYPE:
+      return 'Carro';
+      break;
+
+    default:
+      return null;
+      break;
+  }
+}
