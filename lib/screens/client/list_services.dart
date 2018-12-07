@@ -109,7 +109,7 @@ class ListServicesState extends State<ListServices> {
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
-                              ServiceDeatil(_currentUser, _items[index]),
+                              ServiceDetail(_currentUser, _items[index]),
                         ),
                       );
                     },
@@ -168,7 +168,7 @@ class ListServicesState extends State<ListServices> {
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
-                      ServiceDeatil(_currentUser, _items[index]),
+                      ServiceDetail(_currentUser, _items[index]),
                 ),
               );
             },
