@@ -97,84 +97,55 @@ class ListServicesState extends State<ListServices> {
   Widget build(BuildContext context) {
     return new Scaffold(
       body: ListView.builder(
-          itemCount: _items.length,
-          itemBuilder: (BuildContext ctx, int index) => Column(
+        itemCount: _items.length,
+        itemBuilder: (BuildContext ctx, int index) => Column (
+          children: <Widget>[
+            Divider(height: 10,),
+            ListTile(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        ServiceDetail(_currentUser, _items[index]),
+                  ),
+                );
+              },
+              leading: CircleAvatar(
+                child: Image.asset('assets/car-wash.png'),
+              ),
+              title: Text(
+                _items[index].type,
+                style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 20.0),
+              ),
+              trailing: _getIconStatus(_items[index].status),
+              subtitle: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.only(right: 4, top: 3,),
+                    padding: const EdgeInsets.only(top: 3, right: 1),
                     child: Icon(Icons.timer, size: 15,),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 4),
+                    padding: const EdgeInsets.only(top: 4),
                     child: Text(_items[index].parseTime),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 7, top: 3, right: 4,),
+                    padding: const EdgeInsets.only(left: 7, top: 3, right: 1),
                     child: Icon(Icons.date_range, size: 15,),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 4),
+                    padding: const EdgeInsets.only(top: 3),
                     child: Text(_items[index].date),
-                  ),
-                  Divider(
-                    height: 10,
-                  ),
-                  ListTile(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              ServiceDetail(_currentUser, _items[index]),
-                        ),
-                      );
-                    },
-                    leading: CircleAvatar(
-                      child: Image.asset('assets/car-wash.png'),
-                    ),
-                    title: Text(
-                      _items[index].type,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500, fontSize: 20.0),
-                    ),
-                    trailing: _getIconStatus(_items[index].status),
-                    subtitle: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            right: 7,
-                            top: 3,
-                          ),
-                          child: Icon(
-                            Icons.timer,
-                            size: 20,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4),
-                          child: Text(_items[index].time),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            left: 20,
-                            top: 3,
-                            right: 7,
-                          ),
-                          child: Icon(
-                            Icons.date_range,
-                            size: 20,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4),
-                          child: Text(_items[index].date),
-                        )
-                      ],
-                    ),
                   )
                 ],
-              )),
+              ),
+            )
+          ],
+        )
+      ),
     );
   }
 }
