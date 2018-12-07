@@ -107,19 +107,19 @@ class ListServicesState extends State<ListServices> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.only(right: 7, top: 3,),
-                    child: Icon(Icons.timer, size: 20,),
+                    padding: EdgeInsets.only(right: 4, top: 3,),
+                    child: Icon(Icons.timer, size: 15,),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 4),
-                    child: Text(_items[index].time),
+                    padding: EdgeInsets.only(top: 4),
+                    child: Text(_items[index].parseTime),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 20, top: 3, right: 7,),
-                    child: Icon(Icons.date_range, size: 20,),
+                    padding: EdgeInsets.only(left: 7, top: 3, right: 4,),
+                    child: Icon(Icons.date_range, size: 15,),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 4),
+                    padding: EdgeInsets.only(top: 4),
                     child: Text(_items[index].date),
                   )
                 ],
