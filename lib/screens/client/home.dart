@@ -60,9 +60,6 @@ class _HomeScreenState extends State<HomeScreen> {
       case 1:
         return ListNotifications();
         break;
-      case 2:
-        return Profile(_currentUser);
-        break;
       default:
         return null;
         break;
@@ -77,10 +74,6 @@ class _HomeScreenState extends State<HomeScreen> {
     BottomNavigationBarItem(
       icon: Icon(Icons.notifications),
       title: Text('Notificaciones'),
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.person),
-      title: Text('Perfil'),
     ),
   ];
 
@@ -110,11 +103,6 @@ class _HomeScreenState extends State<HomeScreen> {
         tooltip: 'Ver notificaciones',
         child: Icon(Icons.notifications),
       ),
-      FloatingActionButton(
-        onPressed: () {},
-        tooltip: 'Editar perfil',
-        child: Icon(Icons.edit),
-      )
     ];
     
     void _onSelectedPopupMenu(String menuKey) async {
@@ -138,6 +126,13 @@ class _HomeScreenState extends State<HomeScreen> {
           style: TextStyle(color: Colors.white),
         ),
         actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.person),
+            onPressed: () {
+              Navigator.push(context,
+              MaterialPageRoute(builder: (context) => Profile(_currentUser)));
+            },
+          ),
           PopupMenuButton<String>(
             onSelected: _onSelectedPopupMenu,
             itemBuilder: (BuildContext context) {
@@ -155,6 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
         automaticallyImplyLeading: false,
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: floatingActionButton[_currentIndex],
       body: _renderScreen(),
       bottomNavigationBar: BottomNavigationBar(
