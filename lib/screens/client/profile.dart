@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:panelmex_app/screens/login.dart';
+import 'package:panelmex_app/services/auth.dart';
 
 class Profile extends StatefulWidget {
   static String routerName = '/profile';
@@ -12,13 +14,57 @@ class Profile extends StatefulWidget {
   _ProfileState createState() => new _ProfileState(this._currentUser);
 }
 class _ProfileState extends State<Profile> {
+
   final FirebaseUser _currentUser;
-
+  AuthService _auth = new AuthService();
   _ProfileState(this._currentUser);
-
+  
+   void _onSelectedPopupMenu(String menuKey) async {
+      switch (menuKey) {
+        case 'menu_signout':
+          await _auth.signOutFirebase();
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return LoginScreen();
+          }));
+          break;
+      }
+    }
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          color: Colors.white,
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        iconTheme: new IconThemeData(
+          color: Colors.white,
+        ),
+        title: Text(
+          'Perfil',
+          style: TextStyle(color: Colors.white),
+        ),
+        actions: <Widget>[
+          PopupMenuButton<String>(
+            onSelected: _onSelectedPopupMenu,
+            itemBuilder: (BuildContext context) {
+              return [
+                PopupMenuItem<String>(
+                  value: 'menu_signout',
+                  child: ListTile(
+                    leading: Icon(Icons.exit_to_app),
+                    title: Text('Salir'),
+                  ),
+                )
+              ];
+            },
+          )
+        ],
+        automaticallyImplyLeading: false,
+      ),
       body: Center(
         child: ListView(
           children: <Widget>[
@@ -169,106 +215,8 @@ class _ProfileState extends State<Profile> {
                 buildInfoDetail(),*/
               ],
             )
-            /*Container(
-              padding: const EdgeInsets.only(top: 10),
-              child: CircleAvatar(
-                child: Image.asset('assets/avatars/avatar-4.jpg', height: 150,),
-                backgroundColor: Colors.grey[100],
-                radius: 100,
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.only(top: 15),
-              child: ListTile(
-                leading: Icon(
-                  Icons.people
-                ),
-                title: Text("Vanesa Castro"),
-              ),
-            ),
-            Divider(),
-            ListTile(
-              leading: Icon(
-                Icons.email
-              ),
-              title: Text("prueba@gmail.com"),
-            ),
-            Divider(),
-            ListTile(
-              leading: Icon(
-                Icons.phone
-              ),
-              title: Text("+58-4165625564"),
-            ),*/
           ],
         ),
-      ),
-    );
-  }
-  Widget buildImages() {
-    return Padding(
-      padding: EdgeInsets.only(top: 15, left: 15, right: 15),
-      child: Container(
-        height: 200,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          image: DecorationImage(
-            image: AssetImage('assets/img5.jpg'),
-            fit: BoxFit.cover
-          )
-        ),
-      ),
-    );
-  }
-
-  Widget buildInfoDetail() {
-    return Padding(
-      padding: EdgeInsets.only(left: 25, right: 25, top: 10, bottom: 15),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                'Fiesta - 1 dia',
-                style: TextStyle(
-                  fontFamily: 'Monserrat',
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold
-                ),
-              ),
-              SizedBox(height: 7,),
-              Row(
-                children: <Widget>[
-                  Text(
-                    'Teresa Soto',
-                    style: TextStyle(
-                      color: Colors.grey.shade700,
-                      fontFamily: 'Montserrat',
-                      fontSize: 11
-                    ),
-                  ),
-                  SizedBox(width: 4,),
-                  Icon(
-                    Icons.timer,
-                    size: 4,
-                    color: Colors.black,
-                  ),
-                  SizedBox(width: 4,),
-                  Text(
-                    '3 Videos',
-                    style: TextStyle(
-                      color: Colors.grey.shade500,
-                      fontFamily: 'Montserrat',
-                      fontSize: 11
-                    ),
-                  )
-                ],
-              )
-            ],
-          )
-        ],
       ),
     );
   }

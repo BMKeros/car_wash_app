@@ -61,7 +61,7 @@ class _ServiceDeatilState extends State<ServiceDeatil> {
                     leading: Icon(Icons.date_range),
                   ),
                   ListTile(
-                    title: Text(_currentService.time,
+                    title: Text(_currentService.parseTime,
                         style: TextStyle(fontWeight: FontWeight.w500)),
                     leading: Icon(Icons.access_time),
                   ),
