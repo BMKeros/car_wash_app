@@ -72,19 +72,33 @@ class _ProfileState extends State<Profile> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 SizedBox(height: 10,),
-                Hero(
-                  tag: 'assets/avatars/avatar-4.jpg',
-                  child: Container(
-                    height: 125,
-                    width: 125,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(62.5),
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: AssetImage('assets/avatars/avatar-4.jpg')
-                      )
+                Stack(
+                  children: <Widget>[
+                    Hero(
+                      tag: 'assets/avatars/avatar-4.jpg',
+                      child: Container(
+                        height: 125,
+                        width: 125,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(62.5),
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage('assets/avatars/avatar-4.jpg')
+                          )
+                        ),
+                      ),
                     ),
-                  ),
+                    Positioned(
+                      right: 0,
+                      bottom: 0,
+                      child: FloatingActionButton(
+                        mini: true,
+                        backgroundColor: Colors.blue,
+                        child: Icon(Icons.camera_alt, size: 18,),
+                        onPressed: () {},
+                      )
+                    )
+                  ],
                 ),
                 SizedBox(height: 25,),
                 Text(
