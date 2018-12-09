@@ -32,13 +32,13 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
 
-    _firebaseMessaging.getToken().then((token) async {     
+    _firebaseMessaging.getToken().then((token) async {
       await FirebaseDatabase.instance
-                .reference()
-                .child('/users/${_currentUser.uid}/deviceToken')
-                .set(token);
+          .reference()
+          .child('/users/${_currentUser.uid}/deviceToken')
+          .set(token);
     });
-    
+
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         print('on message $message');
@@ -82,15 +82,14 @@ class _HomeScreenState extends State<HomeScreen> {
       _currentIndex = index;
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     void _handlerNewService() {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => NewService(_currentUser)));
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => NewService(_currentUser)));
     }
+
     // Lista de botones para mostrar al cambiar de bottomNavigationBar
     List<FloatingActionButton> floatingActionButton = [
       FloatingActionButton(
@@ -104,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Icon(Icons.notifications),
       ),
     ];
-    
+
     void _onSelectedPopupMenu(String menuKey) async {
       switch (menuKey) {
         case 'menu_signout':
@@ -129,8 +128,10 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             icon: Icon(Icons.person),
             onPressed: () {
-              Navigator.push(context,
-              MaterialPageRoute(builder: (context) => Profile(_currentUser)));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Profile(_currentUser)));
             },
           ),
           PopupMenuButton<String>(
@@ -152,7 +153,24 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: floatingActionButton[_currentIndex],
-      body: _renderScreen(),
+      body: Container(
+        decoration: BoxDecoration(
+          // Box decoration takes a gradient
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            stops: [0.1, 0.4, 0.6, 0.9],
+            colors: [
+              // Colors are easy thanks to Flutter's Colors class.
+              Colors.lightBlue[700],
+              Colors.lightBlue[600],
+              Colors.lightBlue[300],
+              Colors.lightBlue[200],
+            ],
+          ),
+        ),
+        child: _renderScreen(),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         items: _itemsNavigationBar,

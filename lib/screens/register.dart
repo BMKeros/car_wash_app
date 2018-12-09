@@ -3,21 +3,20 @@ import 'package:panelmex_app/services/auth.dart';
 import 'package:panelmex_app/screens/client/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
+import 'package:panelmex_app/widgets/dialog_loading.dart';
 
 class Register extends StatefulWidget {
   static String routerName = '/register';
-  
+
   @override
   _RegisterState createState() => new _RegisterState();
- }
+}
+
 class _RegisterState extends State<Register> {
   final _authService = new AuthService();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  //static final fullNameTextController = new TextEditingController();
   static final emailTextController = new TextEditingController();
   static final passwordTextController = new TextEditingController();
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -25,12 +24,25 @@ class _RegisterState extends State<Register> {
 
     Future _handleSignUp() async {
       try {
-        await _authService.signUp(emailTextController.text, passwordTextController.text);
-        _currentUser = await _authService.signIn(emailTextController.text, passwordTextController.text);
+        await _authService.signUp(
+            emailTextController.text, passwordTextController.text);
+        _currentUser = await _authService.signIn(
+            emailTextController.text, passwordTextController.text);
+
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return DialogLoading();
+          },
+        );
 
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => HomeScreen(_currentUser)));
       } on PlatformException catch (e) {
+
+        Navigator.pop(context);
+
         final snackBar = SnackBar(
           content: Text(e.message),
         );
@@ -39,6 +51,7 @@ class _RegisterState extends State<Register> {
         _scaffoldKey.currentState.showSnackBar(snackBar);
       }
     }
+
     final logo = Hero(
       tag: 'hero',
       child: CircleAvatar(
@@ -48,50 +61,22 @@ class _RegisterState extends State<Register> {
       ),
     );
 
-    /*final name = TextField(
-      decoration: InputDecoration(
-        labelText: 'Nombre y Apellido',
-      ),
-      controller: fullNameTextController,
-    );*/
-
     final email = TextField(
       keyboardType: TextInputType.emailAddress,
-      decoration: InputDecoration(
-        labelText: 'Correo electronico'
-      ),
+      decoration: InputDecoration(labelText: 'Correo electronico'),
       controller: emailTextController,
     );
 
     final passwordOne = TextField(
       obscureText: true,
-      decoration: InputDecoration(
-        labelText: 'Contrasena'
-      ),
+      decoration: InputDecoration(labelText: 'Contrasena'),
       controller: passwordTextController,
     );
     final passwordTwo = TextField(
       obscureText: true,
-      decoration: InputDecoration(
-        labelText: 'Repita la contrasena'
-      ),
+      decoration: InputDecoration(labelText: 'Repita la contrasena'),
     );
 
-    /*final loginButton = Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.0),
-      child: Material(
-        borderRadius: BorderRadius.circular(30.0),
-        shadowColor: Colors.lightBlueAccent.shade100,
-        elevation: 5.0,
-        child: MaterialButton(
-          minWidth: 200.0,
-          height: 42.0,
-          onPressed: _handleSignUp,
-          color: Colors.lightBlueAccent,
-          child: Text('Nueva cuenta', style: TextStyle(color: Colors.white),),
-        ),
-      ),
-    );*/
     final newAccountButtonRadius = Padding(
       padding: EdgeInsets.symmetric(vertical: 16.0),
       child: RaisedButton(
@@ -99,12 +84,17 @@ class _RegisterState extends State<Register> {
         child: new Text('Nueva cuenta', style: TextStyle(color: Colors.white)),
         textColor: Colors.white,
         onPressed: _handleSignUp,
-        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0))
-      )
+        shape: new RoundedRectangleBorder(
+          borderRadius: new BorderRadius.circular(30.0),
+        ),
+      ),
     );
 
     final forgotLabel = FlatButton(
-      child: Text('Ya tengo una cuenta', style: TextStyle(color: Colors.black54),),
+      child: Text(
+        'Ya tengo una cuenta',
+        style: TextStyle(color: Colors.black54),
+      ),
       onPressed: () {
         Navigator.of(context).pop();
       },
@@ -121,13 +111,21 @@ class _RegisterState extends State<Register> {
             logo,
             //SizedBox(height: 25.0,),
             //name,
-            SizedBox(height: 48.0,),
+            SizedBox(
+              height: 48.0,
+            ),
             email,
-            SizedBox(height: 8.0,),
+            SizedBox(
+              height: 8.0,
+            ),
             passwordOne,
-            SizedBox(height: 8.0,),
+            SizedBox(
+              height: 8.0,
+            ),
             passwordTwo,
-            SizedBox(height: 20.0,),
+            SizedBox(
+              height: 20.0,
+            ),
             newAccountButtonRadius,
             forgotLabel,
           ],
