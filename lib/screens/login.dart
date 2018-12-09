@@ -168,29 +168,47 @@ class _LoginScreenState extends State<LoginScreen> {
     return new Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
-      body: Center(
-        child: ListView(
-          shrinkWrap: true,
-          padding: EdgeInsets.only(left: 24.0, right: 24.0),
-          children: <Widget>[
-            logo,
-            SizedBox(
-              height: 48.0,
+        body:
+        Container(
+          decoration: BoxDecoration(
+            // Box decoration takes a gradient
+            gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              stops: [0.1, 0.4, 0.6, 0.9],
+              colors: [
+                // Colors are easy thanks to Flutter's Colors class.
+                Colors.lightBlue[700],
+                Colors.lightBlue[600],
+                Colors.lightBlue[300],
+                Colors.lightBlue[200],
+              ],
             ),
-            email,
-            SizedBox(
-              height: 8.0,
+          ),
+          child: Center(
+            child: ListView(
+              shrinkWrap: true,
+              padding: EdgeInsets.only(left: 24.0, right: 24.0),
+              children: <Widget>[
+                logo,
+                SizedBox(
+                  height: 48.0,
+                ),
+                email,
+                SizedBox(
+                  height: 8.0,
+                ),
+                password,
+                SizedBox(
+                  height: 24.0,
+                ),
+                LoginButtonRadius,
+                LoginScreenButtonGoogle,
+                newAccount,
+              ],
             ),
-            password,
-            SizedBox(
-              height: 24.0,
-            ),
-            LoginButtonRadius,
-            LoginScreenButtonGoogle,
-            newAccount,
-          ],
-        ),
-      ),
+          ),
+        )
     );
   }
 }
