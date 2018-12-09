@@ -7,9 +7,8 @@ class AuthService {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   Future<FirebaseUser> signIn(String email, String password) async {
-    FirebaseUser user = await _firebaseAuth.signInWithEmailAndPassword(
+    return await _firebaseAuth.signInWithEmailAndPassword(
         email: email, password: password);
-    return user;
   }
 
   Future<FirebaseUser> signInWithGoogle() async {
@@ -24,14 +23,12 @@ class AuthService {
   }
 
   Future<FirebaseUser> signUp(String email, String password) async {
-    FirebaseUser user = await _firebaseAuth.createUserWithEmailAndPassword(
+    return await _firebaseAuth.createUserWithEmailAndPassword(
         email: email, password: password);
-    return user;
   }
 
   Future<FirebaseUser> getCurrentUser() async {
-    FirebaseUser user = await _firebaseAuth.currentUser();
-    return user;
+    return await _firebaseAuth.currentUser();
   }
 
   Future<void> signOutFirebase() async {
