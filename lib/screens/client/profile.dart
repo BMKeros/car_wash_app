@@ -33,7 +33,6 @@ class _ProfileState extends State<Profile> {
   int _totalPending = 0;
   int _totalAccepted = 0;
   int _totalRefused = 0;
-  List<Service> _services;
   File _profileImageFile;
 
   @override
