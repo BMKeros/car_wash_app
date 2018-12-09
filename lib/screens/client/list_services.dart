@@ -7,6 +7,7 @@ import 'package:firebase_database/firebase_database.dart';
 
 import 'package:panelmex_app/screens/client/service_detail.dart';
 import 'package:panelmex_app/models/service.dart';
+import 'package:panelmex_app/ui/card_service.dart';
 
 class ListServices extends StatefulWidget {
   FirebaseUser _currentUser;
@@ -25,7 +26,7 @@ class ListServicesState extends State<ListServices> {
   StreamSubscription<Event> _onServiceChangedSubscription;
 
   DatabaseReference _serviceReference =
-      FirebaseDatabase.instance.reference().child('services');
+  FirebaseDatabase.instance.reference().child('services');
 
   ListServicesState(this._currentUser);
 
@@ -61,9 +62,11 @@ class ListServicesState extends State<ListServices> {
   }
 
   void _onServiceUpdated(Event event) {
-    var oldServiceValue = _items.singleWhere((service) => service.key == event.snapshot.key);
+    var oldServiceValue =
+    _items.singleWhere((service) => service.key == event.snapshot.key);
     setState(() {
-      _items[_items.indexOf(oldServiceValue)] = new Service.fromSnapshot(event.snapshot);
+      _items[_items.indexOf(oldServiceValue)] =
+      new Service.fromSnapshot(event.snapshot);
     });
   }
 
@@ -93,58 +96,81 @@ class ListServicesState extends State<ListServices> {
     return Icon(icon, color: color);
   }
 
-  @override
+  /*@override
   Widget build(BuildContext context) {
     return new Scaffold(
       body: ListView.builder(
         itemCount: _items.length,
-        itemBuilder: (BuildContext ctx, int index) => Column (
-          children: <Widget>[
-            Divider(height: 10,),
-            ListTile(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        ServiceDetail(_currentUser, _items[index]),
+        itemBuilder: (BuildContext ctx, int index) => Column(
+              children: <Widget>[
+                Divider(
+                  height: 10,
+                ),
+                ListTile(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            ServiceDetail(_currentUser, _items[index]),
+                      ),
+                    );
+                  },
+                  leading: CircleAvatar(
+                    child: Image.asset('assets/car-wash.png'),
                   ),
-                );
-              },
-              leading: CircleAvatar(
-                child: Image.asset('assets/car-wash.png'),
-              ),
-              title: Text(
-                _items[index].type,
-                style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 20.0),
-              ),
-              trailing: _getIconStatus(_items[index].status),
-              subtitle: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(top: 3, right: 1),
-                    child: Icon(Icons.timer, size: 15,),
+                  title: Text(
+                    _items[index].type,
+                    style:
+                        TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 4),
-                    child: Text(_items[index].parseTime),
+                  trailing: _getIconStatus(_items[index].status),
+                  subtitle: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(top: 3, right: 1),
+                        child: Icon(
+                          Icons.timer,
+                          size: 15,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: Text(_items[index].parseTime),
+                      ),
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(left: 7, top: 3, right: 1),
+                        child: Icon(
+                          Icons.date_range,
+                          size: 15,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 3),
+                        child: Text(_items[index].date),
+                      )
+                    ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 7, top: 3, right: 1),
-                    child: Icon(Icons.date_range, size: 15,),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 3),
-                    child: Text(_items[index].date),
-                  )
-                ],
-              ),
-            )
-          ],
-        )
+                )
+              ],
+            ),
+      ),
+    );
+  }*/
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      constraints: BoxConstraints.expand(),
+      child: ListView.builder(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        itemCount: _items.length,
+        itemBuilder: (BuildContext context, int index) {
+          return CardService(service: _items[index]);
+        },
       ),
     );
   }
