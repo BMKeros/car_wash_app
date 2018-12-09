@@ -1,5 +1,4 @@
 import 'package:firebase_database/firebase_database.dart';
-import 'package:intl/intl.dart';
 
 class Service {
   String _key;
@@ -60,6 +59,10 @@ class Service {
 
   double get longitude => _longitude;
 
+  bool get hasResponsible => _responsible_key != '' || _responsible_key != null;
+
+  String get responsibleKey => _responsible_key;
+
   Service.fromSnapshot(DataSnapshot snapshot) {
     _key = snapshot.key;
     _uid = snapshot.value['uid'];
@@ -90,7 +93,8 @@ String timeTo12HrFormat(String time) {   // Take a time in 24 hour format and fo
       time_part_array[0] = currenTime.toString();
     }
 
-    String formatted_time = time_part_array[0] + ':' + time_part_array[1] + ':' + time_part_array[2] + ' ' + ampm;
+    String formatted_time = time_part_array[0] + ':' + time_part_array[1] +
+        ' ' + ampm;
 
     return formatted_time;
 }
