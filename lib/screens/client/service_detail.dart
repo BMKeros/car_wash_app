@@ -150,7 +150,7 @@ class _ServiceDetailState extends State<ServiceDetail> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Hero(
-                                tag: 'assets/avatars/avatar-4.jpg',
+                                tag: 'xxx',
                                 child: Container(
                                   height: 125,
                                   width: 125,
@@ -159,9 +159,9 @@ class _ServiceDetailState extends State<ServiceDetail> {
                                     BorderRadius.circular(62.5),
                                     image: DecorationImage(
                                       fit: BoxFit.cover,
-                                      image: NetworkImage(
+                                      image: CachedNetworkImageProvider(
                                         _responsible.imageUrl
-                                      )
+                                      ),
                                     )
                                   ),
                                 ),

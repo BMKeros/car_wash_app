@@ -39,16 +39,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
     //Handlers
     Future _handlerLoginScreen() async {
-      if (emailTextController.text == 'user' &&
-          passwordTextController.text == 'user') {
+      if(emailTextController.text == 'user' && passwordTextController.text == 'user') {
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => HomeScreen(_currentUser)));
-      } else if (emailTextController.text == 'admin@gmail.com' &&
-          passwordTextController.text == 'admin') {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => HomeScreenAdmin(_currentUser)));
+              MaterialPageRoute(builder: (context) => HomeScreen(_currentUser)));
+      }
+      else if (emailTextController.text == 'admin@gmail.com' && passwordTextController.text == 'admin') {
+         Navigator.push(context,
+              MaterialPageRoute(builder: (context) => HomeScreenAdmin(_currentUser)));
       } else {
         try {
           showDialog(
@@ -64,16 +61,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
           Navigator.pop(context);
 
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => HomeScreen(_currentUser)));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => HomeScreen(_currentUser)));
         } on PlatformException catch (e) {
-          Navigator.pop(context);
-
-          _scaffoldKey.currentState.showSnackBar(SnackBar(
+          final snackBar = SnackBar(
             content: Text(e.message),
-          ));
+          );
+
+          // Find the Scaffold in the Widget tree and use it to show a SnackBar!
+          _scaffoldKey.currentState.showSnackBar(snackBar);
         }
       }
     }
@@ -89,9 +85,12 @@ class _LoginScreenState extends State<LoginScreen> {
       } on PlatformException catch (e) {
         Navigator.pop(context);
 
-        _scaffoldKey.currentState.showSnackBar(SnackBar(
+        final snackBar = SnackBar(
           content: Text(e.message),
-        ));
+        );
+
+        // Find the Scaffold in the Widget tree and use it to show a SnackBar!
+        _scaffoldKey.currentState.showSnackBar(snackBar);
       }
     }
 
@@ -108,27 +107,29 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
     final LoginButtonRadius = Padding(
-        padding: EdgeInsets.symmetric(vertical: 16.0),
-        child: RaisedButton(
-            highlightColor: Colors.lightBlueAccent,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Icon(Icons.input),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, top: 18, bottom: 18),
-                  child: Text('Iniciar sesion'),
-                )
-              ],
+      padding: EdgeInsets.symmetric(vertical: 16.0),
+      child: RaisedButton(
+        highlightColor: Colors.lightBlueAccent,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Icon(
+              Icons.input
             ),
-            textColor: Colors.white,
-            onPressed: _handlerLoginScreen,
-            shape: new RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(30.0))));
+            Padding(
+              padding: const EdgeInsets.only(left: 20),
+              child: Text('Iniciar sesion'),
+            )
+          ],
+        ),
+        textColor: Colors.white,
+        onPressed: _handlerLoginScreen,
+        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0))
+      )
+    );
 
     final LoginScreenButtonGoogle = RaisedButton(
-      shape: new RoundedRectangleBorder(
-          borderRadius: new BorderRadius.circular(30.0)),
+      shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
       child: Center(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -138,7 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
               width: 25.0,
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 20, top: 18, bottom: 18),
+              padding: const EdgeInsets.only(left: 20),              
               child: Text(
                 "Ingresa con Google",
                 style: TextStyle(
@@ -168,47 +169,31 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     return new Scaffold(
-        key: _scaffoldKey,
-        backgroundColor: Colors.white,
-        body: Container(
-          decoration: BoxDecoration(
-            // Box decoration takes a gradient
-            gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              stops: [0.1, 0.4, 0.6, 0.9],
-              colors: [
-                // Colors are easy thanks to Flutter's Colors class.
-                Colors.lightBlue[700],
-                Colors.lightBlue[600],
-                Colors.lightBlue[300],
-                Colors.lightBlue[200],
-              ],
+      key: _scaffoldKey,
+      backgroundColor: Colors.white,
+      body: Center(
+        child: ListView(
+          shrinkWrap: true,
+          padding: EdgeInsets.only(left: 24.0, right: 24.0),
+          children: <Widget>[
+            logo,
+            SizedBox(
+              height: 48.0,
             ),
-          ),
-          child: Center(
-            child: ListView(
-              shrinkWrap: true,
-              padding: EdgeInsets.only(left: 24.0, right: 24.0),
-              children: <Widget>[
-                logo,
-                SizedBox(
-                  height: 48.0,
-                ),
-                email,
-                SizedBox(
-                  height: 8.0,
-                ),
-                password,
-                SizedBox(
-                  height: 24.0,
-                ),
-                LoginButtonRadius,
-                LoginScreenButtonGoogle,
-                newAccount,
-              ],
+            email,
+            SizedBox(
+              height: 8.0,
             ),
-          ),
-        ));
+            password,
+            SizedBox(
+              height: 24.0,
+            ),
+            LoginButtonRadius,
+            LoginScreenButtonGoogle,
+            newAccount,
+          ],
+        ),
+      ),
+    );
   }
 }
