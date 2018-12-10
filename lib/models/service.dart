@@ -68,6 +68,7 @@ class Service {
     _status = snapshot.value['status'];
     _created_date = snapshot.value['created_date'];
     _static_map_uri = snapshot.value['static_map_uri'];
+    _vehicle_type = snapshot.value['vehicle_type'];
     _payment_method = snapshot.value['payment_method'];
     _latitude = snapshot.value['latitude'];
     _longitude = snapshot.value['longitude'];

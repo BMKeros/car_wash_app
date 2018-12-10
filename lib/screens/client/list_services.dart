@@ -79,7 +79,12 @@ class ListServicesState extends State<ListServices> {
         shrinkWrap: true,
         itemCount: _items.length,
         itemBuilder: (BuildContext context, int index) {
-          return CardService(service: _items[index]);
+          return Column(
+            children: <Widget>[
+              CardService(service: _items[index]),
+              index == _items.length - 1 ? SizedBox(height: 10,) : SizedBox(height: 0,)
+            ],
+          );
         },
       ),
     );
