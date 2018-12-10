@@ -18,7 +18,7 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="panelmex_app"
+        android:label="Panelmex"
         android:icon="@mipmap/dream_car">
         
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"/>
