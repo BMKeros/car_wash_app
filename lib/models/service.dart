@@ -9,7 +9,6 @@ class Service {
   String _status;
   String _created_date;
   String _static_map_uri;
-  String _washing_type;
   String _payment_method;
   String _vehicle_type;
   String _responsible_key;
@@ -24,7 +23,6 @@ class Service {
       this._status,
       this._created_date,
       this._static_map_uri,
-      this._washing_type,
       this._payment_method,
       this._vehicle_type,
       this._latitude,
@@ -48,8 +46,6 @@ class Service {
   String get createdDate => _created_date;
 
   String get staticMapUri => _static_map_uri;
-  
-  String get washingType => _washing_type;
 
   String get paymentMethod => _payment_method;
 
@@ -72,7 +68,6 @@ class Service {
     _status = snapshot.value['status'];
     _created_date = snapshot.value['created_date'];
     _static_map_uri = snapshot.value['static_map_uri'];
-    _washing_type = snapshot.value['washing_type'];
     _payment_method = snapshot.value['payment_method'];
     _latitude = snapshot.value['latitude'];
     _longitude = snapshot.value['longitude'];

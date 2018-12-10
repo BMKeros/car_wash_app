@@ -39,14 +39,14 @@ class _NewServiceState extends State<NewService> {
   int selectedServiceType = null;
   int selectedPaymentMethod = null;
   int selectedWashingType = null;
-
+  int selectedVehicleType = null;
   static double _latitud = 23.87;
   static double _longitud = -102.66;
   bool coupon = false;
 
-  final List _dataServiceType = ['Por fuera', 'Completo', 'Pulido', 'Encerado'];
+  final List _dataServiceType = ['Por fuera', 'Por dentro','Completo', 'Pulido', 'Encerado'];
   final List _dataPaymentMethod = ['Tarjeta', 'Efectivo'];
-  final List _dataWashingType = ['car', 'van'];
+  final List _dataVehicleType = ['car', 'van'];
 
   final List<DropdownMenuItem> _itemsServiceType = [
     // select service type
@@ -55,16 +55,20 @@ class _NewServiceState extends State<NewService> {
       value: 1,
     ),
     DropdownMenuItem(
-      child: Text('Completo'),
+      child: Text('Por dentro'),
       value: 2,
     ),
     DropdownMenuItem(
-      child: Text('Pulido'),
+      child: Text('Completo'),
       value: 3,
     ),
     DropdownMenuItem(
-      child: Text('Encerado'),
+      child: Text('Pulido'),
       value: 4,
+    ),
+    DropdownMenuItem(
+      child: Text('Encerado'),
+      value: 5,
     )
   ];
 
@@ -79,7 +83,8 @@ class _NewServiceState extends State<NewService> {
     )
   ];
 
-  final List<DropdownMenuItem> _itemsWashingType = [
+
+  final List<DropdownMenuItem> _itemsVehicleType = [
     DropdownMenuItem(
       child: Text('Carro'),
       value: 1,
@@ -175,8 +180,8 @@ class _NewServiceState extends State<NewService> {
                 .set({
               'uid': _currentUser.uid,
               'type': _dataServiceType[selectedServiceType - 1],
-              'washing_type': _dataWashingType[selectedWashingType - 1],
               'payment_method': _dataPaymentMethod[selectedPaymentMethod - 1],
+              'vehicle_type': _dataVehicleType[selectedVehicleType - 1],
               'date': _dateController.text,
               'time': _timeController.text,
               'status': 'pending',
@@ -236,13 +241,13 @@ class _NewServiceState extends State<NewService> {
                     ),
                   ),
                   ListTile(
-                    title: Text('Tipo de lavado'),
+                    title: Text('Tipo de vehiculo'),
                     trailing: DropdownButton(
-                      value: selectedWashingType,
-                      items: _itemsWashingType,
+                      value: selectedVehicleType,
+                      items: _itemsVehicleType,
                       onChanged: (value) {
                         setState(() {
-                           selectedWashingType = value;              
+                           selectedVehicleType = value;              
                         });
                       },  
                     )
@@ -302,7 +307,9 @@ class _NewServiceState extends State<NewService> {
                     decoration: InputDecoration(labelText: 'Ingrese tu cupon'),
                     controller: _couponController,
                   )
-                  : Text('')
+                  : Text(''),
+
+                  SizedBox(height: 100,)
                 ],
               ),
             ),

@@ -5,7 +5,6 @@ import 'package:panelmex_app/services/auth.dart';
 import 'package:panelmex_app/screens/client/home.dart';
 import 'package:panelmex_app/widgets/dialog_loading.dart';
 import 'package:panelmex_app/screens/admin/home.dart';
-import 'package:panelmex_app/screens/client/profile.dart';
 
 class LoginScreen extends StatefulWidget {
   static String tag = 'LoginScreen';
