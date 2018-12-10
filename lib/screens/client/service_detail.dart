@@ -68,9 +68,8 @@ class _ServiceDetailState extends State<ServiceDetail> {
               child: CachedNetworkImage(
                 imageUrl: getStaticMapBox(_currentService.latitude,
                     _currentService.longitude, '620', '620'),
-                placeholder: Padding(
-                  padding: const EdgeInsets.only(
-                      left: 150, top: 20, right: 150, bottom: 20),
+                placeholder: Container(
+                  constraints: BoxConstraints.expand(),
                   child: CircularProgressIndicator(),
                 ),
                 errorWidget: new Icon(Icons.error),
@@ -119,75 +118,80 @@ class _ServiceDetailState extends State<ServiceDetail> {
                       ],
                     ),
                   ),
+                  SizedBox(
+                    height: 20,
+                  ),
                 ],
               ),
             ),
             _showCardResposible
                 ? Card(
-              child: Column(
-                children: <Widget>[
-                  ExpansionPanelList(
-                    children: <ExpansionPanel>[
-                      new ExpansionPanel(
-                        headerBuilder:
-                            (BuildContext context, bool isExpanded) {
-                          return new ListTile(
-                            title: new Text(
-                              "Responsable",
-                              textAlign: TextAlign.left,
-                              style: new TextStyle(
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.w400,
+              child: Center(
+                child: Column(
+                  children: <Widget>[
+                    ExpansionPanelList(
+                      children: <ExpansionPanel>[
+                        new ExpansionPanel(
+                          headerBuilder:
+                              (BuildContext context, bool isExpanded) {
+                            return new ListTile(
+                              title: new Text(
+                                "Responsable",
+                                textAlign: TextAlign.left,
+                                style: new TextStyle(
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                        isExpanded: expandedDetail,
-                        body: Column(
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Hero(
-                                    tag: 'assets/avatars/avatar-4.jpg',
-                                    child: Container(
-                                      height: 125,
-                                      width: 125,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                          BorderRadius.circular(62.5),
-                                          image: DecorationImage(
-                                              fit: BoxFit.cover,
-                                              image: NetworkImage(
-                                                  _responsible
-                                                      .imageUrl))),
-                                    ),
+                            );
+                          },
+                          isExpanded: expandedDetail,
+                          body: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Hero(
+                                tag: 'assets/avatars/avatar-4.jpg',
+                                child: Container(
+                                  height: 125,
+                                  width: 125,
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                    BorderRadius.circular(62.5),
+                                    image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: NetworkImage(
+                                        _responsible.imageUrl
+                                      )
+                                    )
                                   ),
-                                  Text(
-                                    _responsible.fullName,
-                                    style: TextStyle(
-                                        fontFamily: 'Montserrat',
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
+                                ),
                               ),
-                            ),
-                          ],
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Text(
+                                _responsible.fullName,
+                                style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                               SizedBox(
+                                height: 20,
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                    expansionCallback: (int index, bool isExpanded) {
-                      //isExpanded = !expandedDetail;
-                      setState(() {
-                        this.expandedDetail = !expandedDetail;
-                      });
-                    },
-                  ),
-                ],
+                      ],
+                      expansionCallback: (int index, bool isExpanded) {
+                        //isExpanded = !expandedDetail;
+                        setState(() {
+                          this.expandedDetail = !expandedDetail;
+                        });
+                      },
+                    ),
+                  ],
+                ),
               ),
             )
                 : Text('')

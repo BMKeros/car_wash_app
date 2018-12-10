@@ -61,7 +61,7 @@ class CardService extends StatelessWidget {
           subtitle: Row(
             children: <Widget>[
               Expanded(
-                flex: 4,
+                flex: 3,
                 child: Container(
                   // tag: 'hero',
                   child: Text(service.parseTime,
