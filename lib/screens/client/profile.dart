@@ -12,22 +12,25 @@ import 'package:panelmex_app/screens/login.dart';
 import 'package:panelmex_app/services/auth.dart';
 import 'package:panelmex_app/common/constans.dart';
 
-class Profile extends StatefulWidget {
+import 'package:panelmex_app/models/profile.dart';
+
+class ProfileScreen extends StatefulWidget {
   static String routerName = '/profile';
 
   final FirebaseUser _currentUser;
 
-  Profile(this._currentUser);
+  ProfileScreen(this._currentUser);
 
   @override
-  _ProfileState createState() => new _ProfileState(this._currentUser);
+  _ProfileScreenState createState() =>
+      new _ProfileScreenState(this._currentUser);
 }
 
-class _ProfileState extends State<Profile> {
+class _ProfileScreenState extends State<ProfileScreen> {
   final FirebaseUser _currentUser;
   AuthService _auth = new AuthService();
 
-  _ProfileState(this._currentUser);
+  _ProfileScreenState(this._currentUser);
 
   DatabaseReference _servicesRef =
   FirebaseDatabase.instance.reference().child('services');
@@ -40,7 +43,8 @@ class _ProfileState extends State<Profile> {
   int _totalAccepted = 0;
   int _totalRefused = 0;
   String _profileImageUrl;
-  bool _changedProfileImage = false;
+  bool _changedProfileScreenImage = false;
+  Profile _profile = Profile('', '', '', '', '', '');
 
   @override
   void initState() {
@@ -77,16 +81,14 @@ class _ProfileState extends State<Profile> {
       });
     });
 
-    /*_profileRef
-        .child('/${_currentUser.uid}')
+    _profileRef
+        .child('/${_currentUser.uid}/profile')
         .once()
         .then((DataSnapshot snapshot) {
-
-          setState(() {
-            _profileImageUrl = snapshot.value['profile_image_url'];
-          });
-
-    });*/
+      setState(() {
+        _profile = Profile.fromSnapshot(snapshot);
+      });
+    });
   }
 
   void _onSelectedPopupMenu(String menuKey, BuildContext context) async {
@@ -114,13 +116,20 @@ class _ProfileState extends State<Profile> {
     final String url = await snapshot.ref.getDownloadURL();
 
     _profileRef
-        .child('/${_currentUser.uid}')
-        .update({'profile_image_url': url});
+        .child('/${_currentUser.uid}/profile')
+        .update({'image_url': url});
 
     setState(() {
-      _changedProfileImage = true;
+      _changedProfileScreenImage = true;
       _profileImageUrl = url;
     });
+  }
+
+  ImageProvider renderProfileImage() {
+    if (_profile.hasImage) {
+      return NetworkImage(_profile.imageUrl);
+    }
+    return AssetImage('assets/avatars/empty-profile.png');
   }
 
   @override
@@ -144,7 +153,7 @@ class _ProfileState extends State<Profile> {
         actions: <Widget>[
           PopupMenuButton<String>(
             onSelected: (String menu) async {
-              await _onSelectedPopupMenu(menu, context);
+              _onSelectedPopupMenu(menu, context);
             },
             itemBuilder: (BuildContext context) {
               return [
@@ -181,9 +190,9 @@ class _ProfileState extends State<Profile> {
                           borderRadius: BorderRadius.circular(92.5),
                           image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: !_changedProfileImage
-                                ? AssetImage('assets/avatars/empty-profile.png')
-                                : NetworkImage(_profileImageUrl),
+                            image: _changedProfileScreenImage
+                                ? NetworkImage(_profileImageUrl)
+                                : renderProfileImage(),
                           ),
                         ),
                       ),
@@ -200,10 +209,8 @@ class _ProfileState extends State<Profile> {
                           size: 18,
                         ),
                         onPressed: () async {
-                          final _tmpImage = await ImagePicker.pickImage(
-                              source: ImageSource.gallery);
-
-                          _uploadProfileImage(_tmpImage);
+                          _uploadProfileImage(await ImagePicker.pickImage(
+                              source: ImageSource.gallery));
                         },
                       ),
                     )
