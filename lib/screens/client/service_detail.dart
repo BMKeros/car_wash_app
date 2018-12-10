@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:panelmex_app/common/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:panelmex_app/models/service.dart';
+import 'package:panelmex_app/models/responsible.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class ServiceDetail extends StatefulWidget {
   final FirebaseUser _user;
@@ -15,7 +17,6 @@ class ServiceDetail extends StatefulWidget {
 }
 
 class _ServiceDetailState extends State<ServiceDetail> {
-  // rating service
   final FirebaseUser _currentUser;
   final Service _currentService;
 
@@ -23,7 +24,29 @@ class _ServiceDetailState extends State<ServiceDetail> {
   int starCount = 6;
   bool expandedDetail = false;
   bool _showCardResposible = false;
+  Responsible _responsible;
+
+  DatabaseReference _responsiblesRef =
+  FirebaseDatabase.instance.reference().child('responsibles');
+
   _ServiceDetailState(this._currentUser, this._currentService);
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (_currentService.hasResponsible) {
+      _responsiblesRef
+          .child('/${_currentService.responsibleKey}')
+          .once()
+          .then((snapshot) {
+        setState(() {
+          _responsible = Responsible.fromSnapshot(snapshot);
+          _showCardResposible = true;
+        });
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +66,11 @@ class _ServiceDetailState extends State<ServiceDetail> {
           children: <Widget>[
             Container(
               child: CachedNetworkImage(
-                imageUrl: getStaticMapBox(_currentService.latitude, _currentService.longitude, '620', '620'),
+                imageUrl: getStaticMapBox(_currentService.latitude,
+                    _currentService.longitude, '620', '620'),
                 placeholder: Padding(
-                  padding: const EdgeInsets.only(left: 150, top: 20, right: 150, bottom: 20),
+                  padding: const EdgeInsets.only(
+                      left: 150, top: 20, right: 150, bottom: 20),
                   child: CircularProgressIndicator(),
                 ),
                 errorWidget: new Icon(Icons.error),
@@ -97,22 +122,25 @@ class _ServiceDetailState extends State<ServiceDetail> {
                 ],
               ),
             ),
-            _showCardResposible ? Card(
+            _showCardResposible
+                ? Card(
               child: Column(
                 children: <Widget>[
                   ExpansionPanelList(
                     children: <ExpansionPanel>[
                       new ExpansionPanel(
-                        headerBuilder: (BuildContext context, bool isExpanded) {
+                        headerBuilder:
+                            (BuildContext context, bool isExpanded) {
                           return new ListTile(
-                              title: new Text(
-                                "Responsable",
-                                textAlign: TextAlign.left,
-                                style: new TextStyle(
-                                  fontSize: 15.0,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ));
+                            title: new Text(
+                              "Responsable",
+                              textAlign: TextAlign.left,
+                              style: new TextStyle(
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          );
                         },
                         isExpanded: expandedDetail,
                         body: Column(
@@ -120,18 +148,30 @@ class _ServiceDetailState extends State<ServiceDetail> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  Padding(
-                                    padding:
-                                    EdgeInsets.only(right: 7.0, top: 10.0),
-                                    child: Text("Nombre:",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w600)),
+                                  Hero(
+                                    tag: 'assets/avatars/avatar-4.jpg',
+                                    child: Container(
+                                      height: 125,
+                                      width: 125,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                          BorderRadius.circular(62.5),
+                                          image: DecorationImage(
+                                              fit: BoxFit.cover,
+                                              image: NetworkImage(
+                                                  _responsible
+                                                      .imageUrl))),
+                                    ),
                                   ),
-                                  Padding(
-                                    padding: EdgeInsets.only(top: 0.0),
-                                    child: Text('Ramon Garcia')
+                                  Text(
+                                    _responsible.fullName,
+                                    style: TextStyle(
+                                        fontFamily: 'Montserrat',
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               ),
@@ -149,7 +189,8 @@ class _ServiceDetailState extends State<ServiceDetail> {
                   ),
                 ],
               ),
-            ) : Text('')
+            )
+                : Text('')
           ],
         ),
       ),
