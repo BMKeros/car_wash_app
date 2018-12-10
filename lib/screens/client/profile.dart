@@ -1,11 +1,13 @@
 import 'dart:io';
-import 'dart:async';
+import 'package:path/path.dart';
+import 'package:flutter/material.dart';
 
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+
 import 'package:image_picker/image_picker.dart';
-import 'package:panelmex_app/models/service.dart';
+
 import 'package:panelmex_app/screens/login.dart';
 import 'package:panelmex_app/services/auth.dart';
 import 'package:panelmex_app/common/constans.dart';
@@ -29,11 +31,16 @@ class _ProfileState extends State<Profile> {
 
   DatabaseReference _servicesRef =
   FirebaseDatabase.instance.reference().child('services');
+  DatabaseReference _profileRef =
+  FirebaseDatabase.instance.reference().child('users');
+
+  StorageReference _imagesRef = FirebaseStorage.instance.ref().child('images');
 
   int _totalPending = 0;
   int _totalAccepted = 0;
   int _totalRefused = 0;
-  File _profileImageFile;
+  String _profileImageUrl;
+  bool _changedProfileImage = false;
 
   @override
   void initState() {
@@ -69,9 +76,20 @@ class _ProfileState extends State<Profile> {
         _totalRefused = tmpRefused;
       });
     });
+
+    /*_profileRef
+        .child('/${_currentUser.uid}')
+        .once()
+        .then((DataSnapshot snapshot) {
+
+          setState(() {
+            _profileImageUrl = snapshot.value['profile_image_url'];
+          });
+
+    });*/
   }
 
-  void _onSelectedPopupMenu(String menuKey) async {
+  void _onSelectedPopupMenu(String menuKey, BuildContext context) async {
     switch (menuKey) {
       case 'menu_signout':
         await _auth.signOutFirebase();
@@ -83,6 +101,26 @@ class _ProfileState extends State<Profile> {
         );
         break;
     }
+  }
+
+  void _uploadProfileImage(File file) async {
+    final StorageUploadTask uploadTask = _imagesRef
+        .child(_currentUser.uid)
+        .child('profile_image${extension(file.path)}')
+        .putFile(file);
+
+    final StorageTaskSnapshot snapshot = await uploadTask.onComplete;
+
+    final String url = await snapshot.ref.getDownloadURL();
+
+    _profileRef
+        .child('/${_currentUser.uid}')
+        .update({'profile_image_url': url});
+
+    setState(() {
+      _changedProfileImage = true;
+      _profileImageUrl = url;
+    });
   }
 
   @override
@@ -105,7 +143,9 @@ class _ProfileState extends State<Profile> {
         ),
         actions: <Widget>[
           PopupMenuButton<String>(
-            onSelected: _onSelectedPopupMenu,
+            onSelected: (String menu) async {
+              await _onSelectedPopupMenu(menu, context);
+            },
             itemBuilder: (BuildContext context) {
               return [
                 PopupMenuItem<String>(
@@ -141,9 +181,9 @@ class _ProfileState extends State<Profile> {
                           borderRadius: BorderRadius.circular(92.5),
                           image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: _profileImageFile == null
+                            image: !_changedProfileImage
                                 ? AssetImage('assets/avatars/empty-profile.png')
-                                : FileImage(_profileImageFile),
+                                : NetworkImage(_profileImageUrl),
                           ),
                         ),
                       ),
@@ -159,11 +199,11 @@ class _ProfileState extends State<Profile> {
                           Icons.camera_alt,
                           size: 18,
                         ),
-                        onPressed: () {
-                          setState(() async {
-                            _profileImageFile = await ImagePicker.pickImage(
-                                source: ImageSource.gallery);
-                          });
+                        onPressed: () async {
+                          final _tmpImage = await ImagePicker.pickImage(
+                              source: ImageSource.gallery);
+
+                          _uploadProfileImage(_tmpImage);
                         },
                       ),
                     )
@@ -259,34 +299,31 @@ class _ProfileState extends State<Profile> {
                   ),
                 ),
                 Padding(
-                    padding: EdgeInsets.only(left: 15),
-                    child: Column(
-                      children: <Widget>[
-                        ListTile(
-                          leading: Icon(Icons.email, color: Colors.blueGrey),
-                          title: Text(
-                            _currentUser.email,
-                            style: TextStyle(
-                              fontFamily: 'Montserrat',
-                            ),
+                  padding: EdgeInsets.only(left: 15),
+                  child: Column(
+                    children: <Widget>[
+                      ListTile(
+                        leading: Icon(Icons.email, color: Colors.blueGrey),
+                        title: Text(
+                          _currentUser.email,
+                          style: TextStyle(
+                            fontFamily: 'Montserrat',
                           ),
                         ),
-                        Divider(),
-                        ListTile(
-                          leading: Icon(Icons.phone, color: Colors.blueGrey),
-                          title: Text(
-                            "+58-4165625564",
-                            style: TextStyle(
-                              fontFamily: 'Montserrat',
-                            ),
+                      ),
+                      Divider(),
+                      ListTile(
+                        leading: Icon(Icons.phone, color: Colors.blueGrey),
+                        title: Text(
+                          "+58-4165625564",
+                          style: TextStyle(
+                            fontFamily: 'Montserrat',
                           ),
                         ),
-                      ],
-                    )),
-                /*buildImages(),
-                buildInfoDetail(),
-                buildImages(),
-                buildInfoDetail(),*/
+                      ),
+                    ],
+                  ),
+                ),
               ],
             )
           ],

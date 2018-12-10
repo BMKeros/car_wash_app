@@ -17,11 +17,12 @@ dependencies:
     sdk: flutter
 
   firebase_auth: ^0.6.2+1
+  firebase_storage: ^1.0.4
+  firebase_messaging: ^2.1.0
+  firebase_database: ^1.0.5
   google_sign_in: ^3.2.4
   map_view: ^0.0.14
-  firebase_database: ^1.0.5
   datetime_picker_formfield: ^0.1.6
-  firebase_messaging: ^2.1.0
   cached_network_image: ^0.5.1
   image_picker: ^0.4.10
 
