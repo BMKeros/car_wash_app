@@ -59,8 +59,7 @@ class ListNotificationsState extends State<ListNotifications> {
               ),
             ),
           ),
-          Container(
-            height: 185,
+          Expanded(
             child: ListView.builder(
               itemCount: 10,
               itemBuilder: (BuildContext ctx, int index) => Column (

@@ -5,6 +5,7 @@ class Service {
   String _type;
   String _date;
   String _time;
+  String _address;
   String _uid;
   String _status;
   String _created_date;
@@ -20,6 +21,7 @@ class Service {
       this._type,
       this._date,
       this._time,
+      this._address,
       this._status,
       this._created_date,
       this._static_map_uri,
@@ -38,6 +40,8 @@ class Service {
   String get time => _time;
 
   String get parseTime => timeTo12HrFormat(_time);
+
+  String get address => _address;
 
   String get uid => _uid;
 
@@ -65,6 +69,7 @@ class Service {
     _type = snapshot.value['type'];
     _date = snapshot.value['date'];
     _time = snapshot.value['time'];
+    _address = snapshot.value['address'];
     _status = snapshot.value['status'];
     _created_date = snapshot.value['created_date'];
     _static_map_uri = snapshot.value['static_map_uri'];

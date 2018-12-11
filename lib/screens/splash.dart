@@ -70,7 +70,10 @@ class _SplashScreenState extends State<SplashScreen> {
             ],
           )
         ],
-      ) : LoginScreen()
+      ) : loginScreen()
     );
   }
+}
+Widget loginScreen() {
+  return LoginScreen();
 }

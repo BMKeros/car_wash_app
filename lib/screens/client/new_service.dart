@@ -34,6 +34,7 @@ class _NewServiceState extends State<NewService> {
 
   TextEditingController _dateController = TextEditingController();
   TextEditingController _timeController = TextEditingController();
+  TextEditingController _addressController = TextEditingController();
   TextEditingController _couponController = TextEditingController();
 
   int selectedServiceType = null;
@@ -184,6 +185,7 @@ class _NewServiceState extends State<NewService> {
               'vehicle_type': _dataVehicleType[selectedVehicleType - 1],
               'date': _dateController.text,
               'time': _timeController.text,
+              'address': _addressController,
               'status': 'pending',
               'created_date': DateTime.now().toString(),
               'static_map_uri': _staticMapUri.toString(),
@@ -227,6 +229,11 @@ class _NewServiceState extends State<NewService> {
                     decoration: InputDecoration(labelText: 'Hora'),
                     format: DateFormat.Hms(),
                     controller: _timeController,
+                  ),
+                  TextField(
+                    keyboardType: TextInputType.multiline,
+                    decoration: InputDecoration(labelText: 'dirección'),
+                    controller: _addressController,
                   ),
                   ListTile(
                     title: Text('Tipo de servicio'),

@@ -3,6 +3,7 @@ import 'package:map_view/map_view.dart';
 import 'package:panelmex_app/routes.dart';
 import 'package:panelmex_app/config/config.dart';
 import 'package:panelmex_app/screens/splash.dart';
+import 'package:panelmex_app/screens/login.dart';
 
 void main() {
   MapView.setApiKey(APIKEY);
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: SplashScreen(),
+      home: LoginScreen(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
