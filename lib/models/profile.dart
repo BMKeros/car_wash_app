@@ -32,10 +32,10 @@ class Profile {
 
   Profile.fromSnapshot(DataSnapshot snapshot) {
     _key = snapshot.key;
-    _address = snapshot.value['address'] ?? null;
-    _first_name = snapshot.value['first_name'] ?? null;
-    _last_name = snapshot.value['last_name'] ?? null;
-    _image_url = snapshot.value['image_url'] ?? null;
-    _phone_number = snapshot.value['phone_number'] ?? null;
+    _address = snapshot.value['address'] ?? '';
+    _first_name = snapshot.value['first_name'] ?? '';
+    _last_name = snapshot.value['last_name'] ?? '';
+    _image_url = snapshot.value['image_url'] ?? '';
+    _phone_number = snapshot.value['phone_number'] ?? '';
   }
 }

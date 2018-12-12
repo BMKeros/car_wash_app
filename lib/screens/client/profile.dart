@@ -11,8 +11,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:panelmex_app/screens/login.dart';
 import 'package:panelmex_app/services/auth.dart';
 import 'package:panelmex_app/common/constans.dart';
-
+import 'package:panelmex_app/screens/client/home.dart';
 import 'package:panelmex_app/models/profile.dart';
+import 'package:panelmex_app/screens/edit_profile.dart';
 
 class ProfileScreen extends StatefulWidget {
   static String routerName = '/profile';
@@ -140,7 +141,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           icon: Icon(Icons.arrow_back),
           color: Colors.white,
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.push(context,
+              MaterialPageRoute(builder: (context) => HomeScreen(_currentUser)));
           },
         ),
         iconTheme: new IconThemeData(
@@ -191,7 +193,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image: _changedProfileScreenImage
-                                ? NetworkImage(_profileImageUrl)
+                                ? FadeInImage.assetNetwork(
+                                    fadeInCurve: Curves.bounceIn,
+                                    placeholder: 'assets/gif/loader.gif',
+                                    image: _profileImageUrl,
+                                )
                                 : renderProfileImage(),
                           ),
                         ),
@@ -219,20 +225,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 SizedBox(
                   height: 25,
                 ),
-                Text(
-                  'Vanesa Castro',
-                  style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
-                ),
-                SizedBox(
-                  height: 4,
-                ),
-                Text(
-                  'Santa Barbara',
-                  style:
-                  TextStyle(fontFamily: 'Montserrat', color: Colors.grey),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      _profile.toString(),
+                      style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold
+                      ),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.edit, color: Colors.blueGrey),
+                      onPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => EditProfile(
+                              'Editar nombre',
+                              '',
+                              [_profile.firstName, _profile.lastName],
+                              _currentUser
+                            )
+                          )
+                        );
+                      },
+                    ),
+                  ],
                 ),
                 Padding(
                   padding: EdgeInsets.all(30),
@@ -322,12 +340,51 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ListTile(
                         leading: Icon(Icons.phone, color: Colors.blueGrey),
                         title: Text(
-                          "+58-4165625564",
+                          '${_profile.phoneNumber}',
                           style: TextStyle(
                             fontFamily: 'Montserrat',
                           ),
                         ),
+                        trailing: IconButton(
+                          icon: Icon(Icons.edit, color: Colors.blueGrey),
+                          onPressed: () {
+                            Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => EditProfile(
+                                'Editar numero',
+                                'Numero',
+                                [_profile.phoneNumber],
+                                _currentUser
+                              )
+                            )
+                          );
+                          },
+                        ),
                       ),
+                      Divider(),
+                      ListTile(
+                        leading: Icon(Icons.map, color: Colors.blueGrey,),
+                        title: Text(
+                          '${_profile.address}',
+                          style: TextStyle(
+                            fontFamily: 'Montserrat',
+                          ),
+                        ),
+                        trailing: IconButton(
+                          icon: Icon(Icons.edit, color: Colors.blueGrey),
+                          onPressed: () {
+                            Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => EditProfile(
+                                'Editar dirrecion',
+                                'Direccion',
+                                [_profile.address],
+                                _currentUser
+                              )
+                            )
+                          );
+                          },
+                        ),
+                      ),
+                      SizedBox(height: 20,)
                     ],
                   ),
                 ),

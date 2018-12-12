@@ -185,7 +185,7 @@ class _NewServiceState extends State<NewService> {
               'vehicle_type': _dataVehicleType[selectedVehicleType - 1],
               'date': _dateController.text,
               'time': _timeController.text,
-              'address': _addressController,
+              'address': _addressController.text,
               'status': 'pending',
               'created_date': DateTime.now().toString(),
               'static_map_uri': _staticMapUri.toString(),
