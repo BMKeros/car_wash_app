@@ -21,12 +21,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _currentIndex = 0;
   final FirebaseUser _currentUser;
   AuthService _auth = new AuthService();
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   _HomeScreenState(this._currentUser);
+
+  int _currentIndex = 0;
+  final pageController = PageController();
 
   @override
   void initState() {
@@ -52,30 +54,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _renderScreen() {
-    switch (_currentIndex) {
-      case 0:
-        return ListServices(_currentUser);
-        break;
-      case 1:
-        return ListNotifications();
-        break;
-      default:
-        return null;
-        break;
-    }
-  }
-
-  static List<BottomNavigationBarItem> _itemsNavigationBar = [
-    BottomNavigationBarItem(
-      icon: Icon(Icons.local_car_wash),
-      title: Text('Servicios'),
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.notifications),
-      title: Text('Notificaciones'),
-    ),
-  ];
 
   void onTabTapped(int index) {
     setState(() {
@@ -90,20 +68,6 @@ class _HomeScreenState extends State<HomeScreen> {
           MaterialPageRoute(builder: (context) => NewService(_currentUser)));
     }
 
-    // Lista de botones para mostrar al cambiar de bottomNavigationBar
-    List<FloatingActionButton> floatingActionButton = [
-      FloatingActionButton(
-        onPressed: _handlerNewService,
-        tooltip: 'Nuevo servicio',
-        child: Icon(Icons.add),
-      ),
-      FloatingActionButton(
-        onPressed: () {},
-        tooltip: 'Ver notificaciones',
-        child: Icon(Icons.notifications),
-      ),
-    ];
-
     void _onSelectedPopupMenu(String menuKey) async {
       switch (menuKey) {
         case 'menu_signout':
@@ -114,8 +78,13 @@ class _HomeScreenState extends State<HomeScreen> {
           break;
       }
     }
-
+    List<Color> colorBackground = [
+      Colors.lightBlue[200],
+      Colors.white
+    ];
+  
     return Scaffold(
+      backgroundColor: colorBackground[_currentIndex],
       appBar: AppBar(
         iconTheme: new IconThemeData(
           color: Colors.white,
@@ -152,7 +121,13 @@ class _HomeScreenState extends State<HomeScreen> {
         automaticallyImplyLeading: false,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: floatingActionButton[_currentIndex],
+      floatingActionButton: FloatingActionButton(
+        onPressed: _handlerNewService,
+        tooltip: 'Nuevo servicio',
+        child: Icon(Icons.add),
+        mini: true,
+        elevation: 8,
+      ),
       body: Container(
         decoration: BoxDecoration(
           // Box decoration takes a gradient
@@ -169,14 +144,47 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ),
-        child: _renderScreen(),
+        //child: _renderScreen(),
+        child: PageView(
+          onPageChanged: (int page) {
+            setState(() {
+              _currentIndex = page;          
+            });
+          },
+          controller: pageController,
+          children: <Widget>[
+            ListServices(_currentUser),
+            ListNotifications()
+          ],
+        ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
+      /*bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         items: _itemsNavigationBar,
         onTap: onTabTapped,
+      ),*/
+      bottomNavigationBar: BottomAppBar(
+        shape: CircularNotchedRectangle(),
+        notchMargin: 2,
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            IconButton(
+              icon: Icon(Icons.local_car_wash, color: _currentIndex == 0 ? Colors.blue : Colors.black54),
+              onPressed: () {
+                pageController.jumpToPage(0);
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.notifications, color: _currentIndex == 1 ? Colors.blue : Colors.black54),
+              onPressed: () {
+                pageController.jumpToPage(1);
+              },
+            )
+          ],
+        ),
       ),
     );
   }
 }
-
