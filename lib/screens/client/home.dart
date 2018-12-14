@@ -154,7 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
           controller: pageController,
           children: <Widget>[
             ListServices(_currentUser),
-            ListNotifications()
+            ListNotifications(_currentUser)
           ],
         ),
       ),

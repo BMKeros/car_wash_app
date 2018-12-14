@@ -1,19 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class ListNotifications extends StatefulWidget {
+  final FirebaseUser _currentUser;
+
+  ListNotifications(this._currentUser);
+
   @override
-  ListNotificationsState createState() => new ListNotificationsState();
+  ListNotificationsState createState() =>
+      new ListNotificationsState(this._currentUser);
 }
 
 class ListNotificationsState extends State<ListNotifications> {
-  var listViewItems = [
-    ['Notificacion 1', '20/5/2018', 'Pendiente'],
-    ['Notificacion 1', '13/4/2018', 'Rechazado'],
-    ['Notificacion 1', '17/52/2018', 'Finalizado'],
-    ['Notificacion 1', '20/5/2018', 'Pendiente'],
-    ['Notificacion 1', '13/4/2018', 'Rechazado'],
-    ['Notificacion 1', '17/52/2018', 'Finalizado'],
-  ];
+  final FirebaseUser _currentUser;
+
+  ListNotificationsState(this._currentUser);
+
+  DatabaseReference _notificationsRef =
+      FirebaseDatabase.instance.reference().child('notifications');
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +37,7 @@ class ListNotificationsState extends State<ListNotifications> {
             padding: EdgeInsets.all(9),
             child: Text(
               'Promociones',
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 17
-              ),
+              style: TextStyle(color: Colors.grey, fontSize: 17),
             ),
           ),
           Container(
@@ -53,38 +62,61 @@ class ListNotificationsState extends State<ListNotifications> {
             padding: EdgeInsets.all(9),
             child: Text(
               'Notificaciones',
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 17
-              ),
+              style: TextStyle(color: Colors.grey, fontSize: 17),
             ),
           ),
-          Expanded(
+          /*Expanded(
             child: ListView.builder(
               itemCount: 10,
-              itemBuilder: (BuildContext ctx, int index) => Column (
-                children: <Widget>[
-                  Container(
+              itemBuilder: (BuildContext ctx, int index) => Column(
+                    children: <Widget>[
+                      Container(
+                        width: 380,
+                        child: Card(
+                          elevation: 4,
+                          child: ListTile(
+                            title: Text('Titulo'),
+                            subtitle: Text(
+                              'Su servicio ha sido aceptado correctamente.',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+            ),
+          )
+
+
+            */
+          Expanded(
+            child: FirebaseAnimatedList(
+              query: _notificationsRef.child('/${_currentUser.uid}'),
+              sort: (DataSnapshot a, DataSnapshot b) => b.key.compareTo(a.key),
+              itemBuilder: (BuildContext context, DataSnapshot snapshot,
+                  Animation<double> animation, int index) {
+                return SizeTransition(
+                  sizeFactor: animation,
+                  child: Container(
                     width: 380,
                     child: Card(
                       elevation: 4,
                       child: ListTile(
-                        title: Text('Titulo'),
+                        title: Text(snapshot.value['title']),
                         subtitle: Text(
-                          'Su servicio ha sido aceptado correctamente.',
+                          snapshot.value['body'],
                           style: TextStyle(color: Colors.black),
                         ),
-                      )
+                      ),
                     ),
-                  )
-                ]
-              ),
+                  ),
+                );
+              },
             ),
-          )
+          ),
         ],
       ),
     );
   }
 }
-
-
