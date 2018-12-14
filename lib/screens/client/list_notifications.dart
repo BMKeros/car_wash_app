@@ -98,15 +98,21 @@ class ListNotificationsState extends State<ListNotifications> {
                   Animation<double> animation, int index) {
                 return SizeTransition(
                   sizeFactor: animation,
-                  child: Container(
-                    width: 380,
-                    child: Card(
-                      elevation: 4,
-                      child: ListTile(
-                        title: Text(snapshot.value['title']),
-                        subtitle: Text(
-                          snapshot.value['body'],
-                          style: TextStyle(color: Colors.black),
+                  child: Center(
+                    child: Container(
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width / 1.05,
+                      child: Card(
+                        elevation: 4,
+                        child: ListTile(
+                          title: Text(snapshot.value['title']),
+                          isThreeLine: true,
+                          subtitle: Text(
+                            snapshot.value['body'],
+                            style: TextStyle(color: Colors.black),
+                          ),
                         ),
                       ),
                     ),
