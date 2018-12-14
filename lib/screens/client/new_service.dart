@@ -25,7 +25,7 @@ class _NewServiceState extends State<NewService> {
   final FirebaseUser _currentUser;
 
   _NewServiceState(this._currentUser);
-  
+
   MapView mapView = new MapView();
   var staticMapProvider = new StaticMapProvider(APIKEY);
   Uri _staticMapUri;
@@ -45,7 +45,13 @@ class _NewServiceState extends State<NewService> {
   static double _longitud = -102.66;
   bool coupon = false;
 
-  final List _dataServiceType = ['Por fuera', 'Por dentro','Completo', 'Pulido', 'Encerado'];
+  final List _dataServiceType = [
+    'Por fuera',
+    'Por dentro',
+    'Completo',
+    'Pulido',
+    'Encerado'
+  ];
   final List _dataPaymentMethod = ['Tarjeta', 'Efectivo'];
   final List _dataVehicleType = ['car', 'van'];
 
@@ -84,7 +90,6 @@ class _NewServiceState extends State<NewService> {
     )
   ];
 
-
   final List<DropdownMenuItem> _itemsVehicleType = [
     DropdownMenuItem(
       child: Text('Carro'),
@@ -109,23 +114,18 @@ class _NewServiceState extends State<NewService> {
         hideToolbar: false,
         showCompassButton: true,
       ),
-      toolbarActions: [
-        new ToolbarAction("Cerrar", 1),
-        new ToolbarAction("Confirmar", 2)
-      ],
+      toolbarActions: [new ToolbarAction("Confirmar", 1)],
     );
 
     mapView.onToolbarAction.listen((id) async {
       if (id == 1) {
-        mapView.dismiss();
-      } else if (id == 2) {
-        var currentUriMap =  await staticMapProvider.getImageUriFromMap(mapView, width: 900, height: 400);
+        var currentUriMap = await staticMapProvider.getImageUriFromMap(mapView,
+            width: 900, height: 400);
         if (mapView.markers.isNotEmpty) {
           setState(() {
             _latitud = mapView.markers[0].latitude;
             _longitud = mapView.markers[0].longitude;
             _staticMapUri = currentUriMap;
-
           });
           mapView.dismiss();
         }
@@ -248,18 +248,16 @@ class _NewServiceState extends State<NewService> {
                     ),
                   ),
                   ListTile(
-                    title: Text('Tipo de vehiculo'),
-                    trailing: DropdownButton(
-                      value: selectedVehicleType,
-                      items: _itemsVehicleType,
-                      onChanged: (value) {
-                        setState(() {
-                           selectedVehicleType = value;              
-                        });
-                      },  
-                    )
-
-                  ),
+                      title: Text('Tipo de vehiculo'),
+                      trailing: DropdownButton(
+                        value: selectedVehicleType,
+                        items: _itemsVehicleType,
+                        onChanged: (value) {
+                          setState(() {
+                            selectedVehicleType = value;
+                          });
+                        },
+                      )),
                   ListTile(
                     title: Text('Metodo de pago'),
                     trailing: DropdownButton(
@@ -310,13 +308,16 @@ class _NewServiceState extends State<NewService> {
                       )
                     ],
                   ),
-                  coupon ? TextField(
-                    decoration: InputDecoration(labelText: 'Ingrese tu cupon'),
+                  coupon
+                      ? TextField(
+                    decoration:
+                    InputDecoration(labelText: 'Ingrese tu cupon'),
                     controller: _couponController,
                   )
-                  : Text(''),
-
-                  SizedBox(height: 100,)
+                      : Text(''),
+                  SizedBox(
+                    height: 100,
+                  )
                 ],
               ),
             ),
