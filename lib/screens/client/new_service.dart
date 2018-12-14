@@ -232,7 +232,7 @@ class _NewServiceState extends State<NewService> {
                   ),
                   TextField(
                     keyboardType: TextInputType.multiline,
-                    decoration: InputDecoration(labelText: 'dirección'),
+                    decoration: InputDecoration(labelText: 'Dirección'),
                     controller: _addressController,
                   ),
                   ListTile(
