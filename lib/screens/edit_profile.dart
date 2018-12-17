@@ -3,7 +3,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:panelmex_app/models/profile.dart';
 import 'package:panelmex_app/screens/client/profile.dart';
-
+import 'package:panelmex_app/widgets/dialog_loading.dart';
 class EditProfile extends StatefulWidget {
 
   String _tittle;
@@ -96,6 +96,13 @@ class _EditProfileState extends State<EditProfile> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.check),
         onPressed: () {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return DialogLoading(message: "Guardando cambios");
+            },
+          );
           _profileRef
             .child('/${_currentUser.uid}/profile')
             .update({
@@ -103,6 +110,7 @@ class _EditProfileState extends State<EditProfile> {
               'last_name': _lastNameController.text
             })
             .then((x) {
+              Navigator.pop(context);
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => ProfileScreen(_currentUser))
               );
@@ -131,6 +139,13 @@ class _EditProfileState extends State<EditProfile> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.check),
         onPressed: () {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return DialogLoading(message: "Guardando cambios");
+            },
+          );
           switch(_labelTextField) {
             case 'Numero':
               _profileRef
@@ -139,6 +154,7 @@ class _EditProfileState extends State<EditProfile> {
                 'phone_number': _phoneNumberController.text 
                 })
               .then((x) {
+                Navigator.pop(context);
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => ProfileScreen(_currentUser))
                 );
@@ -151,6 +167,7 @@ class _EditProfileState extends State<EditProfile> {
                 'address': _addressController.text 
                 })
               .then((x) {
+                Navigator.pop(context);
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => ProfileScreen(_currentUser))
                 );
