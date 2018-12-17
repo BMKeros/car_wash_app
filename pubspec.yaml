@@ -47,12 +47,11 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
-      - assets/gif/loader.gif
       - assets/dream-car.png
       - assets/google.png
       - assets/car-wash.png
       - assets/user.png
-
+      - assets/promotions/
       - assets/img1.jpg
       - assets/img2.jpg
       - assets/img3.jpg
