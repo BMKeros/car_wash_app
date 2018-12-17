@@ -26,7 +26,14 @@ class ListNotificationsState extends State<ListNotifications> {
     // TODO: implement initState
     super.initState();
   }
-
+  List<String> imagePromotions = [
+    'xbox.jpg',
+    'cine.jpg',
+    'audifonos.jpg',
+    'altavoz.jpg',
+    'saldo.jpg',
+    'netflix.jpg'
+  ];
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -41,19 +48,23 @@ class ListNotificationsState extends State<ListNotifications> {
             ),
           ),
           Container(
-            height: 125,
+            height: MediaQuery.of(context).size.width / 2,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: 7,
+              itemCount: imagePromotions.length,
               itemBuilder: (context, index) {
                 return Padding(
                   padding: EdgeInsets.all(8),
                   child: Container(
-                    width: 200,
-                    height: 150,
-                    color: Colors.blueGrey,
-                    child: Text('Contenedor $index'),
-                  ),
+                    width: MediaQuery.of(context).size.width / 1.5,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      image: DecorationImage(
+                        image: AssetImage('assets/promotions/' + imagePromotions[index]),
+                        fit: BoxFit.fill
+                      )
+                    ),
+                  )
                 );
               },
             ),
@@ -65,31 +76,6 @@ class ListNotificationsState extends State<ListNotifications> {
               style: TextStyle(color: Colors.grey, fontSize: 17),
             ),
           ),
-          /*Expanded(
-            child: ListView.builder(
-              itemCount: 10,
-              itemBuilder: (BuildContext ctx, int index) => Column(
-                    children: <Widget>[
-                      Container(
-                        width: 380,
-                        child: Card(
-                          elevation: 4,
-                          child: ListTile(
-                            title: Text('Titulo'),
-                            subtitle: Text(
-                              'Su servicio ha sido aceptado correctamente.',
-                              style: TextStyle(color: Colors.black),
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-            ),
-          )
-
-
-            */
           Expanded(
             child: FirebaseAnimatedList(
               query: _notificationsRef.child('/${_currentUser.uid}'),
