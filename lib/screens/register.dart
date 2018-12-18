@@ -24,18 +24,22 @@ class _RegisterState extends State<Register> {
 
     Future _handleSignUp() async {
       try {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return DialogLoading(
+              message: 'Registrando Usuario',
+            );
+          },
+        );
+
         await _authService.signUp(
             emailTextController.text, passwordTextController.text);
         _currentUser = await _authService.signIn(
             emailTextController.text, passwordTextController.text);
 
-        showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return DialogLoading();
-          },
-        );
+        Navigator.pop(context);
 
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => HomeScreen(_currentUser)));

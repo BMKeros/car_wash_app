@@ -141,8 +141,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
           icon: Icon(Icons.arrow_back),
           color: Colors.white,
           onPressed: () {
-            Navigator.push(context,
-              MaterialPageRoute(builder: (context) => HomeScreen(_currentUser)));
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HomeScreen(_currentUser),
+              ),
+            );
           },
         ),
         iconTheme: new IconThemeData(
@@ -193,11 +197,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image: _changedProfileScreenImage
-                                ? FadeInImage.assetNetwork(
-                                    fadeInCurve: Curves.bounceIn,
-                                    placeholder: 'assets/gif/loader.gif',
-                                    image: _profileImageUrl,
-                                )
+                                ? NetworkImage(_profileImageUrl)
                                 : renderProfileImage(),
                           ),
                         ),
@@ -215,8 +215,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           size: 18,
                         ),
                         onPressed: () async {
-                          _uploadProfileImage(await ImagePicker.pickImage(
-                              source: ImageSource.gallery));
+                          _uploadProfileImage(
+                            await ImagePicker.pickImage(
+                              source: ImageSource.gallery,
+                            ),
+                          );
                         },
                       ),
                     )
@@ -233,20 +236,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       style: TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 20,
-                        fontWeight: FontWeight.bold
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                     IconButton(
                       icon: Icon(Icons.edit, color: Colors.blueGrey),
                       onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => EditProfile(
-                              'Editar nombre',
-                              '',
-                              [_profile.firstName, _profile.lastName],
-                              _currentUser
-                            )
-                          )
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                EditProfile(
+                                    'Editar nombre',
+                                    '',
+                                    [_profile.firstName, _profile.lastName],
+                                    _currentUser),
+                          ),
                         );
                       },
                     ),
@@ -263,9 +268,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Text(
                             _totalPending.toString(),
                             style: TextStyle(
-                                fontSize: 17,
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.bold),
+                              fontSize: 17,
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                           SizedBox(
                             height: 5,
@@ -273,8 +279,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Text(
                             'Pendientes',
                             style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.bold),
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.bold,
+                            ),
                           )
                         ],
                       ),
@@ -284,9 +291,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Text(
                             _totalAccepted.toString(),
                             style: TextStyle(
-                                fontSize: 17,
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.bold),
+                              fontSize: 17,
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                           SizedBox(
                             height: 5,
@@ -294,8 +302,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Text(
                             'Aceptadas',
                             style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.bold),
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.bold,
+                            ),
                           )
                         ],
                       ),
@@ -305,9 +314,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Text(
                             _totalRefused.toString(),
                             style: TextStyle(
-                                fontSize: 17,
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.bold),
+                              fontSize: 17,
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                           SizedBox(
                             height: 5,
@@ -315,8 +325,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Text(
                             'Rechazadas',
                             style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.bold),
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.bold,
+                            ),
                           )
                         ],
                       )
@@ -348,21 +359,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         trailing: IconButton(
                           icon: Icon(Icons.edit, color: Colors.blueGrey),
                           onPressed: () {
-                            Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => EditProfile(
-                                'Editar numero',
-                                'Numero',
-                                [_profile.phoneNumber],
-                                _currentUser
-                              )
-                            )
-                          );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    EditProfile(
+                                      'Editar numero',
+                                      'Numero',
+                                      [_profile.phoneNumber],
+                                      _currentUser,
+                                    ),
+                              ),
+                            );
                           },
                         ),
                       ),
                       Divider(),
                       ListTile(
-                        leading: Icon(Icons.map, color: Colors.blueGrey,),
+                        leading: Icon(
+                          Icons.map,
+                          color: Colors.blueGrey,
+                        ),
                         title: Text(
                           '${_profile.address}',
                           style: TextStyle(
@@ -372,19 +389,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         trailing: IconButton(
                           icon: Icon(Icons.edit, color: Colors.blueGrey),
                           onPressed: () {
-                            Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => EditProfile(
-                                'Editar dirrecion',
-                                'Direccion',
-                                [_profile.address],
-                                _currentUser
-                              )
-                            )
-                          );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    EditProfile(
+                                      'Editar dirrecion',
+                                      'Direccion',
+                                      [_profile.address],
+                                      _currentUser,
+                                    ),
+                              ),
+                            );
                           },
                         ),
                       ),
-                      SizedBox(height: 20,)
+                      SizedBox(
+                        height: 20,
+                      )
                     ],
                   ),
                 ),
