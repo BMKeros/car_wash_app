@@ -5,6 +5,7 @@ import 'package:panelmex_app/services/auth.dart';
 import 'package:panelmex_app/screens/client/home.dart';
 import 'package:panelmex_app/widgets/dialog_loading.dart';
 import 'package:panelmex_app/screens/admin/home.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   static String tag = 'LoginScreen';
@@ -20,6 +21,44 @@ class _LoginScreenState extends State<LoginScreen> {
 
   static final emailTextController = TextEditingController();
   static final passwordTextController = TextEditingController();
+  bool checkValueRemember = false;
+
+  SharedPreferences sharedPreferences;
+
+  @override
+  void initState() {
+    super.initState();
+    getCredential();
+  }
+  _onChanged(bool value) async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    setState(() {
+      checkValueRemember = value;
+      sharedPreferences.setBool("check", checkValueRemember);
+      sharedPreferences.setString("email", emailTextController.text);
+      sharedPreferences.setString("password", passwordTextController.text);
+      sharedPreferences.commit();
+      getCredential();
+    });
+  }
+  getCredential() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    setState(() {
+      checkValueRemember = sharedPreferences.getBool("check");
+      if (checkValueRemember != null) {
+        if (checkValueRemember) {
+          emailTextController.text = sharedPreferences.getString("email");
+          passwordTextController.text = sharedPreferences.getString("password");
+        } else {
+          emailTextController.clear();
+          passwordTextController.clear();
+          sharedPreferences.clear();
+        }
+      } else {
+        checkValueRemember = false;
+      }
+    });
+  }
 
   final TextField email = TextField(
     keyboardType: TextInputType.emailAddress,
@@ -187,6 +226,12 @@ class _LoginScreenState extends State<LoginScreen> {
             password,
             SizedBox(
               height: 24.0,
+            ),
+            CheckboxListTile(
+              value: checkValueRemember,
+              onChanged: _onChanged,
+              title: new Text("Recuerdame"),
+              controlAffinity: ListTileControlAffinity.leading,
             ),
             LoginButtonRadius,
             LoginScreenButtonGoogle,
