@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:panelmex_app/models/service.dart';
 import 'package:panelmex_app/screens/client/service_detail.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:panelmex_app/widgets/dialog_loading.dart';
 
 class CardService extends StatelessWidget {
   final Service service;
 
   CardService({Key key, this.service}) : super(key: key);
+  DatabaseReference _serviceRef =
+      FirebaseDatabase.instance.reference().child('services');
 
   Icon getIconStatus(String status) {
     IconData icon;
@@ -20,7 +24,7 @@ class CardService extends StatelessWidget {
         icon = Icons.check_circle;
         color = Colors.green;
         break;
-      case 'cancelled':
+      case 'refused':
         icon = Icons.close;
         color = Colors.red;
         break;
@@ -44,12 +48,12 @@ class CardService extends StatelessWidget {
         ),
         child: ListTile(
           contentPadding:
-              EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           leading: Container(
-            padding: EdgeInsets.only(right: 12.0),
+            padding: EdgeInsets.only(right: 12),
             decoration: new BoxDecoration(
               border: new Border(
-                right: new BorderSide(width: 1.0, color: Colors.black),
+                right: new BorderSide(width: 1, color: Colors.black),
               ),
             ),
             child: getIconStatus(service.status),
@@ -71,7 +75,7 @@ class CardService extends StatelessWidget {
               Expanded(
                 flex: 4,
                 child: Padding(
-                  padding: EdgeInsets.only(left: 10.0),
+                  padding: EdgeInsets.only(left: 10),
                   child: Text(
                     service.date,
                     style: TextStyle(color: Colors.black),
@@ -80,8 +84,13 @@ class CardService extends StatelessWidget {
               )
             ],
           ),
-          trailing:
-              Icon(Icons.keyboard_arrow_right, color: Colors.black, size: 30.0),
+          trailing:IconButton(
+            icon: Icon(Icons.settings, color: Colors.black38, size: 20),
+            onPressed: () {
+              _settingModalBottomSheet(context);
+            },
+          ),
+              
           onTap: () {
             Navigator.push(
               context,
@@ -94,4 +103,40 @@ class CardService extends StatelessWidget {
       ),
     );
   }
+  void _settingModalBottomSheet(context) async {
+    await showModalBottomSheet(
+      context: context,
+      builder: (BuildContext bc) {
+        return Container(
+          child: new Wrap(
+            children: <Widget>[
+              ListTile(
+                leading: new Icon(Icons.cancel, color: Colors.redAccent[200], size: 20),
+                title: new Text('Cancelar servicio'),
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (BuildContext context) {
+                      return DialogLoading(message: "Cancelando servicio");
+                    },
+                  );
+                  _serviceRef
+                    .child('/${service.key}')
+                    .update({
+                      'status': 'refused'
+                    })
+                    .then((x) {
+                       Navigator.pop(context);
+                        Navigator.pop(context);
+                    });
+                },    
+              ),
+            ],
+          ),
+        );
+      }
+    );
+  }
 }
+

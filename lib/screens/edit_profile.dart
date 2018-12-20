@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:panelmex_app/models/profile.dart';
 import 'package:panelmex_app/screens/client/profile.dart';
 import 'package:panelmex_app/widgets/dialog_loading.dart';
+
 class EditProfile extends StatefulWidget {
 
   String _tittle;
