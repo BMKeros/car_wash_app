@@ -24,9 +24,10 @@ class ListServicesState extends State<ListServices> {
 
   StreamSubscription<Event> _onServiceAddedSubscription;
   StreamSubscription<Event> _onServiceChangedSubscription;
+  StreamSubscription<Event> _onServiceRemoveSubscription;
 
   DatabaseReference _serviceReference =
-  FirebaseDatabase.instance.reference().child('services');
+      FirebaseDatabase.instance.reference().child('services');
 
   ListServicesState(this._currentUser);
 
@@ -46,6 +47,12 @@ class ListServicesState extends State<ListServices> {
         .equalTo(_currentUser.uid)
         .onChildChanged
         .listen(_onServiceUpdated);
+
+    _onServiceRemoveSubscription = _serviceReference
+        .orderByChild('uid')
+        .equalTo(_currentUser.uid)
+        .onChildRemoved
+        .listen(_onServiceRemove);
   }
 
   @override
@@ -63,10 +70,16 @@ class ListServicesState extends State<ListServices> {
 
   void _onServiceUpdated(Event event) {
     var oldServiceValue =
-    _items.singleWhere((service) => service.key == event.snapshot.key);
+        _items.singleWhere((service) => service.key == event.snapshot.key);
     setState(() {
       _items[_items.indexOf(oldServiceValue)] =
-      new Service.fromSnapshot(event.snapshot);
+          new Service.fromSnapshot(event.snapshot);
+    });
+  }
+
+  void _onServiceRemove(Event event) {
+    setState(() {
+      _items.removeWhere((service) => service.key == event.snapshot.key);
     });
   }
 
@@ -82,7 +95,13 @@ class ListServicesState extends State<ListServices> {
           return Column(
             children: <Widget>[
               CardService(service: _items[index]),
-              index == _items.length - 1 ? SizedBox(height: 10,) : SizedBox(height: 0,)
+              index == _items.length - 1
+                  ? SizedBox(
+                      height: 10,
+                    )
+                  : SizedBox(
+                      height: 0,
+                    )
             ],
           );
         },
