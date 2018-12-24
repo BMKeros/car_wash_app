@@ -110,7 +110,7 @@ class _NewServiceState extends State<NewService> {
         mapViewType: MapViewType.normal,
         showUserLocation: true,
         showMyLocationButton: true,
-        title: 'Direccion',
+        title: 'Seleccione con el dedo',
         hideToolbar: false,
         showCompassButton: true,
       ),
@@ -278,7 +278,7 @@ class _NewServiceState extends State<NewService> {
                           Icon(Icons.my_location),
                           Padding(
                             child: Text(
-                              "Direccion para el servicio",
+                              "Selecciona la dirección para el servicio",
                               style: TextStyle(
                                 fontFamily: 'Roboto',
                                 color: Color.fromRGBO(68, 68, 76, .8),
@@ -293,7 +293,7 @@ class _NewServiceState extends State<NewService> {
                     splashColor: Colors.lightBlue,
                     onPressed: _handlerShowMap,
                   ),
-                  Row(
+                  /*Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text('Posees un cupon.?'),
@@ -314,9 +314,9 @@ class _NewServiceState extends State<NewService> {
                     InputDecoration(labelText: 'Ingrese tu cupon'),
                     controller: _couponController,
                   )
-                      : Text(''),
+                      : Text(''),*/
                   SizedBox(
-                    height: 100,
+                    height: 51,
                   )
                 ],
               ),
