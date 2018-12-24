@@ -21,7 +21,7 @@ String getNameStatus(String status) {
       break;
     
     case STATUS_REFUSED:
-      return 'Rechasado';
+      return 'Rechazado';
       break;
 
     default:
