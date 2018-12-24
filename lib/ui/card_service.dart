@@ -3,6 +3,7 @@ import 'package:panelmex_app/models/service.dart';
 import 'package:panelmex_app/screens/client/service_detail.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:panelmex_app/widgets/dialog_loading.dart';
+import 'package:panelmex_app/common/constans.dart';
 
 class CardService extends StatelessWidget {
   final Service service;
@@ -39,102 +40,153 @@ class CardService extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.only(top: 15, right: 10, left: 10),
-      elevation: 4.0,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Color.fromRGBO(240, 248, 255, .9),
-        ),
-        child: ListTile(
-          contentPadding:
-              EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          leading: Container(
-            padding: EdgeInsets.only(right: 12),
-            decoration: new BoxDecoration(
-              border: new Border(
-                right: new BorderSide(width: 1, color: Colors.black),
-              ),
-            ),
-            child: getIconStatus(service.status),
+    return Hero(
+      tag: 'service' + service.key,
+      child: Card(
+        margin: EdgeInsets.only(top: 15, right: 10, left: 10),
+        elevation: 4.0,
+        child: Container(
+          decoration: BoxDecoration(
+            color: Color.fromRGBO(240, 248, 255, .9),
           ),
-          title: Text(
-            service.type,
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-          ),
-          subtitle: Row(
-            children: <Widget>[
-              Expanded(
-                flex: 3,
-                child: Container(
-                  // tag: 'hero',
-                  child: Text(service.parseTime,
-                      style: TextStyle(color: Colors.black)),
+          child: ListTile(
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            leading: Container(
+              padding: EdgeInsets.only(right: 12),
+              decoration: new BoxDecoration(
+                border: new Border(
+                  right: new BorderSide(width: 1, color: Colors.black),
                 ),
               ),
-              Expanded(
-                flex: 4,
-                child: Padding(
-                  padding: EdgeInsets.only(left: 10),
-                  child: Text(
-                    service.date,
-                    style: TextStyle(color: Colors.black),
+              child: getIconStatus(service.status),
+            ),
+            title: Text(
+              service.type,
+              style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            ),
+            subtitle: Row(
+              children: <Widget>[
+                Expanded(
+                  flex: 3,
+                  child: Container(
+                    // tag: 'hero',
+                    child: Text(service.parseTime,
+                        style: TextStyle(color: Colors.black)),
                   ),
                 ),
-              )
-            ],
-          ),
-          trailing:IconButton(
-            icon: Icon(Icons.settings, color: Colors.black38, size: 20),
-            onPressed: () {
-              _settingModalBottomSheet(context);
+                Expanded(
+                  flex: 4,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10),
+                    child: Text(
+                      service.date,
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                )
+              ],
+            ),
+            trailing: service.status == STATUS_REFUSED ?
+            IconButton(
+              icon: Icon(Icons.delete_forever, color: Colors.black38, size: 20),
+              onPressed: () {
+                _settingModalBottomSheet(context, 'delete');
+              },
+            )
+            : IconButton(
+              icon: Icon(Icons.settings, color: Colors.black38, size: 20),
+              onPressed: () {
+                _settingModalBottomSheet(context, 'settings');
+              },
+            ),
+                
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ServiceDetail(null, service),
+                ),
+              );
             },
           ),
-              
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ServiceDetail(null, service),
-              ),
-            );
-          },
         ),
       ),
     );
   }
-  void _settingModalBottomSheet(context) async {
+  void _settingModalBottomSheet(context, String action) async {
     await showModalBottomSheet(
       context: context,
       builder: (BuildContext bc) {
-        return Container(
-          child: new Wrap(
-            children: <Widget>[
-              ListTile(
-                leading: new Icon(Icons.cancel, color: Colors.redAccent[200], size: 20),
-                title: new Text('Cancelar servicio'),
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (BuildContext context) {
-                      return DialogLoading(message: "Cancelando servicio");
-                    },
-                  );
-                  _serviceRef
-                    .child('/${service.key}')
-                    .update({
-                      'status': 'refused'
-                    })
-                    .then((x) {
-                       Navigator.pop(context);
-                        Navigator.pop(context);
-                    });
-                },    
+        switch(action) {
+          case 'settings':
+            return Container(
+              child: new Wrap(
+                children: <Widget>[
+                  ListTile(
+                    leading: new Icon(Icons.cancel, color: Colors.redAccent[200], size: 20),
+                    title: new Text('Cancelar servicio'),
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          return DialogLoading(message: "Cancelando servicio");
+                        },
+                      );
+                      _serviceRef
+                        .child('/${service.key}')
+                        .update({
+                          'status': 'refused'
+                        })
+                        .then((x) {
+                          Navigator.pop(context);
+                            Navigator.pop(context);
+                        });
+                    },    
+                  ),
+                ],
               ),
-            ],
-          ),
-        );
+            );
+            break;
+
+          case 'delete':
+            return Container(
+              child: new Wrap(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(left: 12, top: 5),
+                    child: Text(
+                      'Quieres eliminar este servicio?\nEsta accion no se puede deshacer.',
+                      style: TextStyle(color: Colors.grey)
+                      ),
+                  ),
+                  ListTile(
+                    leading: new Icon(Icons.delete_forever, color: Colors.redAccent[200], size: 20),
+                    title: new Text('Eliminar servicio'),
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          return DialogLoading(message: "Elimando servicio");
+                        },
+                      );
+                      _serviceRef
+                        .child('/${service.key}')
+                        .remove()
+                        .then((x) {
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                        });
+                    },    
+                  ),
+                ],
+              ),
+            );
+            break;
+        }
+        
       }
     );
   }
