@@ -43,7 +43,7 @@ class ListNotificationsState extends State<ListNotifications> {
           Padding(
             padding: EdgeInsets.all(9),
             child: Text(
-              'Promociones',
+              'Promociones\nLas siguientes imágenes son ilustrativas',
               style: TextStyle(color: Colors.grey, fontSize: 17),
             ),
           ),
