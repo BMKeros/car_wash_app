@@ -50,152 +50,161 @@ class _ServiceDetailState extends State<ServiceDetail> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: AppBar(
-        iconTheme: new IconThemeData(
-          color: Colors.white,
+    return Hero(
+      tag: 'service' + _currentService.key,
+      child: Scaffold(
+        appBar: AppBar(
+          iconTheme: new IconThemeData(
+            color: Colors.white,
+          ),
+          title: Text(
+            "Detalle del Servicio",
+            style: TextStyle(color: Colors.white),
+          ),
         ),
-        title: Text(
-          "Detalle del Servicio",
-          style: TextStyle(color: Colors.white),
-        ),
-      ),
-      body: Center(
-        child: ListView(
-          //padding: EdgeInsets.only(left: 15.0, right: 15.0, top: 10.0),
-          children: <Widget>[
-            Container(
-              child: CachedNetworkImage(
-                imageUrl: getStaticMapBox(_currentService.latitude,
-                    _currentService.longitude, '620', '620'),
-                placeholder: Container(
-                  constraints: BoxConstraints.expand(),
-                  child: CircularProgressIndicator(),
+        body: Center(
+          child: ListView(
+            //padding: EdgeInsets.only(left: 15.0, right: 15.0, top: 10.0),
+            children: <Widget>[
+              Container(
+                child: CachedNetworkImage(
+                  imageUrl: getStaticMapBox(_currentService.latitude,
+                      _currentService.longitude, '620', '620'),
+                  placeholder: Container(
+                    height: MediaQuery.of(context).size.height / 1.4,
+                    child: Container(
+                      height: MediaQuery.of(context).size.height / 4,
+                      width: MediaQuery.of(context).size.width / 4,
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                  ),
+                  errorWidget: new Icon(Icons.error),
                 ),
-                errorWidget: new Icon(Icons.error),
               ),
-            ),
-            Card(
-              child: Column(
-                children: <Widget>[
-                  ListTile(
-                    title: Text(_currentService.date,
-                        style: TextStyle(fontWeight: FontWeight.w500)),
-                    leading: Icon(Icons.date_range),
-                  ),
-                  ListTile(
-                    title: Text(_currentService.parseTime,
-                        style: TextStyle(fontWeight: FontWeight.w500)),
-                    leading: Icon(Icons.access_time),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(right: 16.0),
-                          child: Text(
-                            'Estado:',
-                            style: TextStyle(fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                        Text(getNameStatus(_currentService.status)),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(right: 16.0),
-                          child: Text("Tipo:",
-                              style: TextStyle(fontWeight: FontWeight.w600)),
-                        ),
-                        Text(_currentService.type)
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                ],
-              ),
-            ),
-            _showCardResposible
-                ? Card(
-              child: Center(
+              Card(
                 child: Column(
                   children: <Widget>[
-                    ExpansionPanelList(
-                      children: <ExpansionPanel>[
-                        new ExpansionPanel(
-                          headerBuilder:
-                              (BuildContext context, bool isExpanded) {
-                            return new ListTile(
-                              title: new Text(
-                                "Responsable",
-                                textAlign: TextAlign.left,
-                                style: new TextStyle(
-                                  fontSize: 15.0,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            );
-                          },
-                          isExpanded: expandedDetail,
-                          body: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Hero(
-                                tag: 'xxx',
-                                child: Container(
-                                  height: 125,
-                                  width: 125,
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                    BorderRadius.circular(62.5),
-                                    image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: CachedNetworkImageProvider(
-                                        _responsible.imageUrl
-                                      ),
-                                    )
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Text(
-                                _responsible.fullName,
-                                style: TextStyle(
-                                    fontFamily: 'Montserrat',
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                               SizedBox(
-                                height: 20,
-                              ),
-                            ],
+                    ListTile(
+                      title: Text(_currentService.date,
+                          style: TextStyle(fontWeight: FontWeight.w500)),
+                      leading: Icon(Icons.date_range),
+                    ),
+                    ListTile(
+                      title: Text(_currentService.parseTime,
+                          style: TextStyle(fontWeight: FontWeight.w500)),
+                      leading: Icon(Icons.access_time),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(right: 16.0),
+                            child: Text(
+                              'Estado:',
+                              style: TextStyle(fontWeight: FontWeight.w600),
+                            ),
                           ),
-                        ),
-                      ],
-                      expansionCallback: (int index, bool isExpanded) {
-                        //isExpanded = !expandedDetail;
-                        setState(() {
-                          this.expandedDetail = !expandedDetail;
-                        });
-                      },
+                          Text(getNameStatus(_currentService.status)),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(right: 16.0),
+                            child: Text("Tipo:",
+                                style: TextStyle(fontWeight: FontWeight.w600)),
+                          ),
+                          Text(_currentService.type)
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
                     ),
                   ],
                 ),
               ),
-            )
-                : Text('')
-          ],
+              _showCardResposible
+                  ? Card(
+                child: Center(
+                  child: Column(
+                    children: <Widget>[
+                      ExpansionPanelList(
+                        children: <ExpansionPanel>[
+                          new ExpansionPanel(
+                            headerBuilder:
+                                (BuildContext context, bool isExpanded) {
+                              return new ListTile(
+                                title: new Text(
+                                  "Responsable",
+                                  textAlign: TextAlign.left,
+                                  style: new TextStyle(
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              );
+                            },
+                            isExpanded: expandedDetail,
+                            body: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Hero(
+                                  tag: 'xxx',
+                                  child: Container(
+                                    height: 125,
+                                    width: 125,
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                      BorderRadius.circular(62.5),
+                                      image: DecorationImage(
+                                        fit: BoxFit.cover,
+                                        image: CachedNetworkImageProvider(
+                                          _responsible.imageUrl
+                                        ),
+                                      )
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Text(
+                                  _responsible.fullName,
+                                  style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                 SizedBox(
+                                  height: 20,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                        expansionCallback: (int index, bool isExpanded) {
+                          //isExpanded = !expandedDetail;
+                          setState(() {
+                            this.expandedDetail = !expandedDetail;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              )
+                  : Text('')
+            ],
+          ),
         ),
       ),
     );
