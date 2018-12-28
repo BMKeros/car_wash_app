@@ -87,20 +87,7 @@ class CardService extends StatelessWidget {
                 )
               ],
             ),
-            trailing: service.status == STATUS_REFUSED ?
-            IconButton(
-              icon: Icon(Icons.delete_forever, color: Colors.black38, size: 20),
-              onPressed: () {
-                _settingModalBottomSheet(context, 'delete');
-              },
-            )
-            : IconButton(
-              icon: Icon(Icons.settings, color: Colors.black38, size: 20),
-              onPressed: () {
-                _settingModalBottomSheet(context, 'settings');
-              },
-            ),
-                
+            trailing: _iconActionService(context, service.status),
             onTap: () {
               Navigator.push(
                 context,
@@ -113,6 +100,30 @@ class CardService extends StatelessWidget {
         ),
       ),
     );
+  }
+  Widget _iconActionService(BuildContext ctx, String status) {
+    switch(status){
+      case 'accepted':
+        return Icon(Icons.arrow_forward_ios, color: Colors.black38, size: 20);
+        break;
+      
+      case 'pending':
+        return IconButton(
+          icon: Icon(Icons.settings, color: Colors.black38, size: 20),
+          onPressed: () {
+            _settingModalBottomSheet(ctx, 'settings');
+          },
+        );
+        break;
+      
+      case 'refused':
+        return IconButton(
+          icon: Icon(Icons.delete_forever, color: Colors.black38, size: 20),
+          onPressed: () {
+            _settingModalBottomSheet(ctx, 'delete');
+          },
+        );
+    }
   }
   void _settingModalBottomSheet(context, String action) async {
     await showModalBottomSheet(

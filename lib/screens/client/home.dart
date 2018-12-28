@@ -67,6 +67,36 @@ class _HomeScreenState extends State<HomeScreen> {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => NewService(_currentUser)));
     }
+    void _modalBottomSheet(context) {
+      showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return Container(
+              child: new Wrap(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(left: 12, top: 5),
+                    child: Text(
+                      'Si tienes alguna duda sobre la aplicacion o nuestros servicios? Puedes contactarnos a este numero.',
+                      style: TextStyle(color: Colors.grey)
+                      ),
+                  ),
+                  ListTile(
+                    leading: new Icon(Icons.phone, color: Colors.grey, size: 20),
+                    title: new Text('+52 1 669 923 0376'),    
+                  ),
+                  ListTile(
+                    leading: new Icon(Icons.cancel, color: Colors.grey, size: 20),
+                    title: new Text('Cerrar'),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+            );
+        });
+    }
 
     void _onSelectedPopupMenu(String menuKey) async {
       switch (menuKey) {
@@ -75,6 +105,9 @@ class _HomeScreenState extends State<HomeScreen> {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
             return LoginScreen();
           }));
+          break;
+        case 'menu_help':
+          _modalBottomSheet(context);
           break;
       }
     }
@@ -108,12 +141,19 @@ class _HomeScreenState extends State<HomeScreen> {
             itemBuilder: (BuildContext context) {
               return [
                 PopupMenuItem<String>(
+                  value: 'menu_help',
+                  child: ListTile(
+                    leading: Icon(Icons.help),
+                    title: Text('Ayuda'),
+                  ),
+                ),
+                PopupMenuItem<String>(
                   value: 'menu_signout',
                   child: ListTile(
                     leading: Icon(Icons.exit_to_app),
                     title: Text('Salir'),
                   ),
-                )
+                ),
               ];
             },
           )

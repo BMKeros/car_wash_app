@@ -116,8 +116,8 @@ class _LoginScreenState extends State<LoginScreen> {
     Future _handlerSignInGoogle() async {
       try {
         _currentUser = await _authService.signInWithGoogle();
-
-        Navigator.pop(context);
+        print(_currentUser);
+        //Navigator.pop(context);
 
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => HomeScreen(_currentUser)));
