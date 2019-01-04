@@ -394,8 +394,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               MaterialPageRoute(
                                 builder: (context) =>
                                     EditProfile(
-                                      'Editar dirrecion',
-                                      'Direccion',
+                                      'Editar dirección',
+                                      'Dirección',
                                       [_profile.address],
                                       _currentUser,
                                     ),

@@ -68,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final TextField password = TextField(
     obscureText: true,
-    decoration: InputDecoration(labelText: 'Password'),
+    decoration: InputDecoration(labelText: 'Contraseña'),
     controller: passwordTextController,
   );
 

@@ -39,7 +39,7 @@ class _EditProfileState extends State<EditProfile> {
     if (_data.length  < 2) {
       // Solo vendria un valor por lo cual podria ser la direccion o el numero
       switch(_labelTextField) {
-        case 'Direccion':
+        case 'Dirección':
           _addressController.text = _data[0];
           break;
         
@@ -161,7 +161,7 @@ class _EditProfileState extends State<EditProfile> {
                 );
               });
               break;
-            case 'Direccion':
+            case 'Dirección':
               _profileRef
               .child('/${_currentUser.uid}/profile')
               .update({ 

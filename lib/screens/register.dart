@@ -73,12 +73,12 @@ class _RegisterState extends State<Register> {
 
     final passwordOne = TextField(
       obscureText: true,
-      decoration: InputDecoration(labelText: 'Contrasena'),
+      decoration: InputDecoration(labelText: 'Contraseña'),
       controller: passwordTextController,
     );
     final passwordTwo = TextField(
       obscureText: true,
-      decoration: InputDecoration(labelText: 'Repita la contrasena'),
+      decoration: InputDecoration(labelText: 'Repita la contraseña'),
     );
 
     final newAccountButtonRadius = Padding(

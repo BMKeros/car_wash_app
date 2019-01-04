@@ -139,7 +139,7 @@ class _NewServiceState extends State<NewService> {
       setState(() {
         markers = []..add(new Marker(
           '1',
-          'Direccion',
+          'Dirección',
           tapped.latitude,
           tapped.longitude,
           color: Colors.lightBlue,

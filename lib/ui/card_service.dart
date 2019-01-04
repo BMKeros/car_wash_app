@@ -138,21 +138,17 @@ class CardService extends StatelessWidget {
                     leading: new Icon(Icons.cancel, color: Colors.redAccent[200], size: 20),
                     title: new Text('Cancelar servicio'),
                     onTap: () {
-                      showDialog(
-                        context: context,
-                        barrierDismissible: false,
-                        builder: (BuildContext context) {
-                          return DialogLoading(message: "Cancelando servicio");
-                        },
-                      );
                       _serviceRef
                         .child('/${service.key}')
                         .update({
                           'status': 'refused'
                         })
                         .then((x) {
-                          Navigator.pop(context);
-                            Navigator.pop(context);
+                          Navigator.pop(bc);
+                          Tooltip(
+                            message: 'Servicio cancelado',
+                            
+                          );
                         });
                     },    
                   ),
@@ -176,19 +172,11 @@ class CardService extends StatelessWidget {
                     leading: new Icon(Icons.delete_forever, color: Colors.redAccent[200], size: 20),
                     title: new Text('Eliminar servicio'),
                     onTap: () {
-                      showDialog(
-                        context: context,
-                        barrierDismissible: false,
-                        builder: (BuildContext context) {
-                          return DialogLoading(message: "Elimando servicio");
-                        },
-                      );
                       _serviceRef
                         .child('/${service.key}')
                         .remove()
                         .then((x) {
-                          Navigator.pop(context);
-                          Navigator.pop(context);
+                          Navigator.pop(bc);
                         });
                     },    
                   ),
