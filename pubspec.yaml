@@ -25,6 +25,12 @@ dependencies:
   datetime_picker_formfield: ^0.1.6
   cached_network_image: ^0.5.1
   image_picker: ^0.4.10
+  flutter_launcher_icons: "^0.7.0"
+flutter_icons:
+  image_path_android: "icon/dream_car.png"
+  image_path_ios: "icon/dream_car.png"
+  android: true 
+  ios: true
 
 
   # The following adds the Cupertino Icons font to your application.

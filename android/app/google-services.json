@@ -1,27 +1,35 @@
 {
   "project_info": {
-    "project_number": "794499569764",
-    "firebase_url": "https://panelmex-app-test.firebaseio.com",
-    "project_id": "panelmex-app-test",
-    "storage_bucket": "panelmex-app-test.appspot.com"
+    "project_number": "733902821350",
+    "firebase_url": "https://dream-car-app.firebaseio.com",
+    "project_id": "dream-car-app",
+    "storage_bucket": "dream-car-app.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:794499569764:android:229183768cc21d0a",
+        "mobilesdk_app_id": "1:733902821350:android:d98dca74be0cacd6",
         "android_client_info": {
-          "package_name": "com.example.panelmexapp"
+          "package_name": "com.panelmex.dreamcar"
         }
       },
       "oauth_client": [
         {
-          "client_id": "794499569764-s4l32h55964sqspce0rrfsl4rg5o5aq9.apps.googleusercontent.com",
+          "client_id": "733902821350-oc214coi0o8e8lblfehj7m6tev28837k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.panelmex.dreamcar",
+            "certificate_hash": "93cf9fc8fa00578d9d3b6fcb34abcaa5526cca07"
+          }
+        },
+        {
+          "client_id": "733902821350-04nma03l1ljbt7hqeihso1k8qhjmcf5v.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDVeq7JA8HAOAA6Zumaxn18JS_oveHnB2Q"
+          "current_key": "AIzaSyDTCVcX5TzjyFfcYwn9lePyt8g16CPRw6k"
         }
       ],
       "services": {
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "733902821350-04nma03l1ljbt7hqeihso1k8qhjmcf5v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
